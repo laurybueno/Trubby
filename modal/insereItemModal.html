@@ -9,43 +9,48 @@
                 <h4 class="modal-title">Inserir novo item</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+                <form class="form-horizontal"  action="modal/insereBackEnd.php" role="form" method="post">
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="nomeItem">Nome do item:</label>
+                        <label class="control-label col-sm-3" for="nomeItem">Nome do item*:</label>
                         <div class="col-sm-7">
-                            <input type="email" class="form-control" id="nomeItem" placeholder="insira o nome do item">
+                            <input type="text" class="form-control" id="nomeItem" name="nomeItem" placeholder="Ex.: Morango">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="quantidade">Quantidade:</label>
+                        <label class="control-label col-sm-3" for="quantidade">Quantidade*:</label>
                         <div class="col-sm-7">
-                            <input type="email" class="form-control" id="quantidade" placeholder="insira a quantidade">
+                            <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Ex.: 60">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="unidade">Unidade:</label>
+                        <label class="control-label col-sm-3" for="unidades">Unidade*:</label>
                         <div class="col-sm-7">
-                            <input type="email" class="form-control" id="unidade" placeholder="insira a unidade (duzia, kg...)">
+                            <select class="form-control" id="unidade" name="unidade">
+                                <option>Unidade</option>
+                                <option>Grama</option>
+                                <option>Ml</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3" for="precoUnidade">Preço da unidade:</label>
                         <div class="col-sm-7">
-                            <input type="email" class="form-control" id="precoUnidade" placeholder="insira o preço da unidade">
+                            <div class="input-group">
+                                <div class="input-group-addon">R$</div>
+                                <input type="text" class="form-control" id="precoUnidade" name="precoUnidade" placeholder="Ex.: 2,50">
+                            </div>
                         </div>
                     </div>
                     
                     
                     <div class="form-group">        
                         <div align="center">
-                            <button type="submit" class="btn btn-default">Inserir</button>
+                            <!--<button type="cancel" class="btn btn-danger" data-toogle="modal">Cancelar</button>-->
+                            <!--<button type="submit" class="btn btn-primary" data-toggle="modal">Inserir</button>-->
+                            <button id="submit" name="submit" type="submit" value="Send" class="btn btn-primary">Inserir</button>
                         </div>
                     </div>
-                    
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
