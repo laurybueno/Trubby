@@ -47,8 +47,27 @@
     	// Tanto faz. Vou apenas exibir os dados na tela.
     	//echo "<h1> Veja os dados enviados</h1>";
     	$erro= "$nomeItem inserido com sucesso";
+        
+        
+        require_once("../connection.php");
+                    
+        $sql =  "INSERT INTO `trubby`.`estoque` (
+                    `id_usuario` ,
+                    `nome` ,
+                    `quantidade` ,
+                    `quantidade_tipo` ,
+                    `custo` ,
+                    `data_modificacao`
+                )
+                VALUES (
+                    '0','" .$nomeItem ."','".$quantidade ."', 'Dz',' ".$precoUnidade."',
+                    CURRENT_TIMESTAMP
+                );";
+        $resultado = mysql_query($sql);
+        mysql_close($con);
+        
         $_SESSION["erro"]=  $erro;
-
+        
         header("Location: ../estoque/insereItemModal.php");
 
     	
