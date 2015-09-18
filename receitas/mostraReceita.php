@@ -1,15 +1,11 @@
 <?php
     session_start();
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>
         <?php
             include "../bootstrap.php" 
-        ?>
-        <?php
-            include "../estoque/modificaItemModal.html"
         ?>
         
         <script src="../1.RESOURCES/jquery-1.11.3.min.js"></script>
@@ -19,9 +15,8 @@
     <body>
         <script type="text/javascript" >
             $(document).ready(function() { 
-                $("#tabelaEstoque").tablesorter(); 
-            } 
-            ); 
+                $("#tabelaReceita").tablesorter(); 
+            }); 
         </script>
 
         <div class="container">
@@ -36,20 +31,16 @@
                 <?php
                     require_once("../connection.php");
                     
-                    $sql = "SELECT `nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque`";
+                    $sql = "SELECT `nome` FROM `fichas`";
                     $resultado = mysql_query($sql);
                     mysql_close($con);
                     
                         
                     echo 
-                        '<table class="table table-striped" id="tabelaEstoque">
+                        '<table class="table table-striped" id="tabelaReceita">
                             <thead>
                                 <tr>
-                                    <td> <strong>Nome do ingrediente</strong> </td>
-                                    <td> <strong>Quantidade</strong> </td>
-                                    <td> <strong>Unidade</strong> </td>
-                                    <td> <strong>Preço unitário (R$)</strong> </td>
-                                    <td> <strong>Data da ultima modificação</strong></td>
+                                    <td> <strong>Nome da receita</strong> </td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -58,12 +49,8 @@
                                     echo
                                         '<tr>
                                             <td>' .$linha['nome'] .'</td>
-                                            <td>' .$linha['quantidade'] .'</td>
-                                            <td>' .$linha['quantidade_tipo'] .'</td>
-                                            <td>' .$linha['custo'] .'</td>
-                                            <td>' .$linha['data_modificacao'] .'</td>
                                             <td>
-                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemEstoque">
+                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#">
                                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
                                                 </button>
                                             </td>
@@ -80,7 +67,7 @@
                         </table>
             
             <!-- Trigger the modal with a button -->
-            <a href="insereEstoque.php" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item no estoque</a>
+            <a href="/insereReceita.php" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir nova ficha técnica</a>
         </div>
     </body>
 </html>

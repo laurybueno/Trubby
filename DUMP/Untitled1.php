@@ -66,6 +66,7 @@ if(!empty($_POST['submitted']))
 	}
 }
 ?>
+
 <!DOCTYPE html>
 <html >
 <head>

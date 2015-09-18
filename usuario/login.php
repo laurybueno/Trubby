@@ -1,11 +1,10 @@
+<?php
+    include "../bootstrap.php" 
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
-        <?php
-            include "../bootstrap.php" 
-        ?>
-
-        
         <script src="jquery-1.11.3.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="jquery.tablesorter.min.js"></script>

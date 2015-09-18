@@ -33,9 +33,13 @@
                     <label class="control-label col-sm-3" for="unidades">Unidade*:</label>
                     <div class="col-sm-7">
                         <select class="form-control" id="unidade" name="unidade">
-                            <option>Unidade</option>
-                            <option>Grama</option>
-                            <option>Ml</option>
+                            <option>Lt</option>
+                            <option>Kg</option>
+                            <option>Dz</option>
+                            <option>Mç</option>
+                            <option>Us</option>
+                            <option>Co</option>
+                            <option>Qb</option>
                         </select>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 <?php
-    include "bootstrap.php";
+    include "../bootstrap.php";
 ?>
 
 <?php
@@ -9,18 +9,11 @@ session_start();
 $erro = false;
 $msg_erro = '';
 
-echo 'teste';
-
 $classQuantidade = 'form-group';
 $classPrecoUnidade = 'form-group';
 
 //Verifica de POST tem algum valor
 if (!empty($_POST['submitted'])) {
-
-    echo 'entrou no if!';
-    
-    //$nome = trim($_POST['nomeItem']);
-
 
     // Cria as variáveis dinamicamente
     foreach ($_POST as $chave => $valor) {
@@ -36,11 +29,11 @@ if (!empty($_POST['submitted'])) {
 
     // Verifica se $quatidade realmente existe e se é um número. 
     // Também verifica se não existe nenhum erro anterior
-    if ((!isset( $quantidade ) || !is_numeric($quantidade) || !maiorIgualZero($quantidade)) && !$erro) {
+    if ((!isset($quantidade) || !is_numeric($quantidade) || !maiorIgualZero($quantidade)) && !$erro) {
         $msg_erro = 'A Quantidade deve ser um valor numérico maior ou igual a zero.';
         $erro = true;
         $quantidade = '';
-        $classQuantidade = 'form-group has-error';
+        $classQuantidade = 'form-group has-error'; //Borda vermelha
     }
     
     // Verifica se $precoUnidade realmente existe e se é um número. 
@@ -49,13 +42,34 @@ if (!empty($_POST['submitted'])) {
     	$msg_erro = 'O Preço da Unidade deve ser um valor em reais, com duas casas decimais maior ou igual a zero (Ex:10,50).';
     	$erro = true;
     	$precoUnidade = '';
-    	$classPrecoUnidade = 'form-group has-error';
+    	$classPrecoUnidade = 'form-group has-error'; //Borda vermelha
     }
 
     // Se existir algum erro, mostra o erro
     if (false === $erro) {
-    	$_SESSION["erro"] = 'Inserido com Sucesso';
+        
+    	require_once("../connection.php");
+    	
+        $sql =  "INSERT INTO `trubby`.`estoque` (
+                    `id_usuario` ,
+                    `nome` ,
+                    `quantidade` ,
+                    `quantidade_tipo` ,
+                    `custo`
+                )
+                VALUES (
+                    '0','".$nomeItem."','".$quantidade."','".$unidade."','".$precoUnidade."'
+                );";
+                
+        $resultado = mysql_query($sql);
+        mysql_close($con);
+    	
     	//header("Location: insereEstoque.php");
+    	
+    	if(!$resultado){
+    	    $_SESSION["erro"] = 'Falha no Banco de Dados, tente novamente!';
+    	} else $_SESSION["erro"] = 'Inserido com Sucesso';
+    	
     } else {
         $_SESSION["erro"] = $msg_erro;
     }
@@ -91,29 +105,41 @@ function formatoReal($valor){
             <h4 class="modal-title">Inserir novo item</h4>
         </div>
         <div class="container">
-            <form class="form-horizontal"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" role="form" method="post">
+            <form class="form-horizontal"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" role="form" method="POST">
+                
+                <!-- Nome -->
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="nomeItem">Nome do item*:</label>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" id="nomeItem" name="nomeItem" placeholder="Ex.: Morango" value='<?php echo htmlentities($nomeItem)?>'>
                     </div>
                 </div>
+                
+                <!-- Quantidade -->
                 <div class="<?php echo htmlentities($classQuantidade)?>">
                     <label class="control-label col-sm-3" for="quantidade">Quantidade*:</label>
                     <div class="col-sm-7">
                         <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Ex.: 60" value='<?php echo htmlentities($quantidade)?>'>
                     </div>
                 </div>
+                
+                <!-- Unidade -->
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="unidades">Unidade*:</label>
                     <div class="col-sm-7">
                         <select class="form-control" id="unidade" name="unidade">
-                            <option <?php echo $unidade =='Unidade'?'selected':''; ?>>Unidade</option>
-                            <option <?php echo $unidade =='Grama'?'selected':''; ?>>Grama</option>
-                            <option <?php echo $unidade =='Ml'?'selected':''; ?>>Ml</option>
+                            <option <?php echo $unidade =='Lt'?'selected':''; ?>>Lt</option>
+                            <option <?php echo $unidade =='Kg'?'selected':''; ?>>Kg</option>
+                            <option <?php echo $unidade =='Dz'?'selected':''; ?>>Dz</option>
+                            <option <?php echo $unidade =='Mç'?'selected':''; ?>>Mç</option>
+                            <option <?php echo $unidade =='Us'?'selected':''; ?>>Us</option>
+                            <option <?php echo $unidade =='Co'?'selected':''; ?>>Co</option>
+                            <option <?php echo $unidade =='Qb'?'selected':''; ?>>Qb</option>
                         </select>
                     </div>
                 </div>
+                
+                <!-- Preço -->
                 <div class="<?php echo htmlentities($classPrecoUnidade)?>">
                     <label class="control-label col-sm-3" for="precoUnidade">Preço da unidade*:</label>
                     <div class="col-sm-7">
@@ -123,9 +149,11 @@ function formatoReal($valor){
                         </div>
                     </div>
                 </div>
+                
+                <!-- BOTÃO DE CONCLUIR -->
                 <div class="form-group">        
                     <div align="center">
-                        <span class="label label-success">
+                        <span class="label label-danger">
                             <?php
                                 echo  $_SESSION["nomeItem"]. " " . $_SESSION["erro"] . "<br>";
                                 session_destroy(); 

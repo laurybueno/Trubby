@@ -1,9 +1,6 @@
- <?php
-    // Start the session
-    session_start();
-?>
-
 <?php
+    // Inicia a session
+    session_start();
 
     $erro = false;
     
@@ -30,6 +27,7 @@
     if ((!isset( $quantidade ) || !is_numeric($quantidade) || !maiorIgualZero($quantidade)) && !$erro) {
         $erro = 'A Quantidade deve ser um valor numérico maior ou igual a zero.';
     }
+    
     // Verifica se $precoUnidade realmente existe e se é um número. 
     // Também verifica se não existe nenhum erro anterior
     echo $precoUnidade . '<br><br>';
@@ -41,7 +39,7 @@
     if ($erro) {
         $_SESSION["erro"]= $erro;
     	echo $erro;
-    	header("Location: ../mostraestoque.php");
+    	header("Location: ../estoque/insereItemModal.php");
     } else {
     	// Se a variável erro continuar com valor falso
     	// Você pode fazer o que preferir aqui, por exemplo, 
@@ -49,9 +47,28 @@
     	// Tanto faz. Vou apenas exibir os dados na tela.
     	//echo "<h1> Veja os dados enviados</h1>";
     	$erro= "$nomeItem inserido com sucesso";
+        
+        
+        require_once("../connection.php");
+                    
+        $sql =  "INSERT INTO `trubby`.`estoque` (
+                    `id_usuario` ,
+                    `nome` ,
+                    `quantidade` ,
+                    `quantidade_tipo` ,
+                    `custo` ,
+                    `data_modificacao`
+                )
+                VALUES (
+                    '0','" .$nomeItem ."','".$quantidade ."','". $unidade."',' ".$precoUnidade."',
+                    CURRENT_TIMESTAMP
+                );";
+        $resultado = mysql_query($sql);
+        mysql_close($con);
+        
         $_SESSION["erro"]=  $erro;
-
-        header("Location: ../mostraestoque.php");
+        
+        header("Location: ../estoque/insereItemModal.php");
 
     	
     	foreach ($_POST as $chave => $valor) {
@@ -60,17 +77,15 @@
     }
     
     function maiorIgualZero($valor){
-        if( $valor >= 0){
+        if($valor >= 0){
             return true;
         } return false;
     }
 
 	function formatoReal($valor){
 	    list($whole, $decimal) = explode(',', $valor);
-	    echo $decimal . '<br><br>';
 	    
 	    $tamanhoDecimal = strlen((string)$decimal);
-	    echo $tamanhoDecimal . '<br><br>';
 	    
 	    if($tamanhoDecimal == 2){
 	        return true;
