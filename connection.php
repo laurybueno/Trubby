@@ -6,14 +6,14 @@
     // then click the URL that is emitted to the Output tab of the console.
 
     $servername = "54.94.128.189";
-    $username = "root";
-    $password = "raiztrubby";
+    $login = "trubby";
+    $senha = "raiztrubby";
     $database = "trubby";
     $dbport = 3306;
 
-    $con = mysql_connect("54.94.128.189", "trubby", 'raiztrubby') or
-                        die('Não foi possível conectar');
-    mysql_select_db("trubby", $con);
+    $con = mysql_connect($servername, $login, $senha) or
+        die('Não foi possível conectar');
+    mysql_select_db($database, $con);
     /*$con = mysql_connect(getenv('IP'), getenv('C9_USER'), 'trubby') or
                         die('Não foi possível conectar');
    mysql_select_db("trubby", $con);
