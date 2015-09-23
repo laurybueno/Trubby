@@ -1,10 +1,10 @@
 <?php
     include "../bootstrap.php";
+
+    require_once("../connection.php");
 ?>
 
 <?php
-// Inicia a session
-session_start();
 
 $erro = false;
 $msg_erro = '';
@@ -48,8 +48,6 @@ if (!empty($_POST['submitted'])) {
     // Se existir algum erro, mostra o erro
     if (false === $erro) {
         
-    	require_once("../connection.php");
-    	
         $sql =  "INSERT INTO `trubby`.`estoque` (
                     `id_usuario` ,
                     `nome` ,
@@ -97,7 +95,15 @@ function formatoReal($valor){
 <!DOCTYPE html>
 <html>
     <head>
+        <?php
 
+            include "../valida_session.inc.php";
+
+            if($login === false){
+                header("Location: ../usuario/naoLogado.php");
+            }
+                
+        ?>
     </head>
     <body>
         <div class="container">
@@ -156,7 +162,6 @@ function formatoReal($valor){
                         <span class="label label-danger">
                             <?php
                                 echo  $_SESSION["nomeItem"]. " " . $_SESSION["erro"] . "<br>";
-                                session_destroy(); 
                             ?>
                         </span>
                         <br>
