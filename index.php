@@ -43,7 +43,7 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="estoque/mostraestoque.php">Estoque</a></li>
+                        
                         <!-- <li><a href="estoque/mostraestoque.php">Estoque</a></li> -->
                         <li><a href="#">Receitas</a></li>
                         <li><a href="#">Caixa</a></li>
