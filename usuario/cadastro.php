@@ -1,5 +1,7 @@
 <?php
-    include "../bootstrap.php"
+    include "../bootstrap.php";
+
+    require_once("../connection.php");
 ?>
 
 <?php
@@ -75,8 +77,6 @@ if (!empty($_POST['submitted'])) {
     
     if (false === $erro) {
         
-        require_once("../connection.php");
-        
         $sql =  "INSERT INTO `trubby`.`usuarios` (
                     `nome` ,
                     `sobrenome` ,
@@ -102,6 +102,10 @@ if (!empty($_POST['submitted'])) {
     } else {
         $_SESSION["erro"] = $msg_erro;
     }
+} else {
+
+    include "../valida_session.inc.php";
+
 }
 
 ?>
@@ -110,6 +114,15 @@ if (!empty($_POST['submitted'])) {
 <!DOCTYPE html>
 <html>
     <head>
+        <?php
+
+            include "../valida_session.inc.php";
+            
+            if($login === true){
+                header("Location: ../index.php");
+            }
+                
+        ?>
     </head>
     <body>
         <div class="container">
@@ -248,7 +261,7 @@ if (!empty($_POST['submitted'])) {
                         <span class="label label-danger">
                             <?php
                                 echo  $_SESSION["nomeItem"]. " " . $_SESSION["erro"] . "<br>";
-                                session_destroy(); 
+                                //session_destroy(); 
                             ?>
                         </span>
                         <br>

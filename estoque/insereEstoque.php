@@ -3,7 +3,14 @@
 
     require_once("../connection.php");
 ?>
+        <?php
 
+            include "../valida_session.inc.php";
+            if($login === false){
+                header("Location: ../usuario/naoLogado.php");
+            }
+                
+        ?>
 <?php
 
 $erro = false;
@@ -95,15 +102,7 @@ function formatoReal($valor){
 <!DOCTYPE html>
 <html>
     <head>
-        <?php
 
-            include "../valida_session.inc.php";
-
-            if($login === false){
-                header("Location: ../usuario/naoLogado.php");
-            }
-                
-        ?>
     </head>
     <body>
         <div class="container">

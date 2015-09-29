@@ -1,6 +1,4 @@
 <?php
-    session_start();
-    
     include "../bootstrap.php"; 
 
     include "../estoque/modificaItemModal.html";
