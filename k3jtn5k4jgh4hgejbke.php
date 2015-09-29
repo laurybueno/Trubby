@@ -8,7 +8,7 @@ $databasepassword = "raiztrubby";
 $con = mysql_connect($databasehost,$databaseusername,$databasepassword) or die(mysql_error());
 mysql_select_db($databasename) or die(mysql_error());
 mysql_query("SET CHARACTER SET utf8");
-$query = $_GET['query'];
+$query = urldecode($_GET['query']);
 $sth = mysql_query($query);
 
 if (mysql_errno()) {

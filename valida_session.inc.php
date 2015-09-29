@@ -25,6 +25,7 @@ if(!(empty($email_usuario) OR empty($senha_usuario))){
             
             $login = true;
             $nomeUsuario = mysql_result($resultado, 0, 'nome');
+            $idUsuario = mysql_result($resultado, 0, 'id_usuario');
             
         }
         
