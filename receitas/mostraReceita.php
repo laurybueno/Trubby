@@ -31,7 +31,7 @@
                 <?php
                     require_once("../connection.php");
                     
-                    $sql = "SELECT `nome` FROM `fichas`";
+                    $sql = "SELECT `nome`, 'foto' FROM `fichas`";
                     $resultado = mysql_query($sql);
                     mysql_close($con);
                     
@@ -40,7 +40,10 @@
                         '<table class="table table-striped" id="tabelaReceita">
                             <thead>
                                 <tr>
+                                    <td></td>
                                     <td> <strong>Nome da receita</strong> </td>
+                                    <td> <strong>Foto</strong> </td>
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             </thead>
@@ -48,7 +51,17 @@
                                 while($linha = mysql_fetch_array($resultado)){
                                     echo
                                         '<tr>
-                                            <td>' .$linha['nome'] .'</td>
+                                            <td>
+                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#">
+                                                    <span aria-hidden="true"></span> Mais informações
+                                                </button>
+                                            </td>
+                                            <td>
+                                                ' .$linha['nome'] .'
+                                            </td>
+                                            <td>
+                                                ' .$linha['foto'] .'
+                                                </td>
                                             <td>
                                                 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#">
                                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
