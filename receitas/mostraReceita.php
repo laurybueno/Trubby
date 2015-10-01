@@ -28,50 +28,49 @@
                     ?>
                 </h3>
             </div>
+                <!-- script para ordenar a tabela -->
+                <script type="text/javascript" >
+                    $(document).ready(function() { 
+                        $("#tabelaReceita").tablesorter(); 
+                    }); 
+                </script>
+            
+                <!-- script para linkar a linha da tabela-->
+                <script type="text/javascript">
+                    jQuery(document).ready(function($) {
+                        $(".clickable-row").click(function() {
+                            window.document.location = $(this).data("href");
+                        });
+                    });
+                </script>
                 <?php
                     require_once("../connection.php");
                     
-                    $sql = "SELECT `nome`, 'foto' FROM `fichas`";
+                    $sql = "SELECT `id_ficha`,`nome`, `foto` FROM `fichas`";
                     $resultado = mysql_query($sql);
                     mysql_close($con);
                     
-                        
+
                     echo 
                         '<table class="table table-striped" id="tabelaReceita">
                             <thead>
                                 <tr>
-                                    <td></td>
                                     <td> <strong>Nome da receita</strong> </td>
                                     <td> <strong>Foto</strong> </td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>';
                                 while($linha = mysql_fetch_array($resultado)){
                                     echo
-                                        '<tr>
-                                            <td>
-                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#">
-                                                    <span aria-hidden="true"></span> Mais informações
-                                                </button>
-                                            </td>
+                                    #isso nao é seguro (ta mandando um get com o id da receita)
+                                        '<tr  class="clickable-row" data-href="/maisInformacoes?receita=' .$linha['id_ficha'] .'"> 
                                             <td>
                                                 ' .$linha['nome'] .'
                                             </td>
                                             <td>
                                                 ' .$linha['foto'] .'
-                                                </td>
-                                            <td>
-                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#">
-                                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
-                                                </button>
                                             </td>
-                                            <td>
-                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#">
-                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
-                                                </button>
-                                            </td>
+                                            
                                         </tr>
                                         ';
                                 }

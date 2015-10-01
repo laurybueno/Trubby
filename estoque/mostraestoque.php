@@ -40,7 +40,7 @@
             </div>
                 <?php
                     
-                    $sql = "SELECT `nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque`";
+                    $sql = "SELECT `id_estoque`,`nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque`";
                     $resultado = mysql_query($sql);
                     mysql_close($con);
                     
