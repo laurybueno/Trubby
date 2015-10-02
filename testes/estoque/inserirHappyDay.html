@@ -30,7 +30,7 @@
 				<tr>
 					<td>type</td>
 					<td>id=nomeItem</td>
-					<td>selenio</td>
+					<td>javascript{&quot;selenio&quot; + Math.floor(Math.random()*15000) ;}</td>
 				</tr>
 				<tr>
 					<td>type</td>
@@ -63,17 +63,16 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td>clickAndWait</td>
-					<td>link=← Voltar</td>
-					<td></td>
-				</tr>
-				<tr>
 					<td>assertText</td>
 					<td>css=tbody &gt; tr &gt; td</td>
 					<td>${nome}</td>
 				</tr>
-			
-			</tbody>
+				<tr>
+					<td>clickAndWait</td>
+					<td>link=← Voltar</td>
+					<td></td>
+				</tr>
+				</tbody>
 		</table>
 	</body>
 </html>
