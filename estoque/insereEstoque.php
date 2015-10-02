@@ -50,6 +50,8 @@ if (!empty($_POST['submitted'])) {
     	$erro = true;
     	$precoUnidade = '';
     	$classPrecoUnidade = 'form-group has-error'; //Borda vermelha
+    } else {
+        $precoUnidade = str_replace(",",".", $precoUnidade);
     }
 
     // Se existir algum erro, mostra o erro
