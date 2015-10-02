@@ -24,9 +24,13 @@
     <body>
         <script type="text/javascript" >
             $(document).ready(function() { 
-                $("#tabelaEstoque").tablesorter(); 
-            } 
-            ); 
+               
+                $("#tabelaEstoque").tablesorter({ 
+                    sortInitialOrder: 'desc',
+                    sortList: [[4,1]]
+                });
+            });
+
         </script>
 
         <div class="container">
@@ -52,7 +56,6 @@
                 <?php
                     
                     $sql = "SELECT `id_estoque`,`nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque` WHERE id_usuario = '$idUsuario'";
-                    echo $sql;
                     $resultado = mysql_query($sql);
                     mysql_close($con);
                     
