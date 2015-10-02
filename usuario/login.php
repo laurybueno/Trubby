@@ -10,6 +10,8 @@ $msg_erro ='';
 
 if (!empty($_POST['submitted'])) {
     
+    session_set_cookie_params(3600);
+    
     session_start();
     
     $email = $_POST["email"];

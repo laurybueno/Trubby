@@ -31,6 +31,17 @@
 
         <div class="container">
             <a href="../index.php" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
+             <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        
+                        <li><a href="estoque/mostraestoque.php">Estoque</a></li>
+                        <li><a href="receitas/mostraReceita.php">Receitas</a></li>
+                        <li><a href="#">Caixa</a></li>
+                        <li><a href="#">Cardápio</a></li>
+                    </ul>
+                </div>
+            </div>
             <div>
                 <h3>
                     <?php
@@ -40,7 +51,8 @@
             </div>
                 <?php
                     
-                    $sql = "SELECT `id_estoque`,`nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque`";
+                    $sql = "SELECT `id_estoque`,`nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque` WHERE id_usuario = '$idUsuario'";
+                    echo $sql;
                     $resultado = mysql_query($sql);
                     mysql_close($con);
                     

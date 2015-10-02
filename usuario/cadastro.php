@@ -80,15 +80,19 @@ if (!empty($_POST['submitted'])) {
         $sql =  "INSERT INTO `trubby`.`usuarios` (
                     `nome` ,
                     `sobrenome` ,
+                    `sexo`,
                     `cpf` ,
                     `email` ,
+                    `endereco` ,
                     `senha` ,
                     `dt_nasc` ,
                     `tel`
                 )
                 VALUES (
-                    '".$nome."', '".$sobrenome."', '".$cpf."', '".$email."', '".$senha."', '".$dataNasc."', '".$telefone."'
+                    '".$nome."', '".$sobrenome."', 'Masculino', '".$cpf."', '".$email."', 'endereco x', '".$senha."', '".$dataNasc."', '".$telefone."'
                 );";
+        
+        echo $sql;
                 
         $resultado = mysql_query($sql);
         mysql_close($con);

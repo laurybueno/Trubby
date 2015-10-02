@@ -63,9 +63,10 @@ if (!empty($_POST['submitted'])) {
                     `custo`
                 )
                 VALUES (
-                    '0','".$nomeItem."','".$quantidade."','".$unidade."','".$precoUnidade."'
+                    '$idUsuario','".$nomeItem."','".$quantidade."','".$unidade."','".$precoUnidade."'
                 );";
-                
+        
+        echo $sql;        
         $resultado = mysql_query($sql);
         mysql_close($con);
     	
