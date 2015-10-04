@@ -2,15 +2,12 @@
     include "../bootstrap.php";
 
     require_once("../connection.php");
-?>
-        <?php
 
-            include "../valida_session.inc.php";
-            if($login === false){
-                header("Location: ../usuario/naoLogado.php");
-            }
-                
-        ?>
+    include "../valida_session.inc.php";
+    if($login === false){
+        header("Location: ../usuario/naoLogado.php");
+    }
+?>
 <?php
 
 $erro = false;
@@ -65,10 +62,9 @@ if (!empty($_POST['submitted'])) {
                     `custo`
                 )
                 VALUES (
-                    '$idUsuario','".$nomeItem."','".$quantidade."','".$unidade."','".$precoUnidade."'
+                    '$idUsuario','$nomeItem','$quantidade','$unidade','$precoUnidade'
                 );";
         
-        echo $sql;        
         $resultado = mysql_query($sql);
         mysql_close($con);
     	
