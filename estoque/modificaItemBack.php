@@ -52,6 +52,7 @@ if (!empty($_POST['submitted'])) {
     // Se existir algum erro, mostra o erro
     if (false === $erro) {
         
+        /*
         $sql =  "INSERT INTO `trubby`.`estoque` (
                     `id_usuario` ,
                     `nome` ,
@@ -62,6 +63,21 @@ if (!empty($_POST['submitted'])) {
                 VALUES (
                     '$idUsuario','$nomeItem','$quantidade','$unidade','$precoUnidade'
                 );";
+        */
+        
+        $sql = "UPDATE `trubby`.`estoque` SET
+        
+                    `nome` = '$nomeItem', 
+                    `quantidade` = '$quantidade', 
+                    `quantidade_tipo` = '$unidade', 
+                    `custo` = '$precoUnidade'
+                    
+                    WHERE `id_estoque` = '$idDoItem'
+                    ;";
+        
+                 
+        echo "teste";            
+        echo $sql;            
         
         $resultado = mysql_query($sql);
         mysql_close($con);
@@ -70,7 +86,7 @@ if (!empty($_POST['submitted'])) {
     	
     	if(!$resultado){
     	    $_SESSION["erro"] = 'Falha no Banco de Dados, tente novamente!';
-    	} else $_SESSION["erro"] = 'Inserido com Sucesso';
+    	} else $_SESSION["erro"] = $sql;
     	
     } else {
         $_SESSION["erro"] = $msg_erro;
