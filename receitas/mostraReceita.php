@@ -8,7 +8,6 @@
                 header("Location: ../usuario/naoLogado.php");
             }
             include "../bootstrap.php";
-            include "insereReceita.php";
         ?>
         <script src="../1.RESOURCES/jquery-1.11.3.min.js"></script>
         <script src="../1.RESOURCES/bootstrap/js/bootstrap.min.js"></script>
@@ -72,7 +71,6 @@
                                 <tbody>';
                                     while($linha = mysql_fetch_array($resultado)){
                                         echo
-                                        #isso nao é seguro (ta mandando um get com o id da receita)
                                             '<tr> 
                                                 <td>
                                                     ' .$linha['nome'] .'
@@ -100,11 +98,9 @@
                     ?>
                                 </tbody>
                             </table>
-                
-                <!-- Trigger the modal with a button -->
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#insereReceita">
-                   <span aria-hidden="true"></span> Inserir nova ficha técnica
-                </button>
+                <p>
+                    <a class="btn btn btn-info btn-lg" href="insereReceita.php" role="button">Inserir nova receita</a>
+                </p>
             </div>
         </div>
     </body>
