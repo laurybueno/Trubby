@@ -20,7 +20,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         
-                        <li><a href="estoque/mostraestoque.php">Estoque</a></li>
+                        <li><a href="../estoque/mostraestoque.php">Estoque</a></li>
                         <li><a href="receitas/mostraReceita.php">Receitas</a></li>
                         <li><a href="#">Caixa</a></li>
                         <li><a href="#">Cardápio</a></li>
@@ -80,9 +80,9 @@
                                                 </td>
                                                 <td>
                                                     <form class="form-horizontal"  action="" role="form" method="POST">
-                                                        <button type="button" data-id="'.$linha['id_ficha'].'" data-nome="'.$linha['nome'].'" data-foto="'.$linha['foto'].'" class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemReceita">
-                                                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
-                                                        </button>
+                                                        <p>
+                                                            <a class="btn btn btn-info btn-lg glyphicon glyphicon-edit" href="modificaReceita.php" role="button">Modificar</a>
+                                                        </p>
                                                      </form>
                                                 </td>
                                                 <td>

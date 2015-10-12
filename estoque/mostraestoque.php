@@ -1,7 +1,7 @@
 <?php
-    include "../bootstrap.php"; 
+    include "../bootstrap.php";
 
-    include "../estoque/modificaItemModal.php";
+    include "modificaItemModal.php";
     include "deletaEstoque.php";
 
     require_once("../connection.php");
@@ -26,13 +26,10 @@
 
         <script type="text/javascript" >
             $(document).ready(function() { 
-               
                 $("#tabelaEstoque").tablesorter({ 
-                    sortInitialOrder: 'desc',
-                    sortList: [[4,1]]
+                    sortInitialOrder: 'desc',sortList: [[4,1]]
                 });
             });
-
         </script>
 
         <script>
@@ -40,7 +37,7 @@
                 var idItem = $(this).data("id");
                 $(".modal-body #idDoItem").val( idItem );
             });
-        </script>;
+        </script>
         
         <script>
             $(document).on("click", ".open-ModificaDialog", function () {
@@ -58,7 +55,7 @@
                 
             });
             
-        </script>;
+        </script>
         
         
 
