@@ -30,64 +30,108 @@
                 
             <div class ="container">
                 <form class="form-horizontal"  action="../receitas/.php" role="form" method="post">
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" for="nomeItem">Nome da ficha técnica*:</label>
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" id="nomeItem" name="nomeItem" placeholder="Ex.:crepe de morango" >
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="nomeItem">Nome da ficha técnica*:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="nomeItem" name="nomeItem" placeholder="Ex.:crepe de morango" >
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" for="nPorcoes">Número de porções*:</label>
-                            <div class="col-sm-7">
-                                <input type="number" class="form-control" id="nPorcoes" name="nPorcoes" placeholder="Ex.: 2" >
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="modoPreparo">Modo de preparo*:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="modoPreparo" name="modoPreparo" >
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" for="pesoPorcao">Peso da porção (g)*:</label>
-                            <div class="col-sm-7">
-                                <input type="number" class="form-control" id="pesoPorcao" name="pesoPorcao" placeholder="peso da porção em gramas Ex.: 2" >
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="seqMontagem">Sequencia de montagem*:</label>
+                        <label class="control-label col-sm-1" >1.</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="seqMontagem" name="seqMontagem" >
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" for="precoVenda">Preço de venda*:</label>
-                            <div class="col-sm-7">
-                                <input type="number" class="form-control" id="precoVenda" name="precoVenda" placeholder="preço de venda em reais Ex.: 2,50" >
-                            </div>
+                        <label class="control-label col-sm-4" >2.</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="seqMontagem2" name="seqMontagem2" >
                         </div>
-                        <h2>Ingredientes:</h2>
-                        <h4>Ingredientes primários</h4>
-                       <div class="form-group">        
-                            <div align="center">
-                                <button id="submit" name="submitted" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngrediente"></button>
-                            </div>
+                    </div>
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info"></button>
                         </div>
-                        <h4>Ingredientes secundários</h4>
-                        <div class="form-group">        
-                            <div align="center">
-                                <button id="submit" name="submitted" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngrediente"></button>
-                            </div>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="equipamento">Equipamentos:</label>
+                        <label class="control-label col-sm-1" >1.</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="equipamento" name="equipamento" >
                         </div>
-                        <h4>Ingredientes extras</h4>
-                        <div class="form-group">        
-                            <div align="center">
-                                <button id="submit" name="submitted" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngrediente"></button>
-                            </div>
+                        <label class="control-label col-sm-4" >2.</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="equipamento2" name="equipamento2" >
                         </div>
-                        
-                        
-                        
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" for="obs">Observações:</label>
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" id="obs" name="obs" >
-                            </div>
+                    </div>
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info"></button>
                         </div>
-                        <div class="form-group">        
-                            <div align="center">
-                                <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Inserir receita</button>
-                            </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="nPorcoes">Número de porções*:</label>
+                        <div class="col-sm-7">
+                            <input type="number" class="form-control" id="nPorcoes" name="nPorcoes" placeholder="Ex.: 2" >
                         </div>
-                    </form>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="pesoPorcao">Peso da porção (g)*:</label>
+                        <div class="col-sm-7">
+                            <input type="number" class="form-control" id="pesoPorcao" name="pesoPorcao" placeholder="peso da porção em gramas Ex.: 2" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="precoVenda">Preço de venda*:</label>
+                        <div class="col-sm-7">
+                            <input type="number" class="form-control" id="precoVenda" name="precoVenda" placeholder="preço de venda em reais Ex.: 2,50" >
+                        </div>
+                    </div>
+                    <h2>Ingredientes:</h2>
+                    <h4>Ingredientes primários</h4>
+                   <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngrediente"></button>
+                        </div>
+                    </div>
+                    <h4>Ingredientes secundários</h4>
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngrediente"></button>
+                        </div>
+                    </div>
+                    <h4>Ingredientes extras</h4>
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngrediente"></button>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="obs">Observações:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="obs" name="obs" >
+                        </div>
+                    </div>
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Inserir receita</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </body>
