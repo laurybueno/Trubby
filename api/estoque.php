@@ -29,6 +29,10 @@ switch ($method) {
         insere_modifica();
         break;
     
+    case 'GET':
+        lista();
+        break;
+    
     case 'DELETE':
         deleta();
         break;
@@ -105,7 +109,8 @@ function insere_modifica(){
 // Requisição DELETE envia 2 campos para esta página via URI (acessível pelo array _GET): id_usuario, id_estoque.
 function deleta(){
     
-    echo 'oi';
+    // Se houver um erro na requisição, retorna BAD REQUEST
+    if(!isset($_GET['id_usuario']) || $_GET['id_usuario']==0) requisicao_incorreta();
     
     // Se houver algum erro na requisição, encerra o programa
     if(! ( isset($_GET['id_estoque']) && $_GET['id_estoque']!=0 && isset($_GET['id_usuario']) && $_GET['id_usuario'] != 0 )) requisicao_incorreta();
@@ -123,25 +128,31 @@ function deleta(){
 }
 
 
-
-
-// Retorna a lista de itens no estoque de um usuário X passado por get (idusuario=)
-// Exemplo de requisição /api/estoque.php?method=listaestoque&idusuario=0&format=json
-if(strcasecmp($_GET['method'],'listaestoque') == 0){
-    $response['code'] = 1;
-    $response['status'] = $api_response_code[ $response['code'] ]['HTTP Response'];
+// **************************************************************
+// Requisição GET: área que prepara a lista de itens de estoque do usuário determinado
+// **************************************************************
+// Exemplo de requisição /api/estoque.php?id_usuario=14
+function lista(){
     
-    $idusuario = $_GET['idusuario'];
-    $sql = "SELECT `id_estoque`,`nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque` WHERE id_usuario = '$idusuario'";
+    $idusuario = $_GET['id_usuario'];
+    $sql = "SELECT `id_estoque` , `id_usuario` , `nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque` WHERE id_usuario = '$idusuario'";
     $aux = mysql_query($sql);
     $resultado = queryParaArray($aux);
     
-    $response['data'] = $resultado;
+    // Formata os dados em um JSON
+    $json_response = json_encode($resultado);
+ 
+ 
+    // Declara o tipo de conteúdo a ser enviado para o cliente
+    header('Content-Type: application/json; charset=utf-8');
+  
+    // Envia os dados
+    echo $json_response;
+    
+    // encerra a execução do webService
+    die();
+
 }
-
-// MANDA A RESPOSTA APÓS PASSAR PELO MÉTODO SELECIONADO
-deliver_response($_GET['format'], $response);
-
 
 //------------------FUNÇÕES AUXILIARES------------------\\
 
