@@ -25,12 +25,17 @@ function requisicao_incorreta(){
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
-  case 'POST':
-    insere_modifica();
-    break;
-  default:
-    requisicao_incorreta();
-    break;
+    case 'POST':
+        insere_modifica();
+        break;
+    
+    case 'DELETE':
+        deleta();
+        break;
+    
+    default:
+        requisicao_incorreta();
+        break;
 }
 
 
@@ -63,7 +68,8 @@ function insere_modifica(){
     }
     else{ // realiza a atualização
         // recupera os dados atuais sobre o item que será modificado
-        $item = mysql_fetch_array(mysql_query("SELECT * FROM `estoque` WHERE id_estoque='".$_POST['id_estoque']."'"));
+        $item = mysql_fetch_array(mysql_query("SELECT * FROM `estoque` WHERE id_estoque='".$_POST['id_estoque']."'"))
+            or die("Erro na recuperação dos dados antigos");
         
         
         // calcula os novos valores de quantidade de preço por unidade
@@ -79,7 +85,8 @@ function insere_modifica(){
                     custo='".$item['custo']."'
                     WHERE 
                     id_estoque='".$_POST['id_estoque']."'
-                    ");
+                    ")
+                    or die("Erro na atualização de dados");
         
         
     }
@@ -89,6 +96,31 @@ function insere_modifica(){
 }
 
 
+
+
+
+// **************************************************************
+// Requisição DELETE: área que deleta item no estoque
+// **************************************************************
+// Requisição DELETE envia 2 campos para esta página via URI (acessível pelo array _GET): id_usuario, id_estoque.
+function deleta(){
+    
+    echo 'oi';
+    
+    // Se houver algum erro na requisição, encerra o programa
+    if(! ( isset($_GET['id_estoque']) && $_GET['id_estoque']!=0 && isset($_GET['id_usuario']) && $_GET['id_usuario'] != 0 )) requisicao_incorreta();
+    
+    mysql_query("DELETE FROM estoque
+                WHERE 
+                id_estoque='".$_GET['id_estoque']."' AND
+                id_usuario='".$_GET['id_usuario']."'
+                ") or
+                die("Erro ao deletar dados.");
+    
+    // Encerra a execução do webService
+    die();
+    
+}
 
 
 
