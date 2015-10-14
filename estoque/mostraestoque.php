@@ -83,53 +83,55 @@
             </div>
        
             <?php
-                
                 $teste = "OK!";
                 
                 $sql = "SELECT `id_estoque`,`nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque` WHERE id_usuario = '$idUsuario'";
                 $resultado = mysql_query($sql);
                 mysql_close($con);
                 
-                
-                echo 
-                    '<table class="table table-striped" id="tabelaEstoque">
-                        <thead>
-                            <tr>
-                                <td> <strong>Nome do ingrediente</strong> </td>
-                                <td> <strong>Quantidade</strong> </td>
-                                <td> <strong>Unidade</strong> </td>
-                                <td> <strong>Preço unitário (R$)</strong> </td>
-                                <td> <strong>Data da ultima modificação</strong></td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>';
-                        while($linha = mysql_fetch_array($resultado)){
-                            echo
-                                '<tr>
-                                    <td>' .$linha['nome'] .'</td>
-                                    <td>' .$linha['quantidade'] .'</td>
-                                    <td>' .$linha['quantidade_tipo'] .'</td>
-                                    <td>' .$linha['custo'] .'</td>
-                                    <td>' .$linha['data_modificacao'] .'</td>
-                                    <td>
-                                        <form class="form-horizontal"  action="" role="form" method="POST">
-                                            <button type="button" data-id="'.$linha['id_estoque'].'" data-nome="'.$linha['nome'].'" data-qnt="'.$linha['quantidade'].'" data-qnttipo="'.$linha['quantidade_tipo'].'" data-custo="'.$linha['custo'].'" class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemEstoque">
-                                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
-                                            </button>
-                                         </form>
-                                    </td>
-                                    <td>
-                                        <form class="form-horizontal"  action="" role="form" method="POST">
-                                            <button type="button" data-id="'.$linha['id_estoque'].'" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemEstoque">
-                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            ';
-                        }
             ?>
+                
+                <table class="table table-striped" id="tabelaEstoque">
+                    <thead>
+                        <tr>
+                            <td> <strong>Nome do ingrediente</strong> </td>
+                            <td> <strong>Quantidade</strong> </td>
+                            <td> <strong>Unidade</strong> </td>
+                            <td> <strong>Preço unitário (R$)</strong> </td>
+                            <td> <strong>Data da ultima modificação</strong></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <?php
+                                while($linha = mysql_fetch_array($resultado)){
+                                    echo
+                                        '<td>' .$linha['nome'] .'</td>
+                                        <td>' .$linha['quantidade'] .'</td>
+                                        <td>' .$linha['quantidade_tipo'] .'</td>
+                                        <td>' .$linha['custo'] .'</td>
+                                        <td>' .$linha['data_modificacao'] .'</td>';
+                                        
+                            ?>
+                            <td>
+                                <form class="form-horizontal"  action="" role="form" method="POST">
+                                    <button type="button" data-id="<?php echo $linha['id_estoque']?>" data-nome="<?php echo $linha['nome']?>" data-qnt="<?php echo $linha['quantidade']?>" data-qnttipo="<?php echo $linha['quantidade_tipo']?>" data-custo="<?php echo$linha['custo']?>" class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemEstoque">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
+                                    </button>
+                                 </form>
+                            </td>
+                            <td>
+                                <form class="form-horizontal"  action="" role="form" method="POST">
+                                    <button type="button" data-id="<?php echo $linha['id_estoque']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemEstoque">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                            <?php        
+                                }
+                            ?>
                     </tbody>
                 </table>
        
