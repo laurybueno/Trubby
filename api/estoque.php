@@ -1,7 +1,5 @@
 <?php
 
-include "brain.php";
-
 require_once("../connection.php");
 
 /* 
@@ -19,9 +17,9 @@ function requisicao_incorreta(){
 
 
 
-// **************************************************************
+// ****************************************************************************
 // Checa qual o tipo de requisição recebida e encaminha o comando para a função adequada
-// **************************************************************
+// ****************************************************************************
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
@@ -44,9 +42,9 @@ switch ($method) {
 
 
 
-// **************************************************************
+// ****************************************************************************
 // Requisição POST: área de inserção/modificação de item no estoque
-// **************************************************************
+// ****************************************************************************
 // Requisição POST envia 6 campos para esta página: id_usuario, id_estoque, nome, quantidade, quantidade_tipo, custo.
 // Se o campo id_estoque for igual a 0, o webService entenderá que o item deve ser novo e fará a inserção.
 // Caso contrário, ele entenderá que se trata de uma atualização e fará as operações devidas para atualizar o item.
@@ -55,45 +53,49 @@ function insere_modifica(){
     // Se a requisição contiver erros, a execução será interrompida e o cliente receberá um código 400
     if(!isset($_POST['id_estoque'])) requisicao_incorreta();
     
-    // checa se a operação será uma inserção ou uma atualização
-    if($_POST['id_estoque'] == 0){ // realiza a inserção
-        
-        $sql = "
-        INSERT INTO `estoque` (id_usuario,nome,quantidade,quantidade_tipo,custo)
-        VALUES 
-        ('".$_POST['id_usuario']."',
-        '".$_POST['nome']."',
-        '".$_POST['quantidade']."',
-        '".$_POST['quantidade_tipo']."',
-        '".$_POST['custo']."')";
-        
-        mysql_query($sql) or die("Erro na inserção de dados");
-    
-    }
-    else{ // realiza a atualização
-        // recupera os dados atuais sobre o item que será modificado
-        $item = mysql_fetch_array(mysql_query("SELECT * FROM `estoque` WHERE id_estoque='".$_POST['id_estoque']."'"))
-            or die("Erro na recuperação dos dados antigos");
-        
-        
-        // calcula os novos valores de quantidade de preço por unidade
-        $item['custo'] = ($item['quantidade']*$item['custo']+$_POST['quantidade']*$_POST['custo'])/($_POST['custo'] + $item['custo']);
-        $item['quantidade'] += $_POST['quantidade'];
-        
-        // atualiza as informações no banco de dados
-        mysql_query("
-                    UPDATE estoque SET
-                    nome='".$_POST['nome']."',
-                    quantidade='".$item['quantidade']."',
-                    quantidade_tipo='".$_POST['quantidade_tipo']."',
-                    custo='".$item['custo']."'
-                    WHERE 
-                    id_estoque='".$_POST['id_estoque']."'
-                    ")
-                    or die("Erro na atualização de dados");
-        
-        
-    }
+    // valida os dados antes de tentar inseri-los (função no final do arquivo [Funções Validadoras])
+    if (validaInsercao()) requisicao_incorreta();
+    // caso os dados estejam OK, ele insere
+    else {
+        // checa se a operação será uma inserção ou uma atualização
+        if($_POST['id_estoque'] == 0){ // realiza a inserção
+            
+            $sql = "
+            INSERT INTO `estoque` (id_usuario,nome,quantidade,quantidade_tipo,custo)
+            VALUES 
+            ('".$_POST['id_usuario']."',
+            '".$_POST['nome']."',
+            '".$_POST['quantidade']."',
+            '".$_POST['quantidade_tipo']."',
+            '".$_POST['custo']."')";
+            
+            mysql_query($sql) or die("Erro na inserção de dados");
+            
+        }
+        else { // realiza a atualização
+            // recupera os dados atuais sobre o item que será modificado
+            $item = mysql_fetch_array(mysql_query("SELECT * FROM `estoque` WHERE id_estoque='".$_POST['id_estoque']."'"))
+                or die("Erro na recuperação dos dados antigos");
+            
+            
+            // calcula os novos valores de quantidade de preço por unidade
+            $item['custo'] = ($item['quantidade']*$item['custo']+$_POST['quantidade']*$_POST['custo'])/($_POST['custo'] + $item['custo']);
+            $item['quantidade'] += $_POST['quantidade'];
+            
+            // atualiza as informações no banco de dados
+            mysql_query("
+                        UPDATE estoque SET
+                        nome='".$_POST['nome']."',
+                        quantidade='".$item['quantidade']."',
+                        quantidade_tipo='".$_POST['quantidade_tipo']."',
+                        custo='".$item['custo']."'
+                        WHERE 
+                        id_estoque='".$_POST['id_estoque']."'
+                        ")
+                        or die("Erro na atualização de dados");
+            
+        }
+    } 
     
     // encerra a execução do webService
     die();
@@ -103,9 +105,9 @@ function insere_modifica(){
 
 
 
-// **************************************************************
+// ****************************************************************************
 // Requisição DELETE: área que deleta item no estoque
-// **************************************************************
+// ****************************************************************************
 // Requisição DELETE envia 2 campos para esta página via URI (acessível pelo array _GET): id_usuario, id_estoque.
 function deleta(){
     
@@ -128,9 +130,9 @@ function deleta(){
 }
 
 
-// **************************************************************
+// ****************************************************************************
 // Requisição GET: área que prepara a lista de itens de estoque do usuário determinado
-// **************************************************************
+// ****************************************************************************
 // Exemplo de requisição /api/estoque.php?id_usuario=14
 function lista(){
     
@@ -141,7 +143,6 @@ function lista(){
     
     // Formata os dados em um JSON
     $json_response = json_encode($resultado);
- 
  
     // Declara o tipo de conteúdo a ser enviado para o cliente
     header('Content-Type: application/json; charset=utf-8');
@@ -154,7 +155,50 @@ function lista(){
 
 }
 
+// ********************************************************
+//------------------FUNÇÕES VALIDADORAS------------------\\
+// ********************************************************
+
+// Função que valida os dados da inserção/modificação, sendos estes em especifico Quantidade e Custo 
+function validaInsercao(){
+    
+    $erro = FALSE;
+    
+    foreach ($_POST as $chave => $valor) {
+        // Remove todas as tags HTML
+    	// Remove os espaços em branco do valor
+    	$$chave = trim(strip_tags($valor));
+    	
+    	// Verifica se tem algum valor nulo
+    	if (empty($valor)) {
+    	    $erro = TRUE;
+    	}
+    }
+    
+    // Verifica se $quatidade realmente existe e se é um número. 
+    if (!isset($_POST['quantidade']) || !is_numeric($_POST['quantidade']) || !maiorIgualZero($_POST['quantidade'])) {
+        $erro = TRUE;
+    }
+    
+    // Verifica se $precoUnidade realmente existe e se esta no formato ideal. 
+    if (!isset($_POST['custo']) || !formatoReal($_POST['custo']) || !maiorIgualZero($_POST['custo'])) {
+    	$erro = TRUE;
+    } else {
+        $_POST['custo'] = str_replace(",",".", $_POST['custo']);
+    }
+    
+    return $erro;
+    
+}
+
+// ********************************************************
+
+
+
+
+// ********************************************************
 //------------------FUNÇÕES AUXILIARES------------------\\
+// ********************************************************
 
 // Transforma o resultado de uma querry em um array
 function queryParaArray($query){
@@ -181,5 +225,8 @@ function formatoReal($valor){
         return true;
     } return false;
 }
+
+
+// ********************************************************
                 
 ?>
