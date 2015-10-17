@@ -20,23 +20,9 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal"  action="../estoque/deletaEstoqueBack.php" role="form" method="post">
-                    <?php
-                        echo "teste";
-                        echo $id;
-                    ?>
                     <h4>Você tem certeza que deseja deletar tal item?</h4>
-                    <input type="hidden" name="idDoItem" id="idDoItem" value=""/>
+                    <input type="text" name="nomeItem" id="nomeItem" value='<?php echo htmlentities($nomeItem)?>'/>
                     <p>Essa ação não pode ser desfeita</p>
-                    
-                    <?php
-                        $variable = $sql;
-                        echo $variable;
-                        echo $_SESSION["idItem"];
-                        echo "teste";
-                        echo $teste;
-                                        
-                    ?>
-                    
                     <div class="form-group">        
                         <div align="center">
                             <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Confirmar</button>
