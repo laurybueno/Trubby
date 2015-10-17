@@ -1,9 +1,3 @@
-<?php
-    include "../valida_session.inc.php";
-    if($login === false){
-        header("Location: ../usuario/naoLogado.php");
-    }
-?>
 <!-- Modal -->
 <div id="inserirIngrediente" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -11,10 +5,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Inserir novo ingrediente ***primario?***</h4>
+                <h4 class="modal-title">Inserir novo ingrediente primario?</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal"  action="#" role="form" method="post">
+                <form class="form-horizontal"  role="form" >
 
                     <!--nome do ingrediente com dropdown -->
                      <div class="form-group" >
@@ -53,7 +47,8 @@
                     </div>
                     <div class="form-group">        
                         <div align="center">
-                            <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Confirmar</button>
+                            <button class="btn btn-primary" onclick="insereIngredientePrimario()">Confirmar</button>
+                            <!-- <button id="submit" onclick="insereIngredientePrimario()" name="submitted" type="submit" value="Send" class="btn btn-primary"  >Confirmar</button>-->
                         </div>
                     </div>
                 </form>
