@@ -34,8 +34,8 @@
 
         <script>
             $(document).on("click", ".open-DeletaDialog", function () {
-                var idItem = $(this).data("id");
-                $(".modal-body #idDoItem").val( idItem );
+                 var nomeItem = $(this).data("nome");
+                 $(".modal-body #nomeItem").val(nomeItem);
             });
         </script>
         
@@ -52,7 +52,6 @@
                 $(".modal-body #quantidade").val(qnt);
                 $(".modal-body #unidade").val(tipo);
                 $(".modal-body #precoUnidade").val(custo);
-                
             });
             
         </script>
@@ -123,7 +122,7 @@
                             </td>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
-                                    <button type="button" data-id="<?php echo $linha['id_estoque']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemEstoque">
+                                    <button type="button" data-nome="<?php echo $linha['nome']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemEstoque">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
                                     </button>
                                 </form>
