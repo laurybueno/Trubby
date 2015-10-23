@@ -1,6 +1,8 @@
-<exec dir="."
-      command="phpunit --log-junit 'reports/unitreport.xml'
-                       --coverage-html 'reports/coverage'
-                       --coverage-clover 'reports/coverage/coverage.xml'
-                       test/"
-/>
+<phpunit codecoverage="true" haltonfailure="true" haltonerror="true">
+  <formatter type="clover" usefile="false"/>
+  <batchtest>
+    <fileset dir="tests">
+      <include name="**/*Test*.php"/>
+    </fileset>
+  </batchtest>
+</phpunit>
