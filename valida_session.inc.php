@@ -12,6 +12,8 @@ if(isset($_SESSION["senha"])) $senha_usuario = $_SESSION["senha"];
 
 if(!(empty($email_usuario) OR empty($senha_usuario))){
     
+    //$sql= "SELECT * FROM usuarios WHERE email='$email_usuario'";
+    //$resultado = $mysqli->query($sql);
 	$resultado = mysql_query("SELECT * FROM usuarios WHERE email='$email_usuario'");
 	
 	if(mysql_num_rows($resultado)==1){
