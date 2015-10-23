@@ -6,7 +6,6 @@
     }
     
 ?>
-
 <!-- Modal -->
 <div id="modificarItemEstoque" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -20,7 +19,7 @@
             <div class="modal-body">
                 <form class="form-horizontal"  action="../estoque/modificaItemBack.php" role="form" method="post">
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="nomeItem"></label>
+                        <label class="control-label col-sm-3" for="idDoItem"></label>
                         <div class="col-sm-7">
                             <input type="hidden" class="form-control" id="idDoItem" name="idDoItem" placeholder="Ex.: Morango" value='<?php echo htmlentities($nomeItem)?>'>
                         </div>
