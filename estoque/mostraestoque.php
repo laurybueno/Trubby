@@ -89,6 +89,16 @@
                 mysql_close($con);
                 
             ?>
+            <?php
+            // ******* CHAMADA PARA API (WIP) *******
+            
+            $service_url = 'http://trubby-flashfox.c9.io/api/estoque.php?id_usuario='.$idUsuario;
+            $json = file_get_contents($service_url);
+            $decoded = json_decode($json, TRUE);
+            
+            //*******                         *******
+            ?>
+            
                 
                 <table class="table table-striped" id="tabelaEstoque">
                     <thead>
@@ -104,32 +114,33 @@
                     <tbody>
                         <tr>
                             <?php
-                                while($linha = mysql_fetch_array($resultado)){
+                                foreach($decoded as $key => $aux) {
                                     echo
-                                        '<td>' .$linha['nome'] .'</td>
-                                        <td>' .$linha['quantidade'] .'</td>
-                                        <td>' .$linha['quantidade_tipo'] .'</td>
-                                        <td>' .$linha['custo'] .'</td>
-                                        <td>' .$linha['data_modificacao'] .'</td>';
-                                        
+                                        '
+                                        <td>' .$aux['nome'] .'</td>
+                                        <td>' .$aux['quantidade'] .'</td>
+                                        <td>' .$aux['quantidade_tipo'] .'</td>
+                                        <td>' .$aux['custo'] .'</td>
+                                        <td>' .$aux['data_modificacao'] .'</td>
+                                        ';
                             ?>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
-                                    <button type="button" data-id="<?php echo $linha['id_estoque']?>" data-nome="<?php echo $linha['nome']?>" data-qnt="<?php echo $linha['quantidade']?>" data-qnttipo="<?php echo $linha['quantidade_tipo']?>" data-custo="<?php echo$linha['custo']?>" class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemEstoque">
+                                    <button type="button" data-id="<?php echo $aux['id_estoque']?>" data-nome="<?php echo $aux['nome']?>" data-qnt="<?php echo $aux['quantidade']?>" data-qnttipo="<?php echo $aux['quantidade_tipo']?>" data-custo="<?php echo $aux['custo']?>" class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemEstoque">
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
                                     </button>
                                  </form>
                             </td>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
-                                    <button type="button" data-nome="<?php echo $linha['nome']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemEstoque">
+                                    <button type="button" data-nome="<?php echo $aux['nome']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemEstoque">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
                                     </button>
                                 </form>
                             </td>
                         </tr>
                             <?php        
-                                }
+                               }
                             ?>
                     </tbody>
                 </table>
