@@ -24,7 +24,7 @@
                         <li><a href="../estoque/mostraestoque.php">Estoque</a></li>
                         <li><a href="receitas/mostraReceita.php">Receitas</a></li>
                         <li><a href="#">Caixa</a></li>
-                        <li><a href="#">Cardápio</a></li>
+                        <li><a href="../cardapio/mostraCardapio.php">Cardápio</a></li>
                     </ul>
                 </div>
             </div>
@@ -93,9 +93,17 @@
                                     <td> <?php  echo $linha['nome']; ?> </td>
                                     <td> <?php  echo $linha['foto']; ?> </td>
                                     <td>
-                                        <form class="form-horizontal"  action="" role="form" method="POST">
+                                        <form class="form-horizontal"  action="modificaReceita.php" role="form" method="POST">
+                                            <div class="form-group">
+                                                <div class="col-sm-7">
+                                                    <input type="hidden" class="form-control" id="idReceita" name="idReceita" value='<?php echo htmlentities($linha['id_ficha'])?>'>
+                                                </div>
+                                            </div>
                                             <p>
-                                                <a class="btn btn-info btn-lg glyphicon glyphicon-edit" data-id="<?php echo $linha['id_ficha']; ?>" href="modificaReceita.php" role="button">Modificar</a>
+                                                <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-info btn-lg glyphicon glyphicon-edit">Modificar</button>
+                                                <!--
+                                                <a class="btn btn-info btn-lg glyphicon glyphicon-edit" data-id="<?php //echo $linha['id_ficha']; ?>" href="modificaReceita.php" role="button">Modificar</a>
+                                                -->
                                             </p>
                                          </form>
                                     </td>
