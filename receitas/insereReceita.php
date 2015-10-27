@@ -5,6 +5,7 @@
     }
     include "../bootstrap.php";
     include "insereIngrediente.php";
+    include "insereIngredienteSecundario.php";
     include "insereIngredienteExtra.php";
     
     if (!empty($_POST['submitted'])) {
@@ -37,46 +38,45 @@
     </head>
     <body>
         <script>
-            function insereIngredientePrimario() {
+            function insereIngredientePrimario(form) {
                 var table = document.getElementById("ingrediente_primario");
-                var row = table.insertRow(0);
+                var row = table.insertRow(1);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
                 var cell4 = row.insertCell(3);
-                cell1.innerHTML = "NEW CELL1";
-                cell2.innerHTML = "NEW CELL2";
-                cell3.innerHTML = "NEW CELL2";
-                cell4.innerHTML = "NEW CELL2";
+                cell1.innerHTML = form.nome.value;
+                cell2.innerHTML = form.qntUtilizada.value;
+                cell3.innerHTML = form.qntLiquida.value;
+                cell4.innerHTML = form.rendimento.value;
             }
             
-             function insereIngredienteSecundario() {
+            function insereIngredienteSecundario(form) {
                 var table = document.getElementById("ingrediente_secundario");
-                var row = table.insertRow(0);
+                var row = table.insertRow(1);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
                 var cell4 = row.insertCell(3);
-                cell1.innerHTML = "NEW CELL1";
-                cell2.innerHTML = "NEW CELL2";
-                cell3.innerHTML = "NEW CELL2";
-                cell4.innerHTML = "NEW CELL2";
+                cell1.innerHTML = form.nome.value;
+                cell2.innerHTML = form.qntUtilizada.value;
+                cell3.innerHTML = form.qntLiquida.value;
+                cell4.innerHTML = form.rendimento.value;
             }
             
-             function insereIngredienteExtra() {
+            function insereIngredienteExtra(form) {
                 var table = document.getElementById("ingrediente_extra");
                 var row = table.insertRow(0);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
                 var cell4 = row.insertCell(3);
-                var cell4 = row.insertCell(4);
-                var cell5 = row.insertCell(5);
-                cell1.innerHTML = "NEW CELL1";
-                cell2.innerHTML = "NEW CELL2";
-                cell3.innerHTML = "NEW CELL2";
-                cell4.innerHTML = "NEW CELL2";
-                cell5.innerHTML = "NEW CELL2";
+                var cell5 = row.insertCell(4);
+                cell1.innerHTML = form.nome.value;
+                cell2.innerHTML = form.qntUtilizada.value;
+                cell3.innerHTML = form.qntLiquida.value;
+                cell4.innerHTML = form.rendimento.value;
+                cell5.innerHTML = form.precoExtra.value;
             }
         </script>
         
@@ -136,21 +136,43 @@
                     </div>
                     <h2>Ingredientes:</h2>
                     <h4>Ingredientes primários</h4>
-                    <table class="table table-striped" id= "ingrediente_primario"></table>
+                    <table class="table table-striped" id= "ingrediente_primario">
+                        <tr>
+                            <td>Nome do ingrediente</td>
+                            <td>Quantidade utilizada</td>
+                            <td>Quantidade líquida</td>
+                            <td>Rendimento</td>
+                        </tr>
+                    </table>
                     <div class="form-group">        
                         <div align="center">
                             <button id="submit"  type="submit" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngrediente"></button>
                         </div>
                     </div>
                     <h4>Ingredientes secundários</h4>
-                    <table class="table table-striped" id= "ingrediente_secundario"></table>
+                    <table class="table table-striped" id= "ingrediente_secundario">
+                        <tr>
+                            <td>Nome do ingrediente</td>
+                            <td>Quantidade utilizada</td>
+                            <td>Quantidade líquida</td>
+                            <td>Rendimento</td>
+                        </tr>
+                    </table>
                     <div class="form-group">
                         <div align="center">
-                            <button id="submit" name="submit" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngrediente"></button>
+                            <button id="submit" name="submit" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngredienteSecundario"></button>
                         </div>
                     </div>
                     <h4>Ingredientes extras</h4>
-                    <table class="table table-striped" id= "ingrediente_extra"></table>
+                    <table class="table table-striped" id= "ingrediente_extra">
+                        <tr>
+                            <td>Nome do ingrediente</td>
+                            <td>Quantidade utilizada</td>
+                            <td>Quantidade líquida</td>
+                            <td>Rendimento</td>
+                            <td>Preço extra</td>
+                        </tr>
+                    </table>
                     <div class="form-group">
                         <div align="center">
                             <button id="submit" name="submit" type="submit" value="Send" class="btn glyphicon glyphicon-plus btn-info" aria-hidden="true" data-toggle="modal" data-target="#inserirIngredienteExtra"></button>
@@ -164,7 +186,7 @@
                     </div>
                     <div class="form-group">        
                         <div align="center">
-                            <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-sucess">Inserir receita</button>
+                            <button id="submit" name="submitted" type="button" value="Send" class="btn btn-sucess">Inserir receita</button>
                         </div>
                     </div>
                 </form>
