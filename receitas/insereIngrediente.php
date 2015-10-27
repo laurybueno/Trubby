@@ -8,13 +8,13 @@
                 <h4 class="modal-title">Inserir novo ingrediente primario?</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal"  role="form" >
+                <form class="form-horizontal" id="form" role="form" >
 
                     <!--nome do ingrediente com dropdown -->
                      <div class="form-group" >
                         <label class="control-label col-sm-3" for="nomeIngrediente">Nome do ingrediente*:</label>
                         <div class="col-sm-7">
-                            <select>
+                            <select name="nome">
                                 <?php
                                 $sql = "SELECT `id_estoque`,`nome` FROM `estoque` WHERE id_usuario = 10";
                                 $resultado = mysql_query($sql);
@@ -47,7 +47,7 @@
                     </div>
                     <div class="form-group">        
                         <div align="center">
-                            <button class="btn btn-primary" onclick="insereIngredientePrimario()">Confirmar</button>
+                            <button class="btn btn-primary" class="insereInfredientePrimario" onclick="insereIngredientePrimario(this.form)">Confirmar</button>
                             <!-- <button id="submit" onclick="insereIngredientePrimario()" name="submitted" type="submit" value="Send" class="btn btn-primary"  >Confirmar</button>-->
                         </div>
                     </div>
