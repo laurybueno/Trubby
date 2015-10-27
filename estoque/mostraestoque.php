@@ -4,6 +4,8 @@
     include "modificaItemModal.php";
     include "deletaEstoque.php";
 
+    include "../usaApi.php";
+
     require_once("../connection.php");
 ?>
 
@@ -68,7 +70,7 @@
                         <li><a href="../estoque/mostraestoque.php">Estoque</a></li>
                         <li><a href="../receitas/mostraReceita.php">Receitas</a></li>
                         <li><a href="#">Caixa</a></li>
-                        <li><a href="#">Cardápio</a></li>
+                        <li><a href="../cardapio/mostraCardapio.php">Cardápio</a></li>
                     </ul>
                 </div>
             </div>
@@ -82,20 +84,10 @@
             </div>
        
             <?php
-                $teste = "OK!";
-                
-                $sql = "SELECT `id_estoque`,`nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque` WHERE id_usuario = '$idUsuario'";
-                $resultado = mysql_query($sql);
-                mysql_close($con);
-                
-            ?>
-            <?php
             // ******* CHAMADA PARA API (WIP) *******
             
-            $service_url = 'http://trubby-flashfox.c9.io/api/estoque.php?id_usuario='.$idUsuario;
-            $json = file_get_contents($service_url);
-            $decoded = json_decode($json, TRUE);
-            
+            $decoded = leEstoque($idUsuario);
+
             //*******                         *******
             ?>
             
