@@ -89,7 +89,7 @@ if (!empty($_POST['submitted'])) {
                     `tel`
                 )
                 VALUES (
-                    '".$nome."', '".$sobrenome."', 'Masculino', '".$cpf."', '".$email."', 'endereco x', '".$senha."', '".$dataNasc."', '".$telefone."'
+                    '$nome', '$sobrenome', 'Masculino', '$cpf', '$email', 'endereco x', '$senha', '$dataNasc', '$telefone'
                 );";
         
         echo $sql;
