@@ -1,20 +1,13 @@
 <?php
 
+require_once("functions.inc.php");
 require_once("../connection.php");
 
 /* 
  * Ao receber um GET com id de usuário, esta página deverá retornar a lista de itens no estoque do dado usuário.
- * Ao receber um POST, ela deverã inserir um novo item no estoque do usuário especificado ou modificar esse item, caso o id_estoque já esteja especificado na requisição.
+ * Ao receber um POST, ela deverá inserir um novo item no estoque do usuário especificado ou modificar esse item, caso o id_estoque já esteja especificado na requisição.
  * Ao receber um DELETE, ela vai deletar o item especificado.
  */
-
-
-// Retorna um BAD REQUEST em caso de erro na requisição
-function requisicao_incorreta(){
-    header('HTTP/1.1 400 BAD REQUEST');
-    die();
-}
-
 
 
 // ****************************************************************************
@@ -50,53 +43,57 @@ switch ($method) {
 // Caso contrário, ele entenderá que se trata de uma atualização e fará as operações devidas para atualizar o item.
 function insere_modifica(){
     
+    // Recebe os dados formatados em JSON entregues no corpo da requisição HTTP
+    $entrada = leJSON();
+    
     // Se a requisição contiver erros, a execução será interrompida e o cliente receberá um código 400
-    if(!isset($_POST['id_estoque'])) requisicao_incorreta();
+    if(!isset($entrada['id_estoque'])) requisicao_incorreta();
     
     // valida os dados antes de tentar inseri-los (função no final do arquivo [Funções Validadoras])
-    if (validaInsercao()) requisicao_incorreta();
-    // caso os dados estejam OK, ele insere
-    else {
-        // checa se a operação será uma inserção ou uma atualização
-        if($_POST['id_estoque'] == 0){ // realiza a inserção
-            
-            $sql = "
-            INSERT INTO `estoque` (id_usuario,nome,quantidade,quantidade_tipo,custo)
-            VALUES 
-            ('".$_POST['id_usuario']."',
-            '".$_POST['nome']."',
-            '".$_POST['quantidade']."',
-            '".$_POST['quantidade_tipo']."',
-            '".$_POST['custo']."')";
-            
-            mysql_query($sql) or die("Erro na inserção de dados");
-            
-        }
-        else { // realiza a atualização
-            // recupera os dados atuais sobre o item que será modificado
-            $item = mysql_fetch_array(mysql_query("SELECT * FROM `estoque` WHERE id_estoque='".$_POST['id_estoque']."'"))
-                or die("Erro na recuperação dos dados antigos");
-            
-            
-            // calcula os novos valores de quantidade de preço por unidade
-            $item['custo'] = ($item['quantidade']*$item['custo']+$_POST['quantidade']*$_POST['custo'])/($_POST['custo'] + $item['custo']);
-            $item['quantidade'] += $_POST['quantidade'];
-            
-            // atualiza as informações no banco de dados
-            mysql_query("
-                        UPDATE estoque SET
-                        nome='".$_POST['nome']."',
-                        quantidade='".$item['quantidade']."',
-                        quantidade_tipo='".$_POST['quantidade_tipo']."',
-                        custo='".$item['custo']."'
-                        WHERE 
-                        id_estoque='".$_POST['id_estoque']."'
-                        ")
-                        or die("Erro na atualização de dados");
-            
-        }
-    } 
+    // if (validaInsercao()) requisicao_incorreta();
     
+    // caso os dados estejam OK, ele insere
+    // checa se a operação será uma inserção ou uma atualização
+    
+    
+    if($entrada['id_estoque'] == 0){ // realiza a inserção
+        
+        $sql = "
+        INSERT INTO `estoque` (id_usuario,nome,quantidade,quantidade_tipo,custo)
+        VALUES 
+        ('".$entrada['id_usuario']."',
+        '".$entrada['nome']."',
+        '".$entrada['quantidade']."',
+        '".$entrada['quantidade_tipo']."',
+        '".$entrada['custo']."')";
+        
+        mysql_query($sql) or die("Erro na inserção de dados");
+        
+    }
+    else { // realiza a atualização
+        // recupera os dados atuais sobre o item que será modificado
+        $item = mysql_fetch_array(mysql_query("SELECT * FROM `estoque` WHERE id_estoque='".$entrada['id_estoque']."'"))
+            or die("Erro na recuperação dos dados antigos");
+        
+        
+        // calcula os novos valores de quantidade de preço por unidade
+        $item['custo'] = ($item['quantidade']*$item['custo']+$entrada['quantidade']*$entrada['custo'])/($entrada['custo'] + $item['custo']);
+        $item['quantidade'] += $entrada['quantidade'];
+        
+        // atualiza as informações no banco de dados
+        mysql_query("
+                    UPDATE estoque SET
+                    nome='".$entrada['nome']."',
+                    quantidade='".$item['quantidade']."',
+                    quantidade_tipo='".$entrada['quantidade_tipo']."',
+                    custo='".$item['custo']."'
+                    WHERE 
+                    id_estoque='".$entrada['id_estoque']."'
+                    ")
+                    or die("Erro na atualização de dados");
+        
+    }
+
     // encerra a execução do webService
     die();
 }
