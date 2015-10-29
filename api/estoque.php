@@ -5,7 +5,7 @@ require_once("../connection.php");
 
 /* 
  * Ao receber um GET com id de usuário, esta página deverá retornar a lista de itens no estoque do dado usuário.
- * Ao receber um POST, ela deverá inserir um novo item no estoque do usuário especificado ou modificar esse item, caso o id_estoque já esteja especificado na requisição.
+ * Ao receber um POST, ela deverá inserir um novo item no estoque do usuário especificado ou modificar esse item, caso o id_produto já esteja especificado na requisição.
  * Ao receber um DELETE, ela vai deletar o item especificado.
  */
 
@@ -33,12 +33,14 @@ switch ($method) {
         break;
 }
 
+// após a realização de uma operação, encerra a execução do script
+die();
 
 
 // ****************************************************************************
 // Requisição POST: área de inserção/modificação de item no estoque
 // ****************************************************************************
-// Requisição POST envia 6 campos para esta página: id_usuario, id_estoque, nome, quantidade, quantidade_tipo, custo.
+// Requisição POST envia 6 campos para esta página: id_usuario, id_produto, nome, quantidade, quantidade_tipo, custo.
 // Se o campo id_estoque for igual a 0, o webService entenderá que o item deve ser novo e fará a inserção.
 // Caso contrário, ele entenderá que se trata de uma atualização e fará as operações devidas para atualizar o item.
 function insere_modifica(){
@@ -47,82 +49,82 @@ function insere_modifica(){
     $entrada = leJSON();
     
     // Se a requisição contiver erros, a execução será interrompida e o cliente receberá um código 400
-    if(!isset($entrada['id_estoque'])) requisicao_incorreta();
+    if(!isset($entrada['id_produto'])) requisicao_incorreta();
     
-    // valida os dados antes de tentar inseri-los (função no final do arquivo [Funções Validadoras])
-    // if (validaInsercao()) requisicao_incorreta();
     
-    // caso os dados estejam OK, ele insere
     // checa se a operação será uma inserção ou uma atualização
-    
-    
-    if($entrada['id_estoque'] == 0){ // realiza a inserção
+    if($entrada['id_produto'] == 0){ // realiza a inserção
         
+        // primeiro insere na tabela de produto e resgata o id_produto escolhido pelo banco de dados
+        $sql = "INSERT INTO `produto` (nome) VALUES ('".$entrada[nome]."')";
+        mysql_query($sql) or die("Erro na inserção de produto");
+        $id = mysql_insert_id();
+        
+        // realiza a inserção equivalente na tabela de estoque
         $sql = "
-        INSERT INTO `estoque` (id_usuario,nome,quantidade,quantidade_tipo,custo)
-        VALUES 
-        ('".$entrada['id_usuario']."',
-        '".$entrada['nome']."',
-        '".$entrada['quantidade']."',
-        '".$entrada['quantidade_tipo']."',
-        '".$entrada['custo']."')";
-        
-        mysql_query($sql) or die("Erro na inserção de dados");
+            INSERT INTO `estoque` (id_produto,id_usuario,quantidade,quantidade_tipo,custo)
+                VALUES 
+                    ('".$id."',
+                    '".$entrada['id_usuario']."',
+                    '".$entrada['quantidade']."',
+                    '".$entrada['quantidade_tipo']."',
+                    '".$entrada['custo']."')";
+                
+        mysql_query($sql) or die("Erro na inserção em estoque");
         
     }
     else { // realiza a atualização
         // recupera os dados atuais sobre o item que será modificado
-        $item = mysql_fetch_array(mysql_query("SELECT * FROM `estoque` WHERE id_estoque='".$entrada['id_estoque']."'"))
+        $item = mysql_fetch_array(mysql_query("SELECT * FROM `estoque` WHERE id_produto='".$entrada['id_produto']."'"))
             or die("Erro na recuperação dos dados antigos");
-        
         
         // calcula os novos valores de quantidade de preço por unidade
         $item['custo'] = ($item['quantidade']*$item['custo']+$entrada['quantidade']*$entrada['custo'])/($entrada['custo'] + $item['custo']);
         $item['quantidade'] += $entrada['quantidade'];
         
-        // atualiza as informações no banco de dados
+        // atualiza as informações de estoque no banco de dados
         mysql_query("
                     UPDATE estoque SET
-                    nome='".$entrada['nome']."',
-                    quantidade='".$item['quantidade']."',
-                    quantidade_tipo='".$entrada['quantidade_tipo']."',
-                    custo='".$item['custo']."'
+                        quantidade='".$item['quantidade']."',
+                        quantidade_tipo='".$entrada['quantidade_tipo']."',
+                        custo='".$item['custo']."'
                     WHERE 
-                    id_estoque='".$entrada['id_estoque']."'
+                        id_produto='".$entrada['id_produto']."'
                     ")
-                    or die("Erro na atualização de dados");
+                    or die("Erro na atualização de estoque");
+        
+        // como o nome fantasia da ficha pode ter sido modificado também, atualiza a entrada na tabela de produto também
+        mysql_query("
+                    UPDATE produto SET
+                        nome='".$entrada['nome']."'
+                    WHERE
+                        id_produto='".$entrada['id_produto']."'
+        ") or die("Erro na atualização de produto");
         
     }
 
-    // encerra a execução do webService
-    die();
 }
-
-
-
 
 
 // ****************************************************************************
 // Requisição DELETE: área que deleta item no estoque
 // ****************************************************************************
-// Requisição DELETE envia 2 campos para esta página via URI (acessível pelo array _GET): id_usuario, id_estoque.
+// Requisição DELETE envia 2 campos para esta página via URI (acessível pelo array _GET): id_usuario, id_produto.
 function deleta(){
     
     // Se houver um erro na requisição, retorna BAD REQUEST
     if(!isset($_GET['id_usuario']) || $_GET['id_usuario']==0) requisicao_incorreta();
     
     // Se houver algum erro na requisição, encerra o programa
-    if(! ( isset($_GET['id_estoque']) && $_GET['id_estoque']!=0 && isset($_GET['id_usuario']) && $_GET['id_usuario'] != 0 )) requisicao_incorreta();
+    if(! ( isset($_GET['id_produto']) && $_GET['id_produto']!=0 && isset($_GET['id_produto']) && $_GET['id_produto'] != 0 )) requisicao_incorreta();
     
-    mysql_query("DELETE FROM estoque
+    
+    // o comando a seguir elimina os dados tanto na tabela produto, quanto na tabela estoque
+    mysql_query("DELETE FROM produto
                 WHERE 
-                id_estoque='".$_GET['id_estoque']."' AND
-                id_usuario='".$_GET['id_usuario']."'
+                id_produto='".$_GET['id_produto']."'
                 ") or
                 die("Erro ao deletar dados.");
-    
-    // Encerra a execução do webService
-    die();
     
 }
 
@@ -134,7 +136,7 @@ function deleta(){
 function lista(){
     
     $idusuario = $_GET['id_usuario'];
-    $sql = "SELECT `id_estoque` , `id_usuario` , `nome` , `quantidade` , `quantidade_tipo` , `custo` , `data_modificacao` FROM `estoque` WHERE id_usuario = '$idusuario'";
+    $sql = "SELECT * FROM `produto` INNER JOIN `estoque` ON produto.id_produto = estoque.id_produto WHERE id_usuario = '$idusuario'";
     $aux = mysql_query($sql);
     $resultado = queryParaArray($aux);
     
@@ -146,9 +148,6 @@ function lista(){
   
     // Envia os dados
     echo $json_response;
-    
-    // encerra a execução do webService
-    die();
 
 }
 
