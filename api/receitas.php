@@ -53,21 +53,21 @@ die();
 // ****************************************************************************
 function lista(){
     
-    header('Content-Type: application/json; charset=utf-8');
-    
     // Se o id_produto não foi recebido, então lista todas as receitas do usuário dado
     if(!isset($_GET['id_produto'])){
         
-        $sql = "SELECT `id_produto`,`nome_tecnico`,`foto` FROM `fichas` WHERE `id_usuario` = '".$_GET[id_usuario]."'";
+        $sql = "SELECT * FROM `fichas` WHERE `id_usuario` = '".$_GET[id_usuario]."'";
 
         $resultado = mysql_query($sql);
         
         $retorno = array();
         
         // Lê todas as linhas de resultado e prepara o array que será transformado em JSON
-        for($i = 0; $linha = mysql_fetch_array($resultado); $i++){
-            $retorno[$i] = $linha;
+        for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++){
+           $retorno[$i] = $linha;
         }
+        
+        // print_r($retorno);
         
         // envia o JSON para o cliente
         echo escreveJSON($retorno);
@@ -78,7 +78,7 @@ function lista(){
         $sql = "SELECT * FROM `fichas` WHERE `id_produto` = '".$_GET[id_produto]."'";
         $resultado = mysql_query($sql);
         
-        $resposta = mysql_fetch_array($resultado);
+        $resposta = mysql_fetch_assoc($resultado);
         
         // encontra todos os ingredientes dessa receita e os armazena no array de resposta
         $sql = "SELECT * FROM  `ingredientes_uso` WHERE `id_ficha` = '".$_GET[id_produto]."'";
@@ -86,9 +86,11 @@ function lista(){
         
         $resposta['ingredientes'] = array();
         
-        for($i = 0; $linha  = mysql_fetch_array($resultado); $i++){
+        for($i = 0; $linha  = mysql_fetch_assoc($resultado); $i++){
             $resposta['ingredientes'][$i] = $linha;
         }
+        
+        // print_r($resposta);
         
         echo escreveJSON($resposta);
         
