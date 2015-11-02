@@ -10,6 +10,7 @@
 		entrada: id_usuario e id_caixa
 		saída: JSON com informações completas sobre a venda especificada
 		
+		
  *	******POST********
 	Cabe a esse método disparar os gatilhos que consomem itens em estoque. Da mesma forma, cabe a ele lançar os métodos responsáveis por checar se os ingredientes de itens em cardápio estão se esgotando
 		entrada: JSON com todos os dados pertinentes à nova venda a ser computada, assim como todos os itens dessa venda
@@ -49,6 +50,67 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
 // Encerra a execução da API após o disparo de uma função.
 die();
- 
+
+// ****************************************************************************
+// POST: cadastra nova venda e dispara os gatilhos de diminuição de estoque
+// ****************************************************************************
+function insere(){
+    
+    // recebe todos os elementos da venda especificada
+    $entrada = leJSON();
+    
+    
+    // insere a venda base na tabela "vendas"
+    mysql_query("
+        INSERT INTO `vendas` (
+            id_usuario
+        ) VALUES (
+            '".$entrada[id_usuario]."'
+        );
+    ");
+    
+    // recupera o id escolhido pelo banco para a nova venda
+    $id = mysql_insert_id();
+    
+    
+    // insere cada um dos itens da venda especificada em "vendas_itens"
+    foreach($entrada[venda_itens] as $item){
+        
+        mysql_query("
+            INSERT INTO `vendas_itens` (
+                id_venda,
+                id_produto,
+                quantidade,
+                preco_venda
+            ) VALUES (
+            '".$id."','".$item[id_produto]."','".$item[quantidade]."','".$item[preco_venda]."');
+        ");
+        
+    }
+}
+
+// ****************************************************************************
+// GET: lista todas as vendas de um dado usuário, ou lista os detalhes de uma venda específica
+// ****************************************************************************
+function lista(){
+    
+    $resultado = mysql_query("
+        SELECT vendas.*, 
+                SUM(preco_venda) as total_venda 
+            FROM vendas INNER JOIN vendas_itens 
+                ON vendas.id_venda=vendas_itens.id_venda 
+            WHERE 
+                id_usuario=34 
+            GROUP BY vendas.id_venda;
+    ");
+    
+    $retorno = array();
+    for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++)
+        $retorno[$i] = $linha;
+    
+    echo escreveJSON($retorno);
+    
+}
+
 
 ?>
