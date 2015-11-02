@@ -140,6 +140,8 @@ function lista(){
     $aux = mysql_query($sql);
     $resultado = queryParaArray($aux);
     
+    //print_r($resultado);
+    
     // Formata os dados em um JSON
     $json_response = json_encode($resultado);
  
@@ -195,15 +197,6 @@ function validaInsercao(){
 // ********************************************************
 //------------------FUNÇÕES AUXILIARES------------------\\
 // ********************************************************
-
-// Transforma o resultado de uma querry em um array
-function queryParaArray($query){
-    $aaux = array();
-    while($r = mysql_fetch_assoc($query)) {
-        $aaux[] = $r;
-    }
-    return $aaux;
-}    
 
 function maiorIgualZero($valor){
     if($valor >= 0){
