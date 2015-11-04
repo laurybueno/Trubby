@@ -46,8 +46,8 @@
                         
                         <li><a href="../estoque/mostraestoque.php">Estoque</a></li>
                         <li><a href="../receitas/mostraReceita.php">Receitas</a></li>
-                        <li><a href="#">Caixa</a></li>
-                        <li><a href="cardapio/mostraCardapio.php">Cardápio</a></li>
+                        <li><a href="../caixa/mostraCaixa.php">Caixa</a></li>
+                        <li><a href="../cardapio/mostraCardapio.php">Cardápio</a></li>
                     </ul>
                 </div>
             </div>

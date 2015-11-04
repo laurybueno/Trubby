@@ -1,34 +1,33 @@
+<?php
+include "../valida_session.inc.php";
+
+include "../usaApi.php";
+    
+if($login === false){
+    header("Location: ../usuario/naoLogado.php");
+}
+
+include "../bootstrap.php";
+include "deletaReceita.php";
+
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
-        <?php
-        include "../valida_session.inc.php";
-            
-            if($login === false){
-                header("Location: ../usuario/naoLogado.php");
-            }
-            include "../bootstrap.php";
-            include "deletaReceita.php"
-        ?>
         <script src="../1.RESOURCES/jquery-1.11.3.min.js"></script>
         <script src="../1.RESOURCES/bootstrap/js/bootstrap.min.js"></script>
         <script src="../1.RESOURCES/jquery.tablesorter.min.js"></script>
     </head>
     <body>
         <div class="container">
-            <a href="../index.php" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
-             <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        
-                        <li><a href="../estoque/mostraestoque.php">Estoque</a></li>
-                        <li><a href="receitas/mostraReceita.php">Receitas</a></li>
-                        <li><a href="#">Caixa</a></li>
-                        <li><a href="../cardapio/mostraCardapio.php">Cardápio</a></li>
-                    </ul>
-                </div>
-            </div>
+            </br>
             
+            <a href="../index.php" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
+            
+            </br>
+            </br>
+            </br>
     
             <div class="container">
                 <!-- script para ordenar a tabela -->
@@ -70,11 +69,8 @@
                     });
                 </script>
                 <?php
-                    require_once("../connection.php");
-                    
-                    $sql = "SELECT `id_ficha`,`nome`, `foto` FROM `fichas`";
-                    $resultado = mysql_query($sql);
-                    mysql_close($con);
+
+                    $decoded = leReceita($id_usuario = $idUsuario);
                     
 
                 ?> 
@@ -86,38 +82,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                            while($linha = mysql_fetch_array($resultado)){
-                        ?>
-                                <tr> 
-                                    <td> <?php  echo $linha['nome']; ?> </td>
-                                    <td> <?php  echo $linha['foto']; ?> </td>
-                                    <td>
-                                        <form class="form-horizontal"  action="modificaReceita.php" role="form" method="POST">
-                                            <div class="form-group">
-                                                <div class="col-sm-7">
-                                                    <input type="hidden" class="form-control" id="idReceita" name="idReceita" value='<?php echo htmlentities($linha['id_ficha'])?>'>
-                                                </div>
-                                            </div>
-                                            <p>
-                                                <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-info btn-lg glyphicon glyphicon-edit">Modificar</button>
-                                                <!--
-                                                <a class="btn btn-info btn-lg glyphicon glyphicon-edit" data-id="<?php //echo $linha['id_ficha']; ?>" href="modificaReceita.php" role="button">Modificar</a>
-                                                -->
-                                            </p>
-                                         </form>
-                                    </td>
-                                    <td>
-                                        <form class="form-horizontal"  action="" role="form" method="POST">
-                                            <button type="button" data-nome="<?php echo $linha['nome'];?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemReceita">
-                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                        <?php
-                            }
-                        ?>
+                        <tr>
+                            <?php
+                                foreach($decoded as $key => $aux) {
+                                    echo
+                                        '
+                                        <td>' .$aux['nome_tecnico'] .'</td>
+                                        <td>' .$aux['foto'] .'</td>
+                                        ';
+                            ?>
+                            <td>
+                                <form class="form-horizontal"  action="" role="form" method="POST">
+                                    <button type="button" data-id="<?php echo $aux['id_produto']?>" data-nome="<?php echo $aux['nome']?>" data-qnt="<?php echo $aux['quantidade']?>" data-qnttipo="<?php echo $aux['quantidade_tipo']?>" data-custo="<?php echo $aux['custo']?>" class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemEstoque">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
+                                    </button>
+                                 </form>
+                            </td>
+                            <td>
+                                <form class="form-horizontal"  action="" role="form" method="POST">
+                                    <button type="button" data-id="<?php echo $aux['id_produto']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemEstoque">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                            <?php        
+                               }
+                            ?>
                     </tbody>
                 </table>
                 <p>

@@ -21,9 +21,9 @@ if (!empty($_POST['submitted'])) {
     
     //print(json_encode($arrayInfo, TRUE));
     
-    deletaESTOQUE($idUsuario, $id_produto);
+    deletaCardapio($idUsuario, $id_produto);
 
-    header("Location: ../estoque/mostraestoque.php");
+    header("Location: ../cardapio/mostraCardapio.php");
     
 }   
 ?>

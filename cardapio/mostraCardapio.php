@@ -1,6 +1,9 @@
 <?php
     include "../bootstrap.php";
-    require_once("../connection.php");
+    include "../usaApi.php";
+    
+    include "deletaCardapio.php";
+    
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +34,7 @@
         <script>
             $(document).on("click", ".open-DeletaDialog", function () {
                 var idItem = $(this).data("id");
-                $(".modal-body #idDoItem").val( idItem );
+                $(".modal-body #id_produto").val( idItem );
             });
         </script>
         
@@ -57,33 +60,20 @@
 
 
         <div class="container">
+            </br>
+            
             <a href="../index.php" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
-             <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        
-                        <li><a href="../estoque/mostraestoque.php">Estoque</a></li>
-                        <li><a href="../receitas/mostraReceita.php">Receitas</a></li>
-                        <li><a href="#">Caixa</a></li>
-                        <li><a href="#">Cardápio</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div>
-            </div>
-       
+            
+            
+            </br>
+            </br>
+            </br>
+            
             <?php
-            //comentario
-                $teste = "OK!";
-                # No sei se a consulta esta certa. Se tiver dando resultado duplicado, deve-se flar com qual tabela esta dando join (LEFT, RIGHT...)
-                # So mostra os itens da ficha que estao a venda
-                $sql= "SELECT fichas.nome, cardapio.preco_venda
-                        FROM cardapio
-                        JOIN produto ON cardapio.id_usuario = '$idUsuario'
-                        AND produto.id_ficha IS NOT NULL
-                        JOIN fichas ON fichas.id_ficha = produto.id_ficha";
-                $resultado = mysql_query($sql);
-                mysql_close($con);
+            
+                //CHAMA A API
+                $decoded = leCardapio($idUsuario);
+            
             ?>
                 <table class="table table-striped" id="tabelaCardapio">
                     <thead>
@@ -97,11 +87,13 @@
                     <tbody>
                         <tr>
                             <?php
-                                while($linha = mysql_fetch_array($resultado)){
+                                foreach($decoded as $key => $aux) {
                                     echo
-                                        '<td>' .$linha['nome'] .'</td>
-                                        <td>' .$linha['preco_venda'].'</td>
-                                        <td>' .$linha['data_modificacao'] .'</td>';
+                                        '
+                                        <td>' .$aux['nome'] .'</td>
+                                        <td>' .$aux['preco_venda'] .'</td>
+                                        <td>' .$aux['id_produto'] .'</td>
+                                        ';
                             ?>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
@@ -112,7 +104,7 @@
                             </td>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
-                                    <button type="button" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemCardapio">
+                                    <button type="button" data-id="<?php echo $aux['id_produto']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemCardapio">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
                                     </button>
                                 </form>

@@ -16,18 +16,13 @@
     </head>
     <body>
         <div class="container">
+            </br>
+            
             <a href="../cardapio/mostraCardapio.php" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
-             <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        
-                        <li><a href="../estoque/mostraestoque.php">Estoque</a></li>
-                        <li><a href="../receitas/mostraReceita.php">Receitas</a></li>
-                        <li><a href="#">Caixa</a></li>
-                        <li><a href="#">Cardápio</a></li>
-                    </ul>
-                </div>
-            </div>
+            
+            </br>
+            </br>
+            </br>
             
             <form class="form-horizontal" role="form" method="POST">
                 <div class="form-group">
