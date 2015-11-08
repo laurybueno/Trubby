@@ -156,9 +156,28 @@ function modifica(){
 
 
 // ****************************************************************************
-// OPTIONS: recebe um id_usuario e retorna todos os itens de estoque e fichas que não estão listados em cardápio no momento
+// OPTIONS: recebe um id_usuario pela URL da requisição e retorna todos os itens de estoque e fichas que não estão listados em cardápio no momento
 // ****************************************************************************
 function opcoes(){
+	
+	$query = "
+		SELECT fichas.id_produto, produto.nome FROM fichas INNER JOIN produto ON fichas.id_produto=produto.id_produto
+		WHERE fichas.id_usuario = $_GET[id_usuario] AND fichas.id_produto NOT IN (SELECT cardapio.id_produto FROM cardapio WHERE cardapio.id_usuario = $_GET[id_usuario])
+
+		UNION
+
+		SELECT estoque.id_produto, produto.nome FROM estoque INNER JOIN produto ON estoque.id_produto=produto.id_produto
+		WHERE estoque.id_usuario = $_GET[id_usuario] AND estoque.id_produto NOT IN (SELECT cardapio.id_produto FROM cardapio WHERE cardapio.id_usuario = $_GET[id_usuario])
+		";
+	
+	$resultado = mysql_query($query);
+	
+	$retorno = array();
+	for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++){
+		$retorno[$i] = $linha;
+	}
+	
+	echo escreveJSON($retorno);
 	
 }	
 
