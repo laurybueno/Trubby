@@ -51,7 +51,9 @@ function insere_modifica(){
     // Se a requisição contiver erros, a execução será interrompida e o cliente receberá um código 400
     if(!isset($entrada['id_produto'])) requisicao_incorreta();
     
-    
+    // corrige a separação decimal do campo custo
+    $entrada['custo'] = str_replace(",",".",$entrada['custo']);
+
     // checa se a operação será uma inserção ou uma atualização
     if($entrada['id_produto'] == 0){ // realiza a inserção
         
@@ -69,6 +71,7 @@ function insere_modifica(){
                     '".$entrada['quantidade']."',
                     '".$entrada['quantidade_tipo']."',
                     '".$entrada['custo']."')";
+        
                 
         mysql_query($sql) or die("Erro na inserção em estoque");
         
@@ -79,7 +82,7 @@ function insere_modifica(){
             or die("Erro na recuperação dos dados antigos");
         
         // calcula os novos valores de quantidade de preço por unidade
-        $item['custo'] = ($item['quantidade']*$item['custo']+$entrada['quantidade']*$entrada['custo'])/($entrada['custo'] + $item['custo']);
+        $item['custo'] = ($item['quantidade']*$item['custo']+$entrada['quantidade']*$entrada['custo'])/($entrada['quantidade'] + $item['quantidade']);
         $item['quantidade'] += $entrada['quantidade'];
         
         // atualiza as informações de estoque no banco de dados
@@ -140,7 +143,12 @@ function lista(){
     $aux = mysql_query($sql);
     $resultado = queryParaArray($aux);
     
-    //print_r($resultado);
+    // print_r($resultado);
+    
+    // troca o separador decimal do campo de custo de ponto por vírgula
+    for($i = 0; $i < sizeof($resultado); $i++){
+        $resultado[$i]['custo'] = str_replace(".",",",$resultado[$i]['custo']);
+    }
     
     // Formata os dados em um JSON
     $json_response = json_encode($resultado);

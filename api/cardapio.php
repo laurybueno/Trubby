@@ -16,6 +16,10 @@
 *	******PUT********	
 		entrada: JSON com todos os dados do item de cardapio a ser modificado, incluindo campos que não sofreram qualquer mudança
 		saída: vazia
+
+*	******OPTIONS********	
+		entrada: id_usuario do cliente ativo
+		saída: JSON com lita de dados completa de todos os itens de estoque e fichas técnicas que não estão listadas em cardápio
 		
 *	******DELETE********	 
 		entrada: id_cardapio e id_usuario do item a ser deletado na URL da requisição
@@ -42,6 +46,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
     
     case 'PUT':
         modifica();
+        break;
+    
+    case 'OPTIONS':
+        opcoes();
         break;
     
     case 'DELETE':
@@ -148,11 +156,17 @@ function modifica(){
 
 
 // ****************************************************************************
+// OPTIONS: recebe um id_usuario e retorna todos os itens de estoque e fichas que não estão listados em cardápio no momento
+// ****************************************************************************
+function opcoes(){
+	
+}	
+
+
+// ****************************************************************************
 // DELETE: recebe id_cardapio e id_usuario na URL da requisição para saber qual entrada deve ser apagada do banco
 // ****************************************************************************
 function deleta(){
-	
-	$entrada = leJSON();
 	
 	// realiza a query para deletar o item de cardapio especificado
 	mysql_query("

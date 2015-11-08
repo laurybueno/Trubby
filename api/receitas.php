@@ -110,7 +110,7 @@ function insere(){
 	// primeiro, a ficha técnica deve ser inserida e seu id no banco de dados deve ser recebido pelo programa
 	
 	mysql_query("
-	            INSERT INTO `produto` (nome) VALUES ('".$entrada[nome]."');
+	            INSERT INTO `produto` (nome) VALUES ('".$entrada[nome_tecnico]."');
 	") or die("Problema na inserção de produto");
 	
 	$id = mysql_insert_id();
@@ -125,12 +125,14 @@ function insere(){
                 `equipamento`,
                 `n_porcoes`,
                 `peso_porcao`,
-                `obs`
+                `obs`,
+                `foto`
                 )
                 VALUES (
-                    '$id', $entrada[id_usuario]','$entrada[nome_tecnico]','$entrada[modo_preparo]','$entrada[seq_montagem]','$entrada[equipamento]','$entrada[n_porcoes]','$entrada[peso_porcao]','$entrada[obs]'
+                    '$id', '$entrada[id_usuario]','$entrada[nome_tecnico]','$entrada[modo_preparo]','$entrada[seq_montagem]','$entrada[equipamento]','$entrada[n_porcoes]','$entrada[peso_porcao]','$entrada[obs]', '$entrada[foto]'
                 );";
-
+    
+    
     $resultado = mysql_query($sql);
 	
 	
@@ -142,16 +144,14 @@ function insere(){
 	    $sql =  "INSERT INTO `trubby`.`ingredientes_uso` (
                 `id_ficha`, 
                 `id_estoque`, 
-                `quantidade_liq`, 
-                `quantidade_liq_tipo`, 
+                `quantidade_liq`,
                 `quantidade_brt`,
-                `quantidade_brt_tipo`,
                 `rendimento`,
                 `tipo`,
                 `preco_extra`
                 )
                 VALUES (
-                    '$id','$ingrediente[id_estoque]','$ingrediente[quantidade_liq]','$ingrediente[quantidade_liq_tipo]','$ingrediente[quantidade_brt]','$ingrediente[quantidade_brt_tipo]','$ingrediente[rendimento]','$ingrediente[tipo]','$ingrediente[preco_extra]'
+                    '$id','$ingrediente[id_estoque]','$ingrediente[quantidade_liq]','$ingrediente[quantidade_brt]','$ingrediente[rendimento]','$ingrediente[tipo]','$ingrediente[preco_extra]'
                 );";
     $resultado = mysql_query($sql);
 	}
@@ -186,9 +186,7 @@ function modifica(){
 	    
 	    $sql = "UPDATE  `trubby`.`ingredientes_uso` SET  
 	                `quantidade_liq` =  '".$ingrediente[quantidade_liq]."',
-	                `quantidade_liq_tipo` =  '".$ingrediente[quantidade_liq_tipo]."',
 	                `quantidade_brt` =  '".$ingrediente[quantidade_brt]."',
-	                `quantidade_brt_tipo` =  '".$ingrediente[quantidade_brt_tipo]."',
 	                `rendimento` =  '".$ingrediente[rendimento]."',
 	                `preco_extra` =  '".$ingrediente[preco_extra]."'
                 WHERE  `ingredientes_uso`.`id_ficha` = ".$ingrediente[id_ficha]." 
@@ -207,12 +205,12 @@ function modifica(){
 function deleta(){
     
     // deleta todos os ingredientes da ficha técnica
-    $sql = "DELETE FROM `trubby`.`ingredientes_uso` WHERE `ingredientes_uso`.`id_produto` = ".$_GET[id_produto].";";
+    $sql = "DELETE FROM `trubby`.`ingredientes_uso` WHERE `ingredientes_uso`.`id_ficha` = ".$_GET[id_produto].";";
     mysql_query($sql);
     
     // deleta a própria ficha técnica
     $sql = "DELETE FROM `trubby`.`fichas` 
-                WHERE `fichas`.`id_ficha` = ".$_GET['id_produto'].";";
+                WHERE `fichas`.`id_produto` = ".$_GET['id_produto'].";";
     mysql_query($sql);
     
 }

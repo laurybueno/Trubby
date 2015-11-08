@@ -91,6 +91,8 @@ function insere(){
 
 // ****************************************************************************
 // GET: lista todas as vendas de um dado usuário, ou lista os detalhes de uma venda específica
+// Envia por URL o id do usuario através da variavel id_usuario
+// Exemplo de requisição /api/caixa.php?id_usuario=14
 // ****************************************************************************
 function lista(){
     
@@ -100,7 +102,7 @@ function lista(){
             FROM vendas INNER JOIN vendas_itens 
                 ON vendas.id_venda=vendas_itens.id_venda 
             WHERE 
-                id_usuario=34 
+                id_usuario='".$_GET[id_usuario]."' 
             GROUP BY vendas.id_venda;
     ");
     
