@@ -3,7 +3,7 @@
 /*
  * Arquivo de funções para utilização da API do Trubby
  *
- * Neste arquivo, utilizando das funções nativas de curl, leremos requisições do tipo: POST, GET, PUT, DELETE
+ * Neste arquivo, utilizando das funções nativas de curl, leremos requisições do tipo: POST, GET, PUT, DELETE, OPTIONS
 */
 
 // CAMINHO DA API
@@ -15,7 +15,6 @@ $url = 'http://trubby-flashfox.c9.io/api/';
 
 // *****************************************************************************
 // CHAMADA: GET
-// Retorna um array contruido pelo JSON da resposta da API
 // *****************************************************************************
 function leEstoque($id_usuario){
     
@@ -27,13 +26,10 @@ function leEstoque($id_usuario){
     
 }
 
-//WIP \/
 function leReceita($id_usuario = null, $id_produto = null){
         
     global $url;
 
-    //$url = $url.'receitas.php?id_usuario='.$id_usuario;
-    
     if(!is_null($id_usuario)) $url = $url.'receitas.php?id_usuario='.$id_usuario; 
 
     if(!is_null($id_produto)) $url = $url.'receitas.php?id_produto='.$id_produto; 
@@ -81,14 +77,47 @@ function updateEstoque($array){
     
 }
 
-function insereReceita(){
+function updateReceita($array){
+    
+    global $url;
+    
+    $url = $url.'receitas.php';
+    
+    curlPOST($url, json_encode($array, TRUE));
     
 }
 
+function insereCardapio($array){
+
+    global $url;
+    
+    $url = $url.'cardapio.php';
+    
+    curlPOST($url, json_encode($array, TRUE));
+    
+}
+
+function insereCaixa($array){
+
+    global $url;
+    
+    $url = $url.'caixa.php';
+    
+    curlPOST($url, json_encode($array, TRUE));
+    
+}
 // *****************************************************************************
 // CHAMADA: PUT
 // *****************************************************************************
-
+function modificaCardapio($array){
+    
+    global $url;
+    
+    $url = $url.'cardapio.php';
+    
+    curlPUT($url, json_encode($array, TRUE));
+    
+}
 // *****************************************************************************
 // CHAMADA: DELETE
 // *****************************************************************************
@@ -112,8 +141,42 @@ function deletaCardapio($id_usuario, $id_produto){
     
 }
 
+function deletaReceita($id_usuario, $id_produto){
+    
+    global $url;
+
+    $url = $url.'receitas.php?id_usuario='.$id_usuario.'&id_produto='.$id_produto;
+    
+    return curlDELETE($url);    
+    
+}
+
+function deletaVenda($id_venda){
+    
+    global $url;
+
+    $url = $url.'caixa.php?id_venda='.$id_venda;
+    
+    return curlDELETE($url);    
+    
+}
+
+// *****************************************************************************
+// CHAMADA: OPTIONS
+// *****************************************************************************
+function optionsCardapio($id_usuario){
+    
+    global $url;
+
+    $url = $url.'cardapio.php?id_usuario='.$id_usuario;
+    
+    return curlOPTIONS($url);
+    
+}
+
 // *****************************************************************************
 // ******************************FUNÇÕES AUXILIARES*****************************
+// ************************************CURL*************************************
 // *****************************************************************************
 
 function curlGET($url){
@@ -182,6 +245,41 @@ function curlDELETE($url){
     $content  = curl_exec($curl);
     
     curl_close($curl);
+}
+
+function curlOPTIONS($url){
+    $curl = curl_init();
+    
+    curl_setopt_array($curl, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_URL => $url,
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request',
+        CURLOPT_CUSTOMREQUEST => "OPTIONS",
+    ));
+    
+    $resp  = curl_exec($curl);
+    
+    curl_close($curl);
+    
+    $array = json_decode($resp, TRUE);
+    
+    return $array;
+}
+
+function curlPUT($url, $json){
+    $curl = curl_init();
+    
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_USERAGENT => 'Codular Sample cURL Request',
+        CURLOPT_CUSTOMREQUEST => "PUT",
+        CURLOPT_POSTFIELDS => $json
+    ));
+    
+    $content  = curl_exec($curl);
+    
+    curl_close($curl);
+    
 }
 
 ?>
