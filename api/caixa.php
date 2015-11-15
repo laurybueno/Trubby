@@ -7,7 +7,7 @@
 		entrada: id_usuario
 		saída: JSON com todas as vendas registradas para esse usuário
 	OU
-		entrada: id_usuario e id_caixa
+		entrada: id_venda
 		saída: JSON com informações completas sobre a venda especificada
 		
 		
@@ -17,8 +17,8 @@
 		saida: vazia
 	
  *	******DELETE********	 
-	Esse método deverá modificar o status de validade da venda em questão. Se ela estiver válida, ela ficará inválida. Se estiver inválida, ela deverá ficar válida.
-		entrada: id_caixa na URL
+	Esse método deverá apagar a venda especificada e reverter os gatilhos de estoque
+		entrada: id_venda na URL
 		saída: vazia
  
  */
@@ -40,7 +40,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
     
     case 'DELETE':
-        deleta();
+        cancela();
         break;
     
     default:
@@ -87,32 +87,86 @@ function insere(){
         ");
         
     }
+    
+    
+    // dispara gatilhos para remover os ingredientes usados do estoque
+    consomeEstoque($entrada['venda_itens']);
+    
 }
+
+/*
+ *  Gatilhos de remoção de itens do estoque serão disparados pela função a seguir.
+ * Se um parâmetro FALSE for recebido pelo atributo "remocao", a função tentará restituir os itens removidos de estoque pelas vendas especificadas.
+ */
+function consomeEstoque($vendas, $remocao = TRUE){
+    
+    
+    
+}
+
 
 // ****************************************************************************
 // GET: lista todas as vendas de um dado usuário, ou lista os detalhes de uma venda específica
-// Envia por URL o id do usuario através da variavel id_usuario
+// Envia por URL o id_usuario ou o id_venda
 // Exemplo de requisição /api/caixa.php?id_usuario=14
 // ****************************************************************************
 function lista(){
     
-    $resultado = mysql_query("
-        SELECT vendas.*, 
-                SUM(preco_venda) as total_venda 
-            FROM vendas INNER JOIN vendas_itens 
-                ON vendas.id_venda=vendas_itens.id_venda 
-            WHERE 
-                id_usuario='".$_GET[id_usuario]."' 
-            GROUP BY vendas.id_venda;
-    ");
+    // Se o id_venda não estiver definido, a API vai listar todas as vendas do usuário dado
+    if(!isset($_GET['id_venda'])){
     
-    $retorno = array();
-    for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++)
-        $retorno[$i] = $linha;
-    
-    echo escreveJSON($retorno);
+        $resultado = mysql_query("
+            SELECT vendas.*, 
+                    SUM(preco_venda) as total_venda 
+                FROM vendas INNER JOIN vendas_itens 
+                    ON vendas.id_venda=vendas_itens.id_venda 
+                WHERE 
+                    id_usuario='".$_GET[id_usuario]."' 
+                GROUP BY vendas.id_venda;
+        ");
+        
+        $retorno = array();
+        for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++)
+            $retorno[$i] = $linha;
+        
+        echo escreveJSON($retorno);
+        
+    }
+    else{
+        // Se o id_venda estiver definido, os detalhes da venda serão exibidos
+        $resultado = mysql_query("SELECT `vendas_itens`.*, `produto`.nome 
+                                        FROM `vendas_itens` LEFT JOIN `produto` 
+                                            ON `vendas_itens`.id_produto = `produto`.id_produto 
+                                        WHERE `vendas_itens`.id_venda = $_GET[id_venda]"
+                                );
+        
+        $retorno = array();
+        $retorno['total_venda'] = 0;
+        for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++){
+            $retorno[$i] = $linha;
+            $retorno['total_venda'] += $linha['preco_venda'];
+        }
+        
+        echo escreveJSON($retorno);
+        
+    }
     
 }
 
+// ****************************************************************************
+// DELETE: deleta uma venda já computada na base de dados
+// Envia por URL o id do usuario através da variavel id_venda
+// Exemplo de requisição /api/caixa.php?id_venda=10
+// ****************************************************************************
+function cancela(){
+    
+    $sql = "DELETE FROM vendas WHERE id_venda = $_GET[id_venda]";
+    
+    mysql_query($sql) or die("Erro ao deletar a venda específica.");
+    
+    // dispara gatilhos para devolver itens consumidos ao estoque
+    
+    
+}
 
 ?>

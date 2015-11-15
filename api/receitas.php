@@ -81,7 +81,10 @@ function lista(){
         $resposta = mysql_fetch_assoc($resultado);
         
         // encontra todos os ingredientes dessa receita e os armazena no array de resposta
-        $sql = "SELECT * FROM  `ingredientes_uso` WHERE `id_ficha` = '".$_GET[id_produto]."'";
+        $sql = "SELECT `ingredientes_uso`.*, `produto`.nome 
+                    FROM  `ingredientes_uso` LEFT JOIN `produto` 
+                    ON `ingredientes_uso`.id_estoque = `produto`.id_produto 
+                WHERE `id_ficha` = '".$_GET[id_produto]."'";
         $resultado = mysql_query($sql);
         
         $resposta['ingredientes'] = array();

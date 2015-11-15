@@ -84,7 +84,14 @@ function lista(){
 		// organiza as informações em um array e converte em JSON
 		$retorno = array();
 		for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++){
+           // troca pontos por vírgulas nos separadores decimais
+           $linha['preco_venda'] = str_replace(".",",",$linha['preco_venda']);
+           $linha['alerta_amarelo'] = str_replace(".",",",$linha['alerta_amarelo']);
+           $linha['alerta_vermelho'] = str_replace(".",",",$linha['alerta_vermelho']);
+           
+           // salva resultado
            $retorno[$i] = $linha;
+           
         }
 		
 		echo escreveJSON($retorno);
@@ -102,10 +109,15 @@ function lista(){
 		
 
 		$retorno = mysql_fetch_assoc($resultado);
+		
+		// troca pontos por vírgulas nos separadores decimais
+		$retorno['preco_venda'] = str_replace(".",",",$retorno['preco_venda']);
+		$retorno['alerta_vermelho'] = str_replace(".",",",$retorno['alerta_vermelho']);
+		$retorno['alerta_amarelo'] = str_replace(".",",",$retorno['alerta_amarelo']);
 
 		// converte os dados para JSON e envia para o cliente
 		echo escreveJSON($retorno);
-		
+	
 	}
 	
 }
@@ -117,6 +129,11 @@ function lista(){
 function insere(){
 	
 	$entrada = leJSON();
+	
+	// corrige separadores decimais
+	$entrada['preco_venda'] = str_replace(",",".",$entrada['preco_venda']);
+	$entrada['alerta_amarelo'] = str_replace(",",".",$entrada['alerta_amarelo']);
+	$entrada['alerta_vermelho'] = str_replace(",",".",$entrada['alerta_vermelho']);
 	
 	// executa a query de inserção de item no cardapio
 	mysql_query("
@@ -142,6 +159,11 @@ function insere(){
 function modifica(){
 	
 	$entrada = leJSON();
+	
+	// corrige separadores decimais
+	$entrada['preco_venda'] = str_replace(",",".",$entrada['preco_venda']);
+	$entrada['alerta_amarelo'] = str_replace(",",".",$entrada['alerta_amarelo']);
+	$entrada['alerta_vermelho'] = str_replace(",",".",$entrada['alerta_vermelho']);
 	
 	// realiza um update com todas as informações recebidas
 	mysql_query("
