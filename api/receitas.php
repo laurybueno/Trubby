@@ -184,18 +184,28 @@ function modifica(){
 	        
     $resultado = mysql_query($sql) or die("Problema ao modificar ficha técnica");
 	
-	// Modifica cada um dos ingredientes associados a essa receita
+	// Para assegurar que ingredientes novos e antigos serão inseridos e modificados, todos os ingredientes atuais da ficha são removidos e substituídos pelas novas versões
+	// deleta todos os ingredientes da ficha técnica
+    $sql = "DELETE FROM `trubby`.`ingredientes_uso` WHERE `ingredientes_uso`.`id_ficha` = ".$entrada[id_produto].";";
+    mysql_query($sql);
+	
+	
+	// Insere cada um dos ingredientes associados a essa receita
+	// realiza as inserções de ingredientes na tabela de ingredientes_uso do banco de dados
 	foreach($entrada['ingredientes'] as $ingrediente){
-	    
-	    $sql = "UPDATE  `trubby`.`ingredientes_uso` SET  
-	                `quantidade_liq` =  '".$ingrediente[quantidade_liq]."',
-	                `quantidade_brt` =  '".$ingrediente[quantidade_brt]."',
-	                `rendimento` =  '".$ingrediente[rendimento]."',
-	                `preco_extra` =  '".$ingrediente[preco_extra]."'
-                WHERE  `ingredientes_uso`.`id_ficha` = ".$ingrediente[id_ficha]." 
-                AND  `ingredientes_uso`.`id_estoque` = ".$ingrediente[id_estoque].";";
-                
-	    $resultado = mysql_query($sql) or die("Problema ao atualizar os ingredientes em uso");
+	    $sql =  "INSERT INTO `trubby`.`ingredientes_uso` (
+                `id_ficha`, 
+                `id_estoque`, 
+                `quantidade_liq`,
+                `quantidade_brt`,
+                `rendimento`,
+                `tipo`,
+                `preco_extra`
+                )
+                VALUES (
+                    '$entrada[id_produto]','$ingrediente[id_estoque]','$ingrediente[quantidade_liq]','$ingrediente[quantidade_brt]','$ingrediente[rendimento]','$ingrediente[tipo]','$ingrediente[preco_extra]'
+                );";
+        $resultado = mysql_query($sql);
 	}
 	
 }

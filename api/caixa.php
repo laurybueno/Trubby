@@ -96,10 +96,11 @@ function insere(){
 
 /*
  *  Gatilhos de remoção de itens do estoque serão disparados pela função a seguir.
- * Se um parâmetro FALSE for recebido pelo atributo "remocao", a função tentará restituir os itens removidos de estoque pelas vendas especificadas.
+ *  Se um parâmetro FALSE for recebido pelo atributo "remocao", a função tentará restituir os itens removidos de estoque pelas vendas especificadas.
  */
 function consomeEstoque($vendas, $remocao = TRUE){
     
+    // para cada produto na venda especificada, é necessário coletar sua receita completa e 
     
     
 }
