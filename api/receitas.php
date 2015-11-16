@@ -16,7 +16,7 @@
 */
 
 require_once("functions.inc.php");
-require_once("../connection.php");
+require_once("connection.php");
 
 
 // ****************************************************************************

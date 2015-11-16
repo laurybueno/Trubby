@@ -1,7 +1,7 @@
 <?php
 
 require_once("functions.inc.php");
-require_once("../connection.php");
+require_once("connection.php");
 
 /* 
  * Ao receber um GET com id de usuário, esta página deverá retornar a lista de itens no estoque do dado usuário.
