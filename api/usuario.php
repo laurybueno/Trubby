@@ -2,14 +2,17 @@
 
 /*
  *  Página responsável por receber as requisições sobre login da API Trubby.
- *	******POST********
+ *	******POST*******
+        entrada:
+        saída:
+ *	******PUT********
 		entrada: JSON com nome de usuário e senha informados pelo cliente
 		saída: JSON com id_usuario e "validade" informando TRUE ou FALSE caso o login seja válido ou não
  */
 
 
 require_once("functions.inc.php");
-require_once("../connection.php");
+require_once("connection.php");
 
 
 // ****************************************************************************
@@ -17,7 +20,11 @@ require_once("../connection.php");
 // ****************************************************************************
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
-        valida();
+        cadastro();
+        break;
+        
+    case 'PUT':
+        login_valida();
         break;
     
     default:
@@ -28,7 +35,41 @@ switch ($_SERVER['REQUEST_METHOD']) {
 // ****************************************************************************
 // POST
 // ****************************************************************************
-function valida(){
+function cadastro(){
+    
+    $entrada = leJSON();
+    
+    $sql =  "INSERT INTO `trubby`.`usuarios` (
+                    `nome` ,
+                    `sobrenome` ,
+                    `sexo`,
+                    `cpf` ,
+                    `email` ,
+                    `endereco` ,
+                    `senha` ,
+                    `dt_nasc` ,
+                    `tel`
+                )
+                VALUES (
+                    '".$entrada[nome]."', 
+                    '".$entrada[sobrenome]."', 
+                    '".$entrada[sexo]."', 
+                    '".$entrada[cpf]."', 
+                    '".$entrada[email]."', 
+                    '".$entrada[endereco]."', 
+                    '".$entrada[senha]."', 
+                    '".$entrada[dt_nasc]."', 
+                    '".$entrada[tel]."'
+                );";
+                
+    $resultado = mysql_query($sql) or die(mysql_error());
+                
+}
+
+// ****************************************************************************
+// PUT
+// ****************************************************************************
+function login_valida(){
     
     $entrada = leJSON();
     
