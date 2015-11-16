@@ -24,7 +24,7 @@
  */
 
 require_once("functions.inc.php");
-require_once("../connection.php");
+require_once("connection.php");
 
 
 // ****************************************************************************
@@ -100,9 +100,39 @@ function insere(){
  */
 function consomeEstoque($vendas, $remocao = TRUE){
     
-    // para cada produto na venda especificada, é necessário coletar sua receita completa e 
+    // determina o fator de alteração que será aplicado em todas as operações sobre estoque
+    if($remocao) $fator = -1;
+    else $fator = 1;
     
-    
+    // Para cada produto na venda especificada, é necessário coletar sua receita completa e remover de estoque o equivalente à quantidade vendida
+    foreach($vendas as $produto){
+        
+        // Tenta encontrar o produto em estoque
+        $resultado = mysql_query("SELECT * FROM `estoque` WHERE id_produto = '$produto[id_produto]'");
+        
+        // Se o item for encontrado em estoque, modifica a quantidade correspondente a ele
+        if(mysql_num_rows($resultado) == 1){
+            $linha = mysql_fetch_assoc($resultado);
+            $linha['quantidade'] = $linha['quantidade'] + ($produto['quantidade']*$fator);
+            
+            // Atualiza quantidade do produto em estoque
+            $resultado = mysql_query("UPDATE `estoque` SET `quantidade`='$linha[quantidade]' WHERE `id_produto`='$produto[id_produto]'") or die(mysql_error());
+            
+        } else{
+            // Se não encontrar em estoque, presume que se trata de uma ficha, e busca seus ingredientes
+            $resultado = mysql_query("SELECT * FROM `ingredientes_uso` WHERE `id_ficha` = '$produto[id_produto]'");
+            
+            // Se nenhum ingrediente for encontrado, desiste da busca pelos itens de estoque correspondentes
+            if(mysql_num_rows($resultado) == 0) die("Nenhuma correspondência em estoque foi enontrada.");
+            
+            // Para cada ingrediente encontrado, uma nova modificação de estoque precisa ser calculada
+            while($ingrediente = mysql_fetch_assoc($resultado)){
+                $modificacao = $ingrediente['quantidade_brt']*$produto['quantidade']*$fator;
+                echo $modificacao."\n";
+                mysql_query("UPDATE estoque SET quantidade = quantidade + $modificacao WHERE id_produto = $ingrediente[id_estoque]") or die(mysql_error());
+            }
+        }
+    }
 }
 
 
@@ -161,11 +191,22 @@ function lista(){
 // ****************************************************************************
 function cancela(){
     
-    $sql = "DELETE FROM vendas WHERE id_venda = $_GET[id_venda]";
+    // Localiza todos os itens da venda em questão
+    $resultado = mysql_query("SELECT * FROM vendas_itens WHERE id_venda = $_GET[id_venda]");
     
+    $vendas_itens = array();
+    for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++){
+        $vendas_itens[$i] = $linha;
+    }
+    
+    // Dispara gatilhos para devolver itens consumidos ao estoque
+    consomeEstoque($vendas_itens,FALSE);
+    
+    // apaga a venda e seus itens do banco de dados
+    $sql = "DELETE FROM vendas WHERE id_venda = $_GET[id_venda]";
     mysql_query($sql) or die("Erro ao deletar a venda específica.");
     
-    // dispara gatilhos para devolver itens consumidos ao estoque
+    
     
     
 }
