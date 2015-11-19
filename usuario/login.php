@@ -1,10 +1,6 @@
 <?php
-    include "../bootstrap.php"; 
-
-    require_once("../connection.php");
-?>
-
-<?php
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
 
 $msg_erro ='';
 
@@ -14,32 +10,21 @@ if (!empty($_POST['submitted'])) {
     
     session_start();
     
-    $email = $_POST["email"];
-    $senha = $_POST["senha"];
+    $array_info = array(
+            email => $_POST[email],
+            senha => $_POST[senha]
+        );
     
-    $resultado = mysql_query("SELECT * FROM usuarios WHERE email='$email'");
-    $linhas = mysql_num_rows($resultado);
+    $resposta = login_valida($array_info);
+    
 
-    if($linhas == 0){ // Sem Usuário
-    
-        $msg_erro = 'Usuário não encontrado';
-        
-    } else {
-        
-        if($senha != mysql_result($resultado, 0, 'senha')){ // Senha incorreta
-        
-            $msg_erro = 'Senha incorreta';
-            
-        } else { // Login com sucesso, cria os cookies!
-            $_SESSION["email"] = $email;
-            $_SESSION["senha"] = $senha;
-            header("Location: ../index.php");
-        }
+    if($resposta[validade]){
+
+        $_SESSION[email] = $_POST[email];
+        $_SESSION[senha] = $_POST[senha];
+        header("Location: ../index.php");
         
     }
-    
-    mysql_close($con);
-    
 }
 
 ?>
@@ -47,20 +32,15 @@ if (!empty($_POST['submitted'])) {
 <!DOCTYPE html>
 <html>
     <head>
-        <?php
-            /*
-            include "../valida_session.inc.php";
 
-            if($login === true){
-                header("Location: ../index.php");
-            }
-            */
-                
-        ?>
     </head>
     <body>
         <div class="container">
+            </br>
             <a href="../index.php" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
+            </br>
+            </br>
+            </br>
             <div class="row">
                 <div class="col-sm-6 col-md-4 col-md-offset-4">
                     <h1 class="text-center login-title">Faça login para continuar no trubby</h1>
@@ -93,11 +73,6 @@ if (!empty($_POST['submitted'])) {
                                     ?>
                                 </span>
                             </div>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" value="lembrar-me"> Lembrar-me
-                            </label>
-                            
-                            <a href="loginAjuda.php" class="pull-right need-help">Precisa de ajuda?</a><span class="clearfix"></span>
                         </form>
                     </div>
                     <a href="cadastro.php" class="text-center new-account">Criar uma conta </a>
