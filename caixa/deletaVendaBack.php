@@ -1,18 +1,11 @@
 <?php
-include "../bootstrap.php";
 
-include "../usaApi.php";
-
-include "../valida_session.inc.php";
-if($login === false){
-    header("Location: ../usuario/naoLogado.php");
-}
-
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
 
 if (!empty($_POST['submitted'])) {
     
 
-    deletaVenda($_POST['id']);    
+    deleta_venda($_POST['id']);    
 
 
     header("Location: ../caixa/mostraCaixa.php");

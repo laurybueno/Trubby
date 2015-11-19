@@ -1,48 +1,25 @@
 <?php
-    include "../bootstrap.php";
-
-    include "../usaApi.php";
-
-    require_once("../connection.php");
-
-    include "../valida_session.inc.php";
-    if($login === false){
-        header("Location: ../usuario/naoLogado.php");
-    }
-?>
-<?php
-
-$erro = false;
-$msg_erro = '';
-
-$classQuantidade = 'form-group';
-$classPrecoUnidade = 'form-group';
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/header.inc.php";
 
 //Verifica de POST tem algum valor
 if (!empty($_POST['submitted'])) {
-    
-    // Cria as variáveis dinamicamente
-    foreach ($_POST as $chave => $valor) {
-        // Remove todas as tags HTML
-    	// Remove os espaços em branco do valor
-    	$$chave = trim(strip_tags($valor));
-    	
-    }
-    
-    $arrayInfo = array(
-            id_usuario => $idUsuario,
+
+    $array_info = array(
+            id_usuario => $dados_usuario[id_usuario],
             id_produto => '0',
-            nome => $nomeItem,
-            quantidade => $quantidade,
-            quantidade_tipo => $unidade,
-            custo => $precoUnidade
+            nome => $_POST[nome_item],
+            quantidade => $_POST[quantidade],
+            quantidade_tipo => $_POST[unidade],
+            custo => $_POST[preco_unidade]
         );
         
-    //print(json_encode($arrayInfo, TRUE));    
+    //print(json_encode($array_info, TRUE));    
 
-    updateEstoque($arrayInfo);
+    update_estoque($array_info);
     
-    header('Location: ../estoque/mostraestoque.php');    
+    header('Location: ../estoque/mostra_estoque.php');    
     
 }
 
@@ -56,7 +33,7 @@ if (!empty($_POST['submitted'])) {
     <body>
         <div class="container">
             </br>
-            <a href="../estoque/mostraestoque.php" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
+            <a href="../estoque/mostra_estoque.php" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
             </br>
             </br>
             </br>
@@ -67,23 +44,23 @@ if (!empty($_POST['submitted'])) {
                 
                 <!-- Nome -->
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="nomeItem">Nome do item*:</label>
+                    <label class="control-label col-sm-3" for="nome_item">Nome do item:</label>
                     <div class="col-sm-7">
-                        <input type="text" class="form-control" id="nomeItem" name="nomeItem" placeholder="Ex.: Morango" value='<?php echo htmlentities($nomeItem)?>'>
+                        <input type="text" class="form-control" id="nome_item" name="nome_item">
                     </div>
                 </div>
                 
                 <!-- Quantidade -->
-                <div class="<?php echo htmlentities($classQuantidade)?>">
-                    <label class="control-label col-sm-3" for="quantidade">Quantidade*:</label>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="quantidade">Quantidade:</label>
                     <div class="col-sm-7">
-                        <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Ex.: 60" value='<?php echo htmlentities($quantidade)?>'>
+                        <input type="number" class="form-control" id="quantidade" name="quantidade">
                     </div>
                 </div>
                 
                 <!-- Unidade -->
                 <div class="form-group">
-                    <label class="control-label col-sm-3" for="unidades">Unidade*:</label>
+                    <label class="control-label col-sm-3" for="unidades">Unidade:</label>
                     <div class="col-sm-7">
                         <select class="form-control" id="unidade" name="unidade">
                             <option <?php echo $unidade =='Lt'?'selected':''; ?>>Lt</option>
@@ -98,12 +75,12 @@ if (!empty($_POST['submitted'])) {
                 </div>
                 
                 <!-- Preço -->
-                <div class="<?php echo htmlentities($classPrecoUnidade)?>">
-                    <label class="control-label col-sm-3" for="precoUnidade">Preço da unidade*:</label>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="preco_unidade">Preço da unidade:</label>
                     <div class="col-sm-7">
                         <div class="input-group">
                             <div class="input-group-addon">R$</div>
-                            <input type="text" class="form-control" id="precoUnidade" name="precoUnidade" placeholder="Ex.: 2,50" value='<?php echo htmlentities($precoUnidade)?>'>
+                            <input type="text" class="form-control" id="preco_unidade" name="preco_unidade">
                         </div>
                     </div>
                 </div>
@@ -111,11 +88,6 @@ if (!empty($_POST['submitted'])) {
                 <!-- BOTÃO DE CONCLUIR -->
                 <div class="form-group">        
                     <div align="center">
-                        <span class="label label-danger">
-                            <?php
-                                echo  $_SESSION["nomeItem"]. " " . $_SESSION["erro"] . "<br>";
-                            ?>
-                        </span>
                         <br>
                         <input id="submit" name="submitted" type="submit" value="Enviar" class="btn btn-success">
                     </div>

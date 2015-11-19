@@ -1,17 +1,9 @@
 <?php
-    include "../bootstrap.php";
-    require_once("../connection.php");
-    include "../valida_session.inc.php";
-    if($login === false){
-        header("Location: ../usuario/naoLogado.php");
-    }
-    
-    
-    
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
 ?>
 
 <!-- Modal -->
-<div id="deletarItemEstoque" class="modal fade" role="dialog">
+<div id="deletar_receita" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -21,9 +13,9 @@
                 <h2 class="modal-title">Deletar item</h2>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal"  action="../estoque/deletaEstoqueBack.php" role="form" method="post">
+                <form class="form-horizontal"  action="../receitas/deleta_receita_back.php" role="form" method="post">
                     <h4>Você tem certeza que deseja deletar tal item?</h4>
-                    <input type="text" name="id_produto" id="id_produto" value = "<?php echo htmlentities($id)?>"/>
+                    <input type="text" name="id_produto" id="id_produto"/>
                     <p>Essa ação não pode ser desfeita</p>
                     <div class="form-group">        
                         <div align="center">

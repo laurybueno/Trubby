@@ -1,10 +1,5 @@
 <?php
-include "../bootstrap.php";
-
-include "../valida_session.inc.php";
-if($login === false){
-    header("Location: ../usuario/naoLogado.php");
-}
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
 ?>
 
 <!-- Modal -->
@@ -22,7 +17,7 @@ if($login === false){
                     <input type="hidden" class="form-control" id="key" name="key">
                     <h4>Qual item quer adicionar:</h4>
                     
-                    <?php $decoded = leCardapio($idUsuario); ?>
+                    <?php $decoded = le_cardapio($dados_usuario[id_usuario]); ?>
                     <label for="produto">Produto:</label>
                     <select id="produto" name="produto" class="form-control">
                         <?php
@@ -35,7 +30,8 @@ if($login === false){
                         ?>
                     </select>
                     <label for="quantidade">Quantidade:</label>
-                    <input type="text" class="form-control" id="quantidade" name="quantidade">
+                    <input type="number" class="form-control" id="quantidade" name="quantidade">
+                    </br>
                     <div class="form-group">        
                         <div align="center">
                             <input id="submit" name="submitted" type="submit" value="Confirmar" class="btn btn-lg btn-primary btn-block">

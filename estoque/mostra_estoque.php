@@ -1,34 +1,28 @@
 <?php
-    include "../bootstrap.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/header.inc.php";
 
-    include "modificaItemModal.php";
-    include "deletaEstoque.php";
+if(!$dados_usuario[validade]){
+    header('Location: ../usuario/nao_logado.php');
+}
 
-    include "../usaApi.php";
+include "modifica_item_modal.php";
+include "deleta_estoque.php";
 
-    require_once("../connection.php");
 ?>
+
 
 <!DOCTYPE html>
 <html>
     <head>
-        <?php
-            include "../valida_session.inc.php";
-            
-            if($login === false){
-                header("Location: ../usuario/naoLogado.php");
-            }
-            
-        ?>
-        <script src="../1.RESOURCES/jquery-1.11.3.min.js"></script>
-        <script src="../1.RESOURCES/bootstrap/js/bootstrap.min.js"></script>
-        <script src="../1.RESOURCES/jquery.tablesorter.min.js"></script>
+
     </head>
     <body>
 
         <script type="text/javascript" >
             $(document).ready(function() { 
-                $("#tabelaEstoque").tablesorter({ 
+                $("#tabela_estoque").tablesorter({ 
                     sortInitialOrder: 'desc',sortList: [[4,1]]
                 });
             });
@@ -43,17 +37,16 @@
         
         <script>
             $(document).on("click", ".open-ModificaDialog", function () {
-                var idItem = $(this).data("id");
-                $(".modal-body #idDoItem").val( idItem );
-                
-                var nomeItem = $(this).data("nome");
+                var id_item = $(this).data("id");
+                var nome_item = $(this).data("nome");
                 var qnt = $(this).data("qnt");
                 var tipo = $(this).data("qnttipo");
                 var custo = $(this).data("custo");
-                $(".modal-body #nomeItem").val(nomeItem);
+                $(".modal-body #id_item").val( id_item );
+                $(".modal-body #nome_item").val(nome_item);
                 $(".modal-body #quantidade").val(qnt);
                 $(".modal-body #unidade").val(tipo);
-                $(".modal-body #precoUnidade").val(custo);
+                $(".modal-body #preco_unidade").val(custo);
             });
             
         </script>
@@ -71,15 +64,15 @@
             </br>
             
             <?php
-            // ******* CHAMADA PARA API (WIP) *******
+            // ******* CHAMADA PARA API *******
             
-            $decoded = leEstoque($idUsuario);
+            $decoded = le_estoque($dados_usuario[id_usuario]);
 
-            //*******                         *******
+            // *******                  *******
             ?>
             
                 
-                <table class="table table-striped" id="tabelaEstoque">
+                <table class="table table-striped" id="tabela_estoque">
                     <thead>
                         <tr>
                             <td> <strong>Nome do ingrediente</strong> </td>
@@ -96,23 +89,29 @@
                                 foreach($decoded as $key => $aux) {
                                     echo
                                         '
-                                        <td>' .$aux['nome'] .'</td>
-                                        <td>' .$aux['quantidade'] .'</td>
-                                        <td>' .$aux['quantidade_tipo'] .'</td>
-                                        <td>' .$aux['custo'] .'</td>
-                                        <td>' .$aux['data_modificacao'] .'</td>
+                                        <td>' .$aux[nome] .'</td>
+                                        <td>' .$aux[quantidade] .'</td>
+                                        <td>' .$aux[quantidade_tipo] .'</td>
+                                        <td>' .$aux[custo] .'</td>
+                                        <td>' .$aux[data_modificacao] .'</td>
                                         ';
                             ?>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
-                                    <button type="button" data-id="<?php echo $aux['id_produto']?>" data-nome="<?php echo $aux['nome']?>" data-qnt="<?php echo $aux['quantidade']?>" data-qnttipo="<?php echo $aux['quantidade_tipo']?>" data-custo="<?php echo $aux['custo']?>" class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemEstoque">
+                                    <button type="button"   data-id="<?php echo $aux[id_produto]?>" 
+                                                            data-nome="<?php echo $aux[nome]?>" 
+                                                            data-qnt="<?php echo $aux[quantidade]?>" 
+                                                            data-qnttipo="<?php echo $aux[quantidade_tipo]?>" 
+                                                            data-custo="<?php echo $aux[custo]?>" 
+                                                            class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificar_item_estoque">
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
                                     </button>
                                  </form>
                             </td>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
-                                    <button type="button" data-id="<?php echo $aux['id_produto']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemEstoque">
+                                    <button type="button"   data-id="<?php echo $aux[id_produto]?>" 
+                                                            class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletar_item_estoque">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
                                     </button>
                                 </form>
@@ -125,7 +124,8 @@
                 </table>
        
             <!-- INSERIR ITEM -->
-            <a href="insereEstoque.php" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item no estoque</a>
+            <a href="insere_estoque.php" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item no estoque</a>
         </div>
     </body>
 </html>
+

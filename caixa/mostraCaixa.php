@@ -1,25 +1,20 @@
 <?php
-    include "../valida_session.inc.php";
-    
-    include "../usaApi.php";
-    
-    include "../caixa/deletaVenda.php";
-    
-    if($login === false){
-        header("Location: ../usuario/naoLogado.php");
-    }
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/header.inc.php";
 
-    include "../bootstrap.php";
+if(!$dados_usuario[validade]){
+    header('Location: ../usuario/nao_logado.php');
+}
 
-    require_once("../connection.php");
+include "../caixa/deletaVenda.php";
+    
+
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="../1.RESOURCES/jquery-1.11.3.min.js"></script>
-        <script src="../1.RESOURCES/bootstrap/js/bootstrap.min.js"></script>
-        <script src="../1.RESOURCES/jquery.tablesorter.min.js"></script>
     </head>
     <body>
 
@@ -49,11 +44,11 @@
             </br>
             
             <?php
-            // ******* CHAMADA PARA API (WIP) *******
+            $decoded = le_caixa($id_usuario = $dados_usuario[id_usuario]);
             
-            $decoded = leCaixa($id_usuario = $idUsuario);
-
-            //*******                         *******
+            //echo "<pre>";
+                //print_r($decoded);
+            //echo "</pre>";
             ?>
             
                 
@@ -69,10 +64,11 @@
                         <tr>
                             <?php
                                 foreach($decoded as $key => $aux) {
+                                    $preco_venda = str_replace(".",",",$aux['total_venda']);
                                     echo
                                         '
                                         <td>' .$aux['id_venda'] .'</td>
-                                        <td>' .$aux['total_venda'] .'</td>
+                                        <td>' .$preco_venda .'</td>
                                         ';
                             ?>
                             <td>

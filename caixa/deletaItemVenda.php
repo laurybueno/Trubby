@@ -1,10 +1,5 @@
 <?php
-include "../bootstrap.php";
-
-include "../valida_session.inc.php";
-if($login === false){
-    header("Location: ../usuario/naoLogado.php");
-}
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
 ?>
 
 <!-- Modal -->

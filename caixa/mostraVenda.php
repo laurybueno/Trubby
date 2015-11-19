@@ -1,20 +1,19 @@
 <?php
-include "../valida_session.inc.php";
-
-include "../usaApi.php";
-
-if($login === false){
-    header("Location: ../usuario/naoLogado.php");
-}
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/header.inc.php";
 
 session_start();
 
 include "../caixa/insereItemVenda.php";
 include "../caixa/deletaItemVenda.php";
 
-include "../bootstrap.php";
-
 $_SESSION['valor_atual'] = 0;
+
+echo "<pre>";
+    print_r($_SESSION['venda_atual']);
+echo "</pre>";
+    
 
 ?>
 
@@ -80,14 +79,22 @@ $_SESSION['valor_atual'] = 0;
                             if ($decoded == null) echo "Insira um item na venda";
                             else{
                                 foreach($decoded as $key => $aux) {
-                                     
-                                $_SESSION['valor_atual'] = $_SESSION['valor_atual'] + $aux['preco_venda'];
-                                echo
-                                    '
-                                    <td>' .$aux['id_produto'] .'</td>
-                                    <td>' .$aux['quantidade'] .'</td>
-                                    <td>' .$aux['preco_venda'] .'</td>
-                                    ';
+                                    
+                                    
+                                    $valor_atual_com_ponto = str_replace(",",".",$_SESSION['valor_atual']);
+                                    $preco_total = $aux['preco_venda'] + $valor_atual_com_ponto;
+                                    $preco_total = str_replace(".",",",$preco_total);
+                                
+                                    $preco_com_virgula = str_replace(".",",",$aux['preco_venda']);
+                                
+                                    $_SESSION['valor_atual'] = $preco_total;
+                                    
+                                    echo
+                                        '
+                                        <td>' .$aux['id_produto'] .'</td>
+                                        <td>' .$aux['quantidade'] .'</td>
+                                        <td>' .$preco_com_virgula .'</td>
+                                        ';
                             
                         ?>
                         <td>

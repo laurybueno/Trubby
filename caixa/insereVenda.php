@@ -1,20 +1,16 @@
 <?php
-include "../bootstrap.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
 
-include "../usaApi.php";
 
-include "../valida_session.inc.php";
-if($login === false){
-    header("Location: ../usuario/naoLogado.php");
-}
 
 $arrayInfo = array(
-        id_usuario => $idUsuario,
+        id_usuario => $dados_usuario[id_usuario],
         venda_itens => $_SESSION['venda_atual']
     );
     
 
-insereCaixa($arrayInfo);
+insere_caixa($arrayInfo);
 
 unset($_SESSION['venda_atual']);
     

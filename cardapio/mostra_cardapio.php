@@ -1,25 +1,20 @@
 <?php
-    include "../bootstrap.php";
-    include "../usaApi.php";
-    
-    include "deletaCardapio.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/header.inc.php";
+
+if(!$dados_usuario[validade]){
+    header('Location: ../usuario/nao_logado.php');
+}
+
+include "deletaCardapio.php";
+include "modificaCardapioModal.php";
     
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <?php
-            include "../valida_session.inc.php";
-            
-            if($login === false){
-                header("Location: ../usuario/naoLogado.php");
-            }
-            
-        ?>
-        <script src="../1.RESOURCES/jquery-1.11.3.min.js"></script>
-        <script src="../1.RESOURCES/bootstrap/js/bootstrap.min.js"></script>
-        <script src="../1.RESOURCES/jquery.tablesorter.min.js"></script>
     </head>
     <body>
 
@@ -41,16 +36,16 @@
         <script>
             $(document).on("click", ".open-ModificaDialog", function () {
                 var idItem = $(this).data("id");
-                $(".modal-body #idDoItem").val( idItem );
+                $(".modal-body #idItem").val(idItem);
                 
-                var nomeItem = $(this).data("nome");
-                var qnt = $(this).data("qnt");
-                var tipo = $(this).data("qnttipo");
-                var custo = $(this).data("custo");
-                $(".modal-body #nomeItem").val(nomeItem);
-                $(".modal-body #quantidade").val(qnt);
-                $(".modal-body #unidade").val(tipo);
-                $(".modal-body #precoUnidade").val(custo);
+                var nome = $(this).data("nome");
+                var preco = $(this).data("preco");
+                var amarelo = $(this).data("amarelo");
+                var vermelho = $(this).data("vermelho");
+                $(".modal-body #nomeItem").val(nome);
+                $(".modal-body #precoVenda").val(preco);
+                $(".modal-body #alertaAmarelo").val(amarelo);
+                $(".modal-body #alertaVermelho").val(vermelho);
                 
             });
             
@@ -72,7 +67,7 @@
             <?php
             
                 //CHAMA A API
-                $decoded = leCardapio($idUsuario);
+                $decoded = le_cardapio($dados_usuario[id_usuario]);
             
             ?>
                 <table class="table table-striped" id="tabelaCardapio">
@@ -92,19 +87,24 @@
                                         '
                                         <td>' .$aux['nome'] .'</td>
                                         <td>' .$aux['preco_venda'] .'</td>
-                                        <td>' .$aux['id_produto'] .'</td>
                                         ';
                             ?>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
-                                    <button type="button" class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemCardapio">
+                                    <button type="button"   data-id="<?php echo $aux['id_produto']?>" 
+                                                            data-nome="<?php echo $aux['nome']?>"
+                                                            data-preco="<?php echo $aux['preco_venda']?>"
+                                                            data-amarelo="<?php echo $aux['alerta_amarelo']?>"
+                                                            data-vermelho="<?php echo $aux['alerta_vermelho']?>"
+                                                            class="open-ModificaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#modificarItemCardapio">
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar
                                     </button>
                                  </form>
                             </td>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
-                                    <button type="button" data-id="<?php echo $aux['id_produto']?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemCardapio">
+                                    <button type="button"   data-id="<?php echo $aux['id_produto']?>" 
+                                                            class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletarItemCardapio">
                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar
                                     </button>
                                 </form>
@@ -117,7 +117,7 @@
                 </table>
        
             <!-- INSERIR ITEM -->
-            <a href="insereCardapio.php" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item (?)àvenda</a>
+            <a href="insereCardapio.php" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
         </div>
     </body>
 </html>

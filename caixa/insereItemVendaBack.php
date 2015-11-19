@@ -1,31 +1,26 @@
 <?php
-include "../bootstrap.php";
-
-include "../valida_session.inc.php";
-if($login === false){
-    header("Location: ../usuario/naoLogado.php");
-}
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
+include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
 
 if (!empty($_POST['submitted'])) {
     
     $item = array();
     $id_e_preco = $_POST['produto'];
     $dados_produto = explode(".", $id_e_preco);
+    
+    //Manipulação do preço
+    $preco_unitario = str_replace(",",".",$dados_produto[2]);
+    $preco_real = $_POST['quantidade'] * $preco_unitario;
+    //$preco_real = str_replace(".",",",$preco_real);
+    
     $arrayInfo = array(
             id_produto => $dados_produto[0],
             quantidade => $_POST['quantidade'],
-            preco_venda => $_POST['quantidade'] * $dados_produto[2],
+            preco_venda => $preco_real,
         );
         
     $_SESSION['venda_atual'][$_POST['key']] = $arrayInfo;
         
-    //echo "<pre>";
-        //print_r($_SESSION['venda_atual']);
-        //print_r($_POST);
-        //print_r($ingredientes);
-        //print_r($arrayInfo);
-    //echo "</pre>";
-    
     header("Location: ../caixa/mostraVenda.php");
     
 }
