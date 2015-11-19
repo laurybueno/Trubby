@@ -6,8 +6,6 @@
  * Neste arquivo, utilizando das funções nativas de curl, leremos requisições do tipo: POST, GET, PUT, DELETE, OPTIONS
 */
 
-
-
 // CAMINHO DA API
 $url_api = 'http://trubby-flashfox.c9.io/api/';
 
@@ -225,6 +223,18 @@ function deleta_venda($id_venda){
     $url = $url_api;
 
     $url = $url.'caixa.php?id_venda='.$id_venda;
+    
+    return curlDELETE($url);    
+    
+}
+
+function deleta_usuario($id_usuario){
+    
+    global $url_api;
+        
+    $url = $url_api;
+
+    $url = $url.'usuario.php?id_usuario='.$id_usuario;
     
     return curlDELETE($url);    
     

@@ -5,9 +5,16 @@
  *	******POST*******
         entrada:
         saída:
+ 
  *	******PUT********
 		entrada: JSON com nome de usuário e senha informados pelo cliente
 		saída: JSON com id_usuario e "validade" informando TRUE ou FALSE caso o login seja válido ou não
+ 
+ *	******DELETE********
+		entrada: id_usuario de quem deve ser deletado escrito na URL da requisição (envio GET)
+		saída: vazia
+ 
+ 
  */
 
 
@@ -25,6 +32,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
         
     case 'PUT':
         login_valida();
+        break;
+    
+    case 'DELETE':
+        deleta();
         break;
     
     default:
@@ -103,6 +114,17 @@ function login_valida(){
     
 }
 
+
+
+
+// ****************************************************************************
+// DELETE
+// ****************************************************************************
+function deleta(){
+    
+    mysql_query("DELETE FROM `trubby`.`usuarios` WHERE  `id_usuario`=$_GET[id_usuario];") or die(mysql_error());
+    
+}
 
 
 ?>

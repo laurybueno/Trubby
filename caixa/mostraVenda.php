@@ -10,10 +10,11 @@ include "../caixa/deletaItemVenda.php";
 
 $_SESSION['valor_atual'] = 0;
 
+/*
 echo "<pre>";
     print_r($_SESSION['venda_atual']);
 echo "</pre>";
-    
+*/    
 
 ?>
 
