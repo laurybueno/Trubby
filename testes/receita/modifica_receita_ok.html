@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Modificar</td>
+	<td>//table[@id='tabela_receita']/tbody/tr[2]/td[3]/form/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -34,22 +34,22 @@
 <tr>
 	<td>select</td>
 	<td>xpath=(//select[@id='nome[]'])[2]</td>
-	<td>label=99. Ingrediente Modificado</td>
+	<td>label=114. Ingrediente Fixo 3</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>xpath=(//input[@id='quantidade_utilizada[]'])[2]</td>
-	<td>11</td>
+	<td>3</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>xpath=(//input[@id='quantidade_liquida[]'])[2]</td>
-	<td>11</td>
+	<td>2</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>xpath=(//input[@id='rendimento[]'])[2]</td>
-	<td>11</td>
+	<td>1</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -58,10 +58,9 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//table[@id='tabela_receita']/tbody/tr/td[2]</td>
+	<td>//table[@id='tabela_receita']/tbody/tr[2]/td[2]</td>
 	<td>Receita Modificada</td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
