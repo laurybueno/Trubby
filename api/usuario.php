@@ -106,7 +106,7 @@ function login_valida(){
     
     $retorno['id_usuario'] = $linha['id_usuario'];
     $retorno['nome'] = $linha['nome'];
-    $retorno['sobrenome'] = $linha['sobrenonome'];
+    $retorno['sobrenome'] = $linha['sobrenome'];
     $retorno['sexo'] = $linha['sexo'];
     $retorno['validade'] = "TRUE";
     
