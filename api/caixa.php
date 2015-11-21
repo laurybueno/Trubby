@@ -172,9 +172,17 @@ function lista(){
                                 );
         
         $retorno = array();
+        
         $retorno['total_venda'] = 0;
+        $retorno['id_venda'] = $_GET[id_venda];
+        $retorno['vendas_itens'] = array();
+        
         for($i = 0; $linha = mysql_fetch_assoc($resultado); $i++){
-            $retorno[$i] = $linha;
+            
+            // limpa o id_venda de cada produto
+            unset($linha['id_venda']);
+            
+            $retorno['vendas_itens'][$i] = $linha;
             $retorno['total_venda'] += $linha['preco_venda'];
         }
         
