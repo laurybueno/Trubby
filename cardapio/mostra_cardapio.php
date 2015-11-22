@@ -91,6 +91,13 @@ include "modificaCardapioModal.php";
                             ?>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
+                                    <a href="../cardapio/detalhes_cardapio.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-info btn-lg">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Detalhes</a>
+                                 </form>
+                            </td>
+                            
+                            <td>
+                                <form class="form-horizontal"  action="" role="form" method="POST">
                                     <button type="button"   data-id="<?php echo $aux['id_produto']?>" 
                                                             data-nome="<?php echo $aux['nome']?>"
                                                             data-preco="<?php echo $aux['preco_venda']?>"
