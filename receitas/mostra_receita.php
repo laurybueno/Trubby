@@ -60,8 +60,8 @@ include "deleta_receita.php";
                 <table class="table table-striped" id="tabela_receita">
                     <thead>
                         <tr>
-                            <td> <strong>Nome da receita</strong> </td>
                             <td> <strong>Foto</strong> </td>
+                            <td> <strong>Nome da receita</strong> </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,10 +76,18 @@ include "deleta_receita.php";
                             ?>
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
+                                    <a href="../receitas/detalhes_receita.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-info btn-lg">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Detalhes</a>
+                                 </form>
+                            </td>
+                            
+                            <td>
+                                <form class="form-horizontal"  action="" role="form" method="POST">
                                     <a href="../receitas/modifica_receita.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-info btn-lg">
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar</a>
                                  </form>
                             </td>
+
                             <td>
                                 <form class="form-horizontal"  action="" role="form" method="POST">
                                     <button type="button" data-id="<?= $aux[id_produto]?>" class="open-DeletaDialog btn btn-info btn-lg" data-toggle="modal" data-target="#deletar_receita">
