@@ -104,6 +104,7 @@ function login_valida(){
     // caso as informações de login estejam corretas, prepara os dados para envio
     $linha = mysql_fetch_assoc($resultado);
     
+    $retorno[email] = $linha [email];
     $retorno['id_usuario'] = $linha['id_usuario'];
     $retorno['nome'] = $linha['nome'];
     $retorno['sobrenome'] = $linha['sobrenome'];
