@@ -65,45 +65,72 @@ if (!empty($_POST['submitted'])) {
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <a href="../../index2.html">Tru<b>bb</b>y</a>
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg">Register a new membership</p>
+    <p class="login-box-msg">Criar uma conta</p>
 
-    <form action="../../index.html" method="post">
+    <form action="" method="post">
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="Full name">
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+        <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Sobrenome">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+        <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Retype password">
-        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+        Sexo:
+        <label class="radio-inline">
+            <input type="radio" name="sexo" id="Masculino" value="Masculino" checked> Masculino
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="sexo" id="Feminino" value="Feminino"> Feminino
+        </label>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="date" class="form-control" id="data_nasc" name="data_nasc" placeholder="Data de Nascimento">
+        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="number" class="form-control" id="cpf" name="cpf" placeholder="CPF">
+        <span class="glyphicon glyphicon-credit-card form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Endereço">
+        <span class="glyphicon glyphicon-home form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="number" class="form-control" id="telefone" name="telefone" placeholder="Telefone">
+        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> I agree to the <a href="#">terms</a>
+              <input type="checkbox" id="termos" name="termos" required> Eu aceito os <a href="#">termos de uso</a>
             </label>
           </div>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+          <input id="submit" name="submitted" type="submit" value="Cadastrar" class="btn btn-primary btn-block btn-flat">
+          <!--<button type="submit" class="btn btn-primary btn-block btn-flat">Cadastrar</button>-->
         </div>
         <!-- /.col -->
       </div>
     </form>
 
+<!--
     <div class="social-auth-links text-center">
       <p>- OR -</p>
       <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
@@ -111,8 +138,8 @@ if (!empty($_POST['submitted'])) {
       <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
         Google+</a>
     </div>
-
-    <a href="login.html" class="text-center">I already have a membership</a>
+-->
+    <a href="login.php" class="text-center">Ja possuo uma conta</a>
   </div>
   <!-- /.form-box -->
 </div>
