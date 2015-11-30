@@ -1,0 +1,40 @@
+
+
+
+body {
+    background-color: #F2F2F2;
+}
+
+.login-title {
+    font-size: 130px;
+}
+
+.login-page .col-sm-7{
+    width:100%;
+}
+
+/*
+.btn-primary{
+    color: #fff;
+    background-color: #006bb3;
+    border-color: #2e6da4;
+}    
+    
+a {
+    color:#113E65;
+}
+
+.btn-default {
+    color: #080808;
+    background-color: #d6e9c6;
+    border-color: #337ab7;
+}
+*/
+
+.nome-usuario{
+    display: inline;
+}
+
+.container-fluid {
+    text-align: right;
+}

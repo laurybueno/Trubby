@@ -1,0 +1,30 @@
+[29-Nov-2015 16:35:17 UTC] PHP Warning:  session_start(): Cannot send session cookie - headers already sent by (output started at /home/ubuntu/workspace/estoque/modifica_item_modal.php:68) in /home/ubuntu/workspace/includes/valida_session.inc.php on line 5
+[29-Nov-2015 16:35:17 UTC] PHP Stack trace:
+[29-Nov-2015 16:35:17 UTC] PHP   1. {main}() /home/ubuntu/workspace/estoque/index.php:0
+[29-Nov-2015 16:35:17 UTC] PHP   2. include() /home/ubuntu/workspace/estoque/index.php:6
+[29-Nov-2015 16:35:17 UTC] PHP   3. include() /home/ubuntu/workspace/estoque/deleta_estoque_modal.php:2
+[29-Nov-2015 16:35:17 UTC] PHP   4. include() /home/ubuntu/workspace/includes/dependencias.inc.php:18
+[29-Nov-2015 16:35:17 UTC] PHP   5. session_start() /home/ubuntu/workspace/includes/valida_session.inc.php:5
+[29-Nov-2015 16:35:17 UTC] PHP Warning:  session_start(): Cannot send session cache limiter - headers already sent (output started at /home/ubuntu/workspace/estoque/modifica_item_modal.php:68) in /home/ubuntu/workspace/includes/valida_session.inc.php on line 5
+[29-Nov-2015 16:35:17 UTC] PHP Stack trace:
+[29-Nov-2015 16:35:17 UTC] PHP   1. {main}() /home/ubuntu/workspace/estoque/index.php:0
+[29-Nov-2015 16:35:17 UTC] PHP   2. include() /home/ubuntu/workspace/estoque/index.php:6
+[29-Nov-2015 16:35:17 UTC] PHP   3. include() /home/ubuntu/workspace/estoque/deleta_estoque_modal.php:2
+[29-Nov-2015 16:35:17 UTC] PHP   4. include() /home/ubuntu/workspace/includes/dependencias.inc.php:18
+[29-Nov-2015 16:35:17 UTC] PHP   5. session_start() /home/ubuntu/workspace/includes/valida_session.inc.php:5
+[29-Nov-2015 16:35:18 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/ubuntu/workspace/estoque/modifica_item_modal.php:68) in /home/ubuntu/workspace/estoque/index.php on line 11
+[29-Nov-2015 16:35:18 UTC] PHP Stack trace:
+[29-Nov-2015 16:35:18 UTC] PHP   1. {main}() /home/ubuntu/workspace/estoque/index.php:0
+[29-Nov-2015 16:35:18 UTC] PHP   2. header(*uninitialized*) /home/ubuntu/workspace/estoque/index.php:11
+[29-Nov-2015 19:00:37 UTC] PHP Warning:  include(modifica_item_modal.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/receitas/index.php on line 5
+[29-Nov-2015 19:00:37 UTC] PHP Stack trace:
+[29-Nov-2015 19:00:37 UTC] PHP   1. {main}() /home/ubuntu/workspace/receitas/index.php:0
+[29-Nov-2015 19:00:37 UTC] PHP Warning:  include(): Failed opening 'modifica_item_modal.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/receitas/index.php on line 5
+[29-Nov-2015 19:00:37 UTC] PHP Stack trace:
+[29-Nov-2015 19:00:37 UTC] PHP   1. {main}() /home/ubuntu/workspace/receitas/index.php:0
+[29-Nov-2015 19:00:37 UTC] PHP Warning:  include(deleta_estoque_modal.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/receitas/index.php on line 6
+[29-Nov-2015 19:00:37 UTC] PHP Stack trace:
+[29-Nov-2015 19:00:37 UTC] PHP   1. {main}() /home/ubuntu/workspace/receitas/index.php:0
+[29-Nov-2015 19:00:37 UTC] PHP Warning:  include(): Failed opening 'deleta_estoque_modal.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/receitas/index.php on line 6
+[29-Nov-2015 19:00:37 UTC] PHP Stack trace:
+[29-Nov-2015 19:00:37 UTC] PHP   1. {main}() /home/ubuntu/workspace/receitas/index.php:0
