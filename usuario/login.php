@@ -1,8 +1,5 @@
 <?php
 include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
-include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
-
-$msg_erro ='';
 
 if (!empty($_POST['submitted'])) {
     
