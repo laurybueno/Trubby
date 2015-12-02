@@ -8,7 +8,8 @@ if (!empty($_POST['submitted'])) {
     //print_r($_POST);
 
     deleta_estoque($dados_usuario[id_usuario], $_POST[id_produto]);
-
+    
+    //echo "entrou e deletou";
     header("Location: ../estoque/");
     
 }  

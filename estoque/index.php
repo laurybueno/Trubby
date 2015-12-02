@@ -2,9 +2,6 @@
 include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
 include "$_SERVER[DOCUMENT_ROOT]/includes/valida_session.inc.php";
 
-include "modifica_item_modal.php";
-include "deleta_estoque_modal.php";
-
 if(!$dados_usuario[validade]){ 
 
 // se o usuário não está logado, aparece a tela de login
@@ -25,6 +22,7 @@ $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) 
 $resposta = le_estoque($dados_usuario[id_usuario]);
 
 // CHAMADA PARA API
+
 /*
 echo "<pre>";
 print_r($resposta);
@@ -89,7 +87,92 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue layout-boxed">
+<body class="hold-transition skin-blue layout-boxed sidebar-mini">
+<div id="modificar_item_estoque" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modificar item</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  action="../estoque/modifica_item_back.php" role="form" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="id_item"></label>
+                        <div class="col-sm-7">
+                            <input type="hidden" class="form-control" id="id_item" name="id_item">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="nomeItem">Nome do item:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="nome_item" name="nome_item">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="quantidade">Quantidade:</label>
+                        <div class="col-sm-7">
+                            <input type="number" class="form-control" id="quantidade" name="quantidade">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="unidades">Unidade:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="unidade" name="unidade">
+                                <option value = "Lt">Lt</option>
+                                <option value = "Kg">Kg</option>
+                                <option value = "Dz">Dz</option>
+                                <option value = "Mç">Mç</option>
+                                <option value = "Us">Us</option>
+                                <option value = "Co">Co</option>
+                                <option value = "Qb">Qb</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="precoUnidade">Preço da unidade:</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <div class="input-group-addon">R$</div>
+                                <input type="text" class="form-control" id="preco_unidade" name="preco_unidade">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deletar_item_estoque" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Deletar item</h2>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  action="../estoque/deleta_estoque_back.php" role="form" method="post">
+                    <h4>Você tem certeza que deseja deletar este item?</h4>
+                    <input type="text" name="id_produto" id="id_produto"/>
+                    <p>Essa ação não pode ser desfeita</p>
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -105,7 +188,7 @@ desired effect
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button
+      <!-- Sidebar toggle button -->
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
@@ -286,7 +369,7 @@ desired effect
         </div>
         -->
 
-          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm">Desconectar</a>
+          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm"><i class="fa fa-power-off"></i></a>
 
       </div>
 
@@ -348,7 +431,7 @@ desired effect
       <div class="box">
         <div class="box-header">
           <div class="pull-right">
-            <a href="insere_estoque.php" class="btn btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
+            <a href="inserir.php" class="btn btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
           </div>
         </div>    
         <div class="box-body">
@@ -364,6 +447,7 @@ desired effect
                     <th>  </th>
                 </tr>
             </thead>
+            <?php if($resposta != null){ ?>
             <tbody>
                 <tr>
                     <?php
@@ -404,6 +488,7 @@ desired effect
                        }
                     ?>
             </tbody>
+            <?php } ?>
             <tfoot>
                 <tr>
                     <th> <strong>Nome do ingrediente</strong> </th>
