@@ -17,51 +17,11 @@ $size = 80;
 $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
 // GRAVATAR
 
-if (!empty($_POST[submitted])) {
-    
-    $ingredientes = array();
-    $id_e_nome = $_POST[nome];
-    
-    for($i = 0; $i < $_POST[contador]; $i++){
-        //echo $i . " " . $_POST['contador'];
-        $id_produto = explode(".", $id_e_nome[$i]);
-        $ingredientes[$i] = array(
-            id_estoque => $id_produto[0],
-            quantidade_liq => $_POST[quantidade_liquida][$i],
-            quantidade_brt => $_POST[quantidade_utilizada][$i],
-            rendimento => $_POST[rendimento][$i],
-            tipo => "primario",
-            preco_extra => "0"
-        );
-    }
-    
-    $array_info = array(
-            id_produto => "0",
-            id_usuario => $dados_usuario[id_usuario],
-            nome_tecnico => $_POST[nome_receita],
-            modo_preparo => $_POST[modo_preparo],
-            seq_montagem => $_POST[seq_montagem],
-            equipamento => $_POST[equipamento],
-            n_porcoes => $_POST[n_porcoes],
-            peso_porcao => $_POST[peso_porcao],
-            obs => $_POST[obs],
-            foto => "foto.jpg",
-            ingredientes => $ingredientes
-        );
-    
-    /*
-    echo "<pre>";
-        print_r($_POST);
-        //print_r($ingredientes);
-        print_r($array_info);
-    echo "</pre>";
-    */
-    
-    update_receita($array_info);
-    
-    header("Location: ../receitas");
-    
-}
+// RESPOSTA DA API
+
+$receita = le_receita($dados_usuario[id_usuario], $_GET['id_produto'])
+
+// RESPOSTA DA API
 
 /*
 echo "<pre>";
@@ -125,7 +85,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue layout-boxed">
+<body class="hold-transition skin-blue layout-boxed sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -141,7 +101,7 @@ desired effect
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button
+      <!-- Sidebar toggle button -->
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
@@ -322,7 +282,7 @@ desired effect
         </div>
         -->
 
-          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm">Desconectar</a>
+          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm"><i class="fa fa-power-off"></i></a>
 
       </div>
 
@@ -371,7 +331,7 @@ desired effect
     <section class="content-header">
       <h1>
         Receitas
-        <small>Inserir nova Receita</small>
+        <small>Detalhes da Receita</small>
       </h1><!--
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
@@ -388,37 +348,37 @@ desired effect
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="nome_receita">Nome da ficha técnica:</label>
                     <div class="col-sm-7">
-                        <input type="text" class="form-control" id="nome_receita" name="nome_receita">
+                        <input type="text" class="form-control" id="nome_receita" name="nome_receita" value="<?= $receita[nome_tecnico]?>" disabled>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="modo_preparo">Modo de preparo:</label>
                     <div class="col-sm-7">
-                        <input type="text" class="form-control" id="modo_preparo" name="modo_preparo">
+                        <input type="text" class="form-control" id="modo_preparo" name="modo_preparo" value="<?= $receita[modo_preparo]?>" disabled>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="seq_montagem">Sequencia de montagem:</label>
                     <div class="col-sm-7">
-                        <input type="text" class="form-control" id="seq_montagem" name="seq_montagem">
+                        <input type="text" class="form-control" id="seq_montagem" name="seq_montagem" value="<?= $receita[seq_montagem]?>" disabled>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="equipamento">Equipamentos:</label>
                     <div class="col-sm-7">
-                        <input type="text" class="form-control" id="equipamento" name="equipamento">
+                        <input type="text" class="form-control" id="equipamento" name="equipamento" value="<?= $receita[equipamento]?>" disabled>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="n_porcoes">Número de porções:</label>
                     <div class="col-sm-7">
-                        <input type="number" class="form-control" id="n_porcoes" name="n_porcoes">
+                        <input type="number" class="form-control" id="n_porcoes" name="n_porcoes" value="<?= $receita[n_porcoes]?>" disabled>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="peso_porcao">Peso da porção (g):</label>
                     <div class="col-sm-7">
-                        <input type="number" class="form-control" id="peso_porcao" name="peso_porcao">
+                        <input type="number" class="form-control" id="peso_porcao" name="peso_porcao" value="<?= $receita[peso_porcao]?>" disabled>
                     </div>
                 </div>
                 
@@ -426,14 +386,7 @@ desired effect
                     <label class="control-label col-sm-3" for="obs">Observações:</label>
                     <div class="col-sm-7">
                         <!--<textarea class="form-control" rows="3"></textarea>-->
-                        <input type="text" class="form-control" id="obs" name="obs">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="contador">Contador Ingredientes:</label>
-                    <div class="col-sm-7">
-                        <input type="text" class="form-control" id="contador" name="contador" value="1">
+                        <input type="text" class="form-control" id="obs" name="obs" value="<?= $receita[obs]?>" disabled>
                     </div>
                 </div>
                 
@@ -449,40 +402,32 @@ desired effect
                                 <td>Rendimento</td>
                             </tr>
                         </thead>
+                        
                         <tbody class="tbodyClone">
-                            <tr id="clonedInput0" class="clonedInput" name="clonedInput0">
-                                <td>
-                                    <?php $resposta = le_estoque($dados_usuario[id_usuario]); ?>
-                                    <select id="nome[]" name="nome[]" class="form-control">
-                                        <?php
-                                            foreach($resposta as $key => $aux) {
-                                                echo
-                                                    '
-                                                    <option>'.$aux['id_produto'].'. '.$aux['nome'].'</option>
-                                                    ';
-                                            }
-                                        ?>
-                                    </select>
-                                    
-                                </td>
-                                <td><input id="quantidade_utilizada[]" name="quantidade_utilizada[]" required type="number" class="form-control"/></td>
-                                <td><input id="quantidade_liquida[]" name="quantidade_liquida[]" required type="number" class="form-control"/></td>
-                                <td><input id="rendimento[]" name="rendimento[]" required type="number" class="form-control"/></td>
-                                <td>
-                                    <button id="add_0" name="add_0" type="button" class="clone btn btn-success"><i class="fa fa-plus-circle"></i></button>
-                                    <button id="del_0" name="del_0" type="button" class="remove btn btn-danger"><i class="fa fa-trash-o"></i></button>
-                                </td>
-                            </tr>
+                            
+                            <?php
+                            // INGREDIENTES ATUAIS
+                            foreach($receita[ingredientes] as $key => $ingrediente){
+
+                            ?>
+
+                                <tr id="clonedInput0" class="clonedInput" name="clonedInput0">
+                                    <td><input id="nome[]" name="nome[]" required type="text" class="form-control" value="<?= $ingrediente[nome]?>" disabled></td>
+                                    <td><input id="quantidade_utilizada[]" name="quantidade_utilizada[]" required type="number" class="form-control" value="<?= $ingrediente[quantidade_brt]?>" disabled></td>
+                                    <td><input id="quantidade_liquida[]" name="quantidade_liquida[]" required type="number" class="form-control" value="<?= $ingrediente[quantidade_liq]?>" disabled></td>
+                                    <td><input id="rendimento[]" name="rendimento[]" required type="number" class="form-control" value="<?= $ingrediente[rendimento]?>" disabled></td>
+                                </tr>
+
+                            <?php
+                            // INGREDIENTES ATUAIS
+                            }
+                            
+                            ?>
+                            
                         </tbody>
-                        </table>
+                    </table>
                 </div>
                 <br class="clearfix" />
-
-                <div class="form-group">        
-                    <div align="center">
-                        <input id="submit" name="submitted" type="submit" value="Enviar" class="btn btn-success">
-                    </div>
-                </div>
             </form>         
         </div>
       </div>      

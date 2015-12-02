@@ -2,8 +2,6 @@
 include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
 include "$_SERVER[DOCUMENT_ROOT]/includes/valida_session.inc.php";
 
-include "deleta_receita.php";
-
 if(!$dados_usuario[validade]){ 
 
 // se o usuário não está logado, aparece a tela de login
@@ -88,7 +86,31 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue layout-boxed">
+<body class="hold-transition skin-blue layout-boxed sidebar-mini">
+<div id="deletar_receita" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Deletar item</h2>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  action="../receitas/deleta_receita_back.php" role="form" method="post">
+                    <h4>Você tem certeza que deseja deletar tal item?</h4>
+                    <input type="text" name="id_produto" id="id_produto"/>
+                    <p>Essa ação não pode ser desfeita</p>
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -104,7 +126,7 @@ desired effect
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button
+      <!-- Sidebar toggle button -->
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
@@ -285,7 +307,7 @@ desired effect
         </div>
         -->
 
-          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm">Desconectar</a>
+          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm"><i class="fa fa-power-off"></i></a>
 
       </div>
 
@@ -347,7 +369,7 @@ desired effect
       <div class="box">
         <div class="box-header">
           <div class="pull-right">
-            <a href="insere_receita.php" class="btn btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
+            <a href="inserir.php" class="btn btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
           </div>
         </div>    
         <div class="box-body">
@@ -361,6 +383,7 @@ desired effect
                     <th>  </th>
                 </tr>
             </thead>
+            <?php if($resposta != null){ ?>
             <tbody>
                 <tr>
                     <?php
@@ -373,14 +396,14 @@ desired effect
                     ?>
                     <td>
                         <form class="form-horizontal"  action="" role="form" method="POST">
-                            <a href="../receitas/detalhes_receita.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-default">
+                            <a href="../receitas/detalhes.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-default">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Detalhes</a>
                          </form>
                     </td>
                     
                     <td>
                         <form class="form-horizontal"  action="" role="form" method="POST">
-                            <a href="../receitas/modifica_receita.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-default">
+                            <a href="../receitas/modificar.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-default">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modificar</a>
                          </form>
                     </td>
@@ -397,6 +420,7 @@ desired effect
                        }
                     ?>
             </tbody>
+            <?php } ?>
             <tfoot>
                 <tr>
                     <th> <strong>Foto</strong> </th>
