@@ -110,7 +110,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue layout-boxed">
+<body class="hold-transition skin-blue layout-boxed sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -126,7 +126,7 @@ desired effect
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button
+      <!-- Sidebar toggle button -->
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
@@ -307,7 +307,7 @@ desired effect
         </div>
         -->
 
-          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm">Desconectar</a>
+          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm"><i class="fa fa-power-off"></i></a>
 
       </div>
 

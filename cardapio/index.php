@@ -2,9 +2,6 @@
 include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
 include "$_SERVER[DOCUMENT_ROOT]/includes/valida_session.inc.php";
 
-include "deletaCardapio.php";
-include "modificaCardapioModal.php";
-
 if(!$dados_usuario[validade]){ 
 
 // se o usuário não está logado, aparece a tela de login
@@ -89,7 +86,88 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue layout-boxed">
+<body class="hold-transition skin-blue layout-boxed sidebar-mini">
+<div id="deletarItemCardapio" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Deletar item</h2>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  action="../cardapio/deletaCardapioBack.php" role="form" method="post">
+                    <h4>Você tem certeza que deseja deletar tal item?</h4>
+                    <input type="text" name="id_produto" id="id_produto" value = "<?php echo htmlentities($id)?>"/>
+                    <p>Essa ação não pode ser desfeita</p>
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modificarItemCardapio" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modificar item</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  action="../cardapio/modificaCardapioBack.php" role="form" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="idDoItem"></label>
+                        <div class="col-sm-7">
+                            <input type="hidden" class="form-control" id="idItem" name="idItem">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="nomeItem">Nome do item:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="nomeItem" name="nomeItem" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="precoVenda">Preço de venda (em reais):</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="precoVenda" name="precoVenda" placeholder="Ex.: 4,50">
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="alertaAmarelo">Alerta amarelo:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="alertaAmarelo" name="alertaAmarelo" placeholder="Ex.: 50">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="alertaVermelho">Alerta vermelho:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="alertaVermelho" name="alertaVermelho" placeholder="Ex.: 15">
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group">        
+                        <div align="center">
+                            <button id="submit" name="submitted" type="submit" value="Send" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -105,7 +183,7 @@ desired effect
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button
+      <!-- Sidebar toggle button -->
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
@@ -286,7 +364,7 @@ desired effect
         </div>
         -->
 
-          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm">Desconectar</a>
+          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm"><i class="fa fa-power-off"></i></a>
 
       </div>
 
@@ -348,7 +426,7 @@ desired effect
       <div class="box">
         <div class="box-header">
           <div class="pull-right">
-            <a href="insereCardapio.php" class="btn btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
+            <a href="inserir.php" class="btn btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
           </div>
         </div>    
         <div class="box-body">
@@ -362,6 +440,7 @@ desired effect
                     <th>  </th>
                 </tr>
             </thead>
+            <?php if($decoded != null){ ?>
             <tbody>
                 <tr>
                     <?php
@@ -374,7 +453,7 @@ desired effect
                     ?>
                     <td>
                         <form class="form-horizontal"  action="" role="form" method="POST">
-                            <a href="../cardapio/detalhes_cardapio.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-default">
+                            <a href="../cardapio/detalhes.php?id_produto=<?= $aux[id_produto]?>" class="btn btn-default">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Detalhes</a>
                          </form>
                     </td>
@@ -404,6 +483,7 @@ desired effect
                         }
                     ?>
             </tbody>
+            <?php } ?>
             <tfoot>
                 <tr>
                     <th> <strong>Nome do item</strong> </th>
