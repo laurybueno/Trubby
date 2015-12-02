@@ -1,8 +1,5 @@
 <?php
 include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
-include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
-
-
 
 $arrayInfo = array(
         id_usuario => $dados_usuario[id_usuario],

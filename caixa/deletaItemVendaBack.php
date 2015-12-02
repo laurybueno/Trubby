@@ -1,6 +1,5 @@
 <?php
 include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
-include "$_SERVER[DOCUMENT_ROOT]/includes/dependencias.inc.php";
 
 if (!empty($_POST['submitted'])) {
     
@@ -10,7 +9,7 @@ if (!empty($_POST['submitted'])) {
     array_splice($_SESSION['venda_atual'], 1, -1);
         
 
-    header("Location: ../caixa/");
+    header("Location: ../caixa/inserir.php");
     
 }
     

@@ -2,8 +2,7 @@
 include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
 include "$_SERVER[DOCUMENT_ROOT]/includes/valida_session.inc.php";
 
-include "../caixa/insereItemVenda.php";
-include "../caixa/deletaItemVenda.php";
+session_start();
 
 if(!$dados_usuario[validade]){ 
 
@@ -25,9 +24,10 @@ $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) 
 $decoded = $_SESSION['venda_atual'];
 
 // CHAMADA PARA SESSION
+
 /*
 echo "<pre>";
-print_r($resposta);
+print_r($decoded);
 echo "</pre>";
 */
 
@@ -89,7 +89,69 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue layout-boxed">
+<body class="hold-transition skin-blue layout-boxed sidebar-mini">
+<div id="adicionarItemVenda" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Adicionar item</h2>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  action="../caixa/insereItemVendaBack.php" role="form" method="post">
+                    <input type="hidden" class="form-control" id="key" name="key">
+                    <h4>Qual item quer adicionar:</h4>
+                    
+                    <?php $decoded = le_cardapio($dados_usuario[id_usuario]); ?>
+                    <label for="produto">Produto:</label>
+                    <select id="produto" name="produto" class="form-control">
+                        <?php
+                            foreach($decoded as $key => $aux){
+                                echo
+                                    '
+                                    <option>'.$aux['id_produto'].'. '.$aux['nome'].'. '.$aux['preco_venda'].'</option>
+                                    ';
+                            }
+                        ?>
+                    </select>
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" class="form-control" id="quantidade" name="quantidade">
+                    </br>
+                    <div class="form-group">        
+                        <div align="center">
+                            <input id="submit" name="submitted" type="submit" value="Confirmar" class="btn btn-primary">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deletarItemVenda" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Deletar item</h2>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal"  action="../caixa/deletaItemVendaBack.php" role="form" method="post">
+                    <h4>Qual item quer deletar:</h4>
+                    <input type="text" class="form-control" id="key" name="key">
+                    <div class="form-group">        
+                        <div align="center">
+                            <input id="submit" name="submitted" type="submit" value="Confirmar" class="btn btn-lg btn-primary btn-block">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -105,7 +167,7 @@ desired effect
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button
+      <!-- Sidebar toggle button -->
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
@@ -286,7 +348,7 @@ desired effect
         </div>
         -->
 
-          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm">Desconectar</a>
+          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm"><i class="fa fa-power-off"></i></a>
 
       </div>
 
@@ -351,15 +413,14 @@ desired effect
             <button type="button" data-key="<?php echo count($_SESSION['venda_atual'])?>" class="open-InsereDialog btn btn-default" data-toggle="modal" data-target="#adicionarItemVenda">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar Item
             </button>
-            <a href="../caixa/cancelaVenda.php" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancelar Venda</a>
-            <a href="../caixa/insereVenda.php" class="btn btn-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirmar Venda</a>
+            <a href="../caixa/cancelar.php" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancelar Venda</a>
+            <a href="../caixa/confirmar.php" class="btn btn-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirmar Venda</a>
           </div>
         </div>    
         <div class="box-body">
             <?php
                 if ($decoded == null){ 
                     echo "<strong>Insira um item na venda</strong></br></br></br>";
-                    unset($_SESSION);
                 }
             ?>
           <table class="table table-striped table-hover" id="tabela-estoque">
@@ -371,11 +432,11 @@ desired effect
                     <th>  </th>
                 </tr>
             </thead>
+            <?php if($decoded != null){ ?>
             <tbody>
                 <tr>
                     <?php
-                        if ($decoded != null){
-                            foreach($decoded as $key => $aux) {
+                              foreach($decoded as $key => $aux) {
                                 
                                 
                                 $valor_atual_com_ponto = str_replace(",",".",$_SESSION['valor_atual']);
@@ -404,10 +465,10 @@ desired effect
                 </tr>
                     <?php        
                             }
-                        }
                     ?>
 
             </tbody>
+            <?php } ?>
             <tfoot>
                 <tr>
                     <th> <strong>ID do Item</strong> </th>
@@ -423,8 +484,8 @@ desired effect
             <button type="button" data-key="<?php echo count($_SESSION['venda_atual'])?>" class="open-InsereDialog btn btn-default" data-toggle="modal" data-target="#adicionarItemVenda">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar Item
             </button>
-            <a href="../caixa/cancelaVenda.php" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancelar Venda</a>
-            <a href="../caixa/insereVenda.php" class="btn btn-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirmar Venda</a>
+            <a href="../caixa/cancelar.php" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancelar Venda</a>
+            <a href="../caixa/confirmar.php" class="btn btn-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Confirmar Venda</a>
           </div>
         </div> 
       </div>      
@@ -553,7 +614,7 @@ desired effect
 
 <script>
   $(function () {
-    $("#tabela-estoque1").DataTable();
+    $("#tabela-estoque").DataTable();
   });
 </script>
 
