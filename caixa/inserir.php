@@ -173,7 +173,7 @@ desired effect
       </a>
       <!-- Sidebar toggle button-->
       <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
+      <div class="navbar-custom-menu" hidden>
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown messages-menu">
