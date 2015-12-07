@@ -3,6 +3,8 @@ include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
 
 if (!empty($_POST['submitted'])) {
     
+    session_start();
+    
     $item = array();
     $id_e_preco = $_POST['produto'];
     $dados_produto = explode(".", $id_e_preco);

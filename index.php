@@ -19,12 +19,28 @@ $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) 
 
 // CHAMADA PARA API
 
-//$resposta = le_estoque($dados_usuario[id_usuario]);
+$estoque = le_estoque($dados_usuario[id_usuario]);
+$receitas = le_receita($dados_usuario[id_usuario]);
+$cardapio = le_cardapio($dados_usuario[id_usuario]);
+$caixa = le_caixa($dados_usuario[id_usuario]);
 
 // CHAMADA PARA API
+
 /*
 echo "<pre>";
-print_r($resposta);
+print_r($estoque);
+echo "</pre>";
+
+echo "<pre>";
+print_r($receitas);
+echo "</pre>";
+
+echo "<pre>";
+print_r($cardapio);
+echo "</pre>";
+
+echo "<pre>";
+print_r($caixa);
 echo "</pre>";
 */
 
@@ -331,8 +347,8 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Template
-        <small>Desc</small>
+        Página Inicial
+        <small>Dados gerais</small>
       </h1><!--
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
@@ -342,20 +358,55 @@ desired effect
 
     <!-- Main content -->
     <section class="content">
-      <div class="box">
-        <div class="box-header">
-          Header
-        </div>    
-        <div class="box-body">
-          Body
+      <div class="row">
+        <div class="col-md-8">
+          <div class="box box-default collapsed-box">
+            <div class="box-header">
+              <h4>Bem-Vindo ao Trubby</h4>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>    
+            <div class="box-body">
+              WORK IN PROGRESS </br>
+                <marquee scrollamount="25">
+                  #TrubbyLove <3
+                </marquee>
+            </div>
+            <div class="box-footer">
+              <h6>PISI + ENG + RP2</h6>
+            </div>
+          </div>
         </div>
-        <div class="box-footer">
-          Footer
-        </div> 
+        
+        <div class="col-md-4">
+          <!-- Widget: user widget style 2 -->
+          <div class="box widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header">
+              <div class="widget-user-image">
+                <img class="img-circle" src="<?= $grav_url ?>" alt="User Avatar">
+              </div>
+              <!-- /.widget-user-image -->
+              <h3 class="widget-user-username"><?= $dados_usuario[nome] . " " . $dados_usuario[sobrenome] ?></h3>
+              <h5 class="widget-user-desc">Quantidade de items:</h5>
+            </div>
+            <div class="box-footer no-padding">
+              <ul class="nav nav-stacked">
+                <li><a href="/estoque">Estoque <span class="pull-right badge bg-aqua"><?= count($estoque) ?></span></a></li>
+                <li><a href="/receitas">Receitas <span class="pull-right badge bg-aqua"><?= count($receitas) ?></span></a></li>
+                <li><a href="/cardapio">Cardápio <span class="pull-right badge bg-aqua"><?= count($cardapio) ?></span></a></li>
+                <li><a href="/caixa">Caixa <span class="pull-right badge bg-aqua"><?= count($caixa) ?></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.widget-user -->
+        </div>
       </div>      
       <!-- Your Page Content Here -->
-
     </section>
+    
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

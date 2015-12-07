@@ -434,7 +434,7 @@ desired effect
         </div>
         <div class="box-footer">
           <div class="pull-right">
-            <a href="insere_receita.php" class="btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
+            <a href="inserir.php" class="btn btn-default"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Inserir novo item</a>
           </div>
         </div> 
       </div>      
