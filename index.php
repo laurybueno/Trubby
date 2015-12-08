@@ -24,6 +24,32 @@ $receitas = le_receita($dados_usuario[id_usuario]);
 $cardapio = le_cardapio($dados_usuario[id_usuario]);
 $caixa = le_caixa($dados_usuario[id_usuario]);
 
+$tabela_barras = array();
+
+foreach($caixa as $key => $aux){
+  $detalhe_item = le_caixa($dados_usuario[id_usuario], $aux[id_venda]);
+  /*
+  echo "<pre>";
+  print_r($detalhe_item);
+  echo "</pre>";
+  */
+  
+  $array_aux = $detalhe_item[vendas_itens];
+  
+  foreach($array_aux as $key => $aux2){
+    $tabela_barras[$aux2[nome]] = $tabela_barras[$aux2[nome]] + $aux2[quantidade];
+  }
+  
+}
+
+/*
+echo "<pre>";
+print_r($tabela_barras);
+echo "</pre>";
+*/
+
+
+
 // CHAMADA PARA API
 
 /*
@@ -73,7 +99,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
   -->
-  <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -102,7 +128,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue layout-boxed sidebar-mini">
+<body class="hold-transition skin-red layout-boxed sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -299,7 +325,7 @@ desired effect
         </div>
         -->
 
-          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm"><i class="fa fa-power-off"></i></a>
+          <a href="../usuario/logout.php" class="btn btn-danger btn-block btn-sm"><i class="fa fa-power-off"></i></a>
 
       </div>
 
@@ -380,6 +406,28 @@ desired effect
           </div>
         </div>
         
+        <div class="col-md-8">
+        <!-- Bar chart -->
+          <div class="box">
+            <div class="box-header with-border">
+              <i class="fa fa-bar-chart-o"></i>
+
+              <h3 class="box-title">Vendas</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                
+              </div>
+            </div>
+            <div class="box-body">
+              <div id="bar-chart" style="height: 300px;"></div>
+            </div>
+            <!-- /.box-body-->
+          </div>
+          <!-- /.box -->
+        </div>
+        
         <div class="col-md-4">
           <!-- Widget: user widget style 2 -->
           <div class="box widget-user-2">
@@ -394,10 +442,10 @@ desired effect
             </div>
             <div class="box-footer no-padding">
               <ul class="nav nav-stacked">
-                <li><a href="/estoque">Estoque <span class="pull-right badge bg-aqua"><?= count($estoque) ?></span></a></li>
-                <li><a href="/receitas">Receitas <span class="pull-right badge bg-aqua"><?= count($receitas) ?></span></a></li>
-                <li><a href="/cardapio">Cardápio <span class="pull-right badge bg-aqua"><?= count($cardapio) ?></span></a></li>
-                <li><a href="/caixa">Caixa <span class="pull-right badge bg-aqua"><?= count($caixa) ?></span></a></li>
+                <li><a href="/estoque">Estoque <span class="pull-right badge bg-red"><?= count($estoque) ?></span></a></li>
+                <li><a href="/receitas">Receitas <span class="pull-right badge bg-red"><?= count($receitas) ?></span></a></li>
+                <li><a href="/cardapio">Cardápio <span class="pull-right badge bg-red"><?= count($cardapio) ?></span></a></li>
+                <li><a href="/caixa">Caixa <span class="pull-right badge bg-red"><?= count($caixa) ?></span></a></li>
               </ul>
             </div>
           </div>
@@ -513,6 +561,14 @@ desired effect
 <script src="../../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/app.min.js"></script>
+<!-- FLOT CHARTS -->
+<script src="../../plugins/flot/jquery.flot.min.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../../plugins/flot/jquery.flot.resize.min.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="../../plugins/flot/jquery.flot.pie.min.js"></script>
+<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
+<script src="../../plugins/flot/jquery.flot.categories.min.js"></script>
 
 <script>
     $(document).on("click", ".open-DeletaDialog", function () {
@@ -541,6 +597,53 @@ desired effect
   $(function () {
     $("#tabela-estoque").DataTable();
   });
+</script>
+
+<script>
+
+/*
+ * BAR CHART
+ * ---------
+ */
+
+var bar_data = {
+  data: [<?php
+    
+    $loops = 1;
+    
+    foreach($tabela_barras as $key => $aux3){
+      if($loops < (count($tabela_barras))) 
+        // ainda não estou no último item de cardapio
+        echo "[\"".$key."\", ".$aux3."], "; 
+      else
+        // estou no ultimo item de cardapio
+        echo "[\"".$key."\", ".$aux3."]";
+      $loops++;
+    }
+    
+    ?>],
+  color: "#dd4b39"
+};
+$.plot("#bar-chart", [bar_data], {
+  grid: {
+    borderWidth: 1,
+    borderColor: "#f3f3f3",
+    tickColor: "#f3f3f3"
+  },
+  series: {
+    bars: {
+      show: true,
+      barWidth: 0.5,
+      align: "center"
+    }
+  },
+  xaxis: {
+    mode: "categories",
+    tickLength: 0
+  }
+});
+/* END BAR CHART */
+  
 </script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.

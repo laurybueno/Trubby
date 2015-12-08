@@ -56,15 +56,17 @@ function le_cardapio($id_usuario, $id_produto = NULL){
     
 }
 
-function le_caixa($id_usuario = NULL, $id_produto = NULL){
+function le_caixa($id_usuario, $id_venda = NULL){
     
     global $url_api;
         
     $url = $url_api;
 
-    if(!is_null($id_usuario)) $url = $url.'caixa.php?id_usuario='.$id_usuario; 
+    $url = $url.'caixa.php?id_usuario='.$id_usuario; 
 
-    if(!is_null($id_produto)) $url = $url.'caixa.php?id_produto='.$id_produto; 
+    if(!is_null($id_venda)) $url = $url.'&id_venda='.$id_venda; 
+
+    //echo $url;
 
     return curlGET($url);
     

@@ -78,7 +78,6 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
-<head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Trubby | Inserir item no Estoque</title>
@@ -96,7 +95,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
   -->
-  <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -125,7 +124,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue layout-boxed sidebar-mini">
+<body class="hold-transition skin-red layout-boxed sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -322,7 +321,7 @@ desired effect
         </div>
         -->
 
-          <a href="../usuario/logout.php" class="btn btn-primary btn-block btn-sm"><i class="fa fa-power-off"></i></a>
+          <a href="../usuario/logout.php" class="btn btn-danger btn-block btn-sm"><i class="fa fa-power-off"></i></a>
 
       </div>
 
@@ -418,7 +417,7 @@ desired effect
                 <div class="form-group">
                     <label class="control-label col-sm-3" for="peso_porcao">Peso da porção (g):</label>
                     <div class="col-sm-7">
-                        <input type="number" class="form-control" id="peso_porcao" name="peso_porcao">
+                        <input type="text" class="form-control" id="peso_porcao" name="peso_porcao">
                     </div>
                 </div>
                 
@@ -444,7 +443,7 @@ desired effect
                         <thead>
                             <tr>
                                 <td>Nome do ingrediente</td>
-                                <td>Quantidade utilizada</td>
+                                <td>Quantidade bruta</td>
                                 <td>Quantidade líquida</td>
                                 <td>Rendimento</td>
                             </tr>
@@ -465,9 +464,9 @@ desired effect
                                     </select>
                                     
                                 </td>
-                                <td><input id="quantidade_utilizada[]" name="quantidade_utilizada[]" required type="number" class="form-control"/></td>
-                                <td><input id="quantidade_liquida[]" name="quantidade_liquida[]" required type="number" class="form-control"/></td>
-                                <td><input id="rendimento[]" name="rendimento[]" required type="number" class="form-control"/></td>
+                                <td><input id="quantidade_utilizada[]" name="quantidade_utilizada[]" required type="text" class="form-control"/></td>
+                                <td><input id="quantidade_liquida[]" name="quantidade_liquida[]" required type="text" class="form-control"/></td>
+                                <td><input id="rendimento[]" name="rendimento[]" required type="text" class="form-control"/></td>
                                 <td>
                                     <button id="add_0" name="add_0" type="button" class="clone btn btn-success"><i class="fa fa-plus-circle"></i></button>
                                     <button id="del_0" name="del_0" type="button" class="remove btn btn-danger"><i class="fa fa-trash-o"></i></button>
