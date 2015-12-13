@@ -1,30 +1,29 @@
 
-     ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
-    '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
-    |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 
-    '  '--'\|  |' '-' ''  ''  '\ `-' | .'  /   |  ||  '--'  /|  `---.
-     `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'
-    ----------------------------------------------------------------- 
+     ___                              ___       ___                 
+    (   )                            (   )     (   )                
+     | |_      ___ .-.     ___  ___   | |.-.    | |.-.    ___  ___  
+    (   __)   (   )   \   (   )(   )  | /   \   | /   \  (   )(   ) 
+     | |       | ' .-. ;   | |  | |   |  .-. |  |  .-. |  | |  | |  
+     | | ___   |  / (___)  | |  | |   | |  | |  | |  | |  | |  | |  
+     | |(   )  | |         | |  | |   | |  | |  | |  | |  | '  | |  
+     | | | |   | |         | |  | |   | |  | |  | |  | |  '  `-' |  
+     | ' | |   | |         | |  ; '   | '  | |  | '  | |   `.__. |  
+     ' `-' ;   | |         ' `-'  /   ' `-' ;   ' `-' ;    ___ | |  
+      `.__.   (___)         '.__.'     `.__.     `.__.    (   )' |  
+                                                           ; `-' '  
+                                                            .__.'   
 
+Um sistema de gerenciamento de estoque, receitas e caixa para empreendimentos
+gastronômicos de pequeno porte, como foodtrucks e quiosques. O nome dado à 
+solução foi Trubby. O seu diferencial em relação aos produtos já existentes no
+mercado seria a sincronização da quantidade de itens no estoque de ingredientes
+com a venda dos produtos, além de um sistema de alertas que notificariam o
+usuário que determinado produto está chegando em seu limite por falta de
+ingredientes.
 
-Hi there! Welcome to Cloud9 IDE!
+## API
 
-To get you started, we have created a small hello world application.
+A API se encontra na pasta: `../api`.
 
-1) Open the hello-world.php file
-
-2) Follow the run instructions in the file's comments
-
-3) If you want to look at the Apache logs, check out ~/lib/apache2/log
-
-And that's all there is to it! Just have fun. Go ahead and edit the code, 
-or add new files. It's all up to you! 
-
-Happy coding!
-The Cloud9 IDE team
-
-
-## Support & Documentation
-
-Visit http://docs.c9.io for support, or to learn more about using Cloud9 IDE. 
-To watch some training videos, visit http://www.youtube.com/user/c9ide
+A mesma se encontra ainda em desenvolvimento seguindo os padrões REST, recebendo
+chamadas para qual quer tipo de requisição.
