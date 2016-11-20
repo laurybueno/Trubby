@@ -1,107 +1,35 @@
 <?php
-    include "../bootstrap.php"
-?>
+include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
 
-<?php
 // Inicia a session
 session_start();
 
-$erro = false;
-$msg_erro = '';
-
-$classUsuario = 'control-group';
-$classCpf = 'control-group';
-
 if (!empty($_POST['submitted'])) {
     
-    // Cria as variáveis dinamicamente
-    foreach ($_POST as $chave => $valor) {
-        
-        $$chave = trim(strip_tags($valor));
-        
-       	// Verifica se tem algum valor nulo
-    	if (empty($valor)) {
-    	    $erro = true;
-    	    $msg_erro = 'Existem campos em branco.';
-    	}
-    }
+    $array_info = array(
+            nome => $_POST['nome'], 
+            sobrenome => $_POST['sobrenome'],
+            sexo => $_POST['sexo'],
+            cpf => $_POST['cpf'],
+            email => $_POST['email'],
+            endereco => $_POST['endereco'],
+            senha => $_POST['senha'],
+            dt_nasc => $_POST['data_nasc'],
+            tel => $_POST['telefone'],
+        );
 
-    // Verificação de Duplicatas (Contas com mesmo e-mail ou CPF)
-    // EU FIZ MAS PODERIA VAI ESTAR NO WS \/\/\/\/\/\/\/\/\/\/
     /*
-    require_once("../connection.php");
-	
-    $sql =  "SELECT email FROM usuarios WHERE email='$email'";
-    
-    $resultado = mysql_query($sql);
-    
-    $qntResposta = mysql_num_rows($resultado);
-    
-    if($linhas >= 1){
-        $erro = true;
-    	$msg_erro = 'E-mail ja cadastrado';
-    }
-    
-    $sql =  "SELECT cpf FROM usuarios WHERE cpf='$cpf'";
-    
-    $resultado = mysql_query($sql);
-    
-    $qntResposta = mysql_num_rows($resultado);
-    
-    if($linhas >= 1){
-        $erro = true;
-    	$msg_erro = 'Cadastro de pessoa fisica ja cadastrado';
-    }
-    */
-    // EU FIZ MAS PODERIA VAI ESTAR NO WS /\/\/\/\/\/\/\/\/\/\
-    
-    //mysql_close($con);
-	
-	//header("Location: insereEstoque.php");
-	
-	
-    // Verifica de $Cpf realmente existe, se tem campos em branco e se tem 11 digitos.
-    // Também verifica se não existe nenhum erro anterior.
-    // Reza a Lenda que isso e papel do WebService. TBD.
-    /*
-    if ((!isset($cpf) || campoEmBranco($cpf) || onzeDigitos($cpf)) && !$erro) {
-        echo 'Teste';
-        $msg_erro = 'O Cadastro de pessoa fisica não deve conter espaços em branco e deve ter 11 digitos (nem mais nem menos).';
-        $erro = true;
-        $cpf = '';
-        $classCpf = 'control-group has-error'; //Borda vermelha
-    }
+    echo '<pre>';
+    print_r($_POST);
+    echo '</pre>';
+            
+    echo '<pre>';
+    print_r($array_info);
+    echo '</pre>';
     */
     
-    if (false === $erro) {
-        
-        require_once("../connection.php");
-        
-        $sql =  "INSERT INTO `trubby`.`usuarios` (
-                    `nome` ,
-                    `sobrenome` ,
-                    `cpf` ,
-                    `email` ,
-                    `senha` ,
-                    `dt_nasc` ,
-                    `tel`
-                )
-                VALUES (
-                    '".$nome."', '".$sobrenome."', '".$cpf."', '".$email."', '".$senha."', '".$dataNasc."', '".$telefone."'
-                );";
-                
-        $resultado = mysql_query($sql);
-        mysql_close($con);
-    	
-    	//header("Location: insereEstoque.php");
-    	
-    	if(!$resultado){
-    	    $_SESSION["erro"] = 'Falha no Banco de Dados, tente novamente!';
-    	} else $_SESSION["erro"] = 'Inserido com Sucesso';
-    	
-    } else {
-        $_SESSION["erro"] = $msg_erro;
-    }
+    cadastro($array_info);
+
 }
 
 ?>
@@ -109,154 +37,127 @@ if (!empty($_POST['submitted'])) {
 
 <!DOCTYPE html>
 <html>
-    <head>
-    </head>
-    <body>
-        <div class="container">
-            <a href="../" class="btn btn-default"><span aria-hidden="true">&larr;</span> Voltar</a>
-            <h4 class="modal-title">Cadastro</h4>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Trubby | Cadastro</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+  <div class="register-logo">
+    <a href="../../index2.html">Tru<b>bb</b>y</a>
+  </div>
+
+  <div class="register-box-body">
+    <p class="login-box-msg">Criar uma conta</p>
+
+    <form action="" method="post">
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Sobrenome">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        Sexo:
+        <label class="radio-inline">
+            <input type="radio" name="sexo" id="Masculino" value="Masculino" checked> Masculino
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="sexo" id="Feminino" value="Feminino"> Feminino
+        </label>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="date" class="form-control" id="data_nasc" name="data_nasc" placeholder="Data de Nascimento">
+        <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="number" class="form-control" id="cpf" name="cpf" placeholder="CPF">
+        <span class="glyphicon glyphicon-credit-card form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Endereço">
+        <span class="glyphicon glyphicon-home form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="number" class="form-control" id="telefone" name="telefone" placeholder="Telefone">
+        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox" id="termos" name="termos" required> Eu aceito os <a href="#">termos de uso</a>
+            </label>
+          </div>
         </div>
-        <div class="container">
-            <form class="form-horizontal"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" role="form" method="POST">
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <input id="submit" name="submitted" type="submit" value="Cadastrar" class="btn btn-primary btn-block btn-flat">
+          <!--<button type="submit" class="btn btn-primary btn-block btn-flat">Cadastrar</button>-->
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
 
-                <!-- Usuário -->
-                <!--
-                <div class="control-group">
-                    <label class="control-label" for="usuario">Usuário</label>
-                    <div class="controls">
-                        <input id="usuario" name="usuario" placeholder="" class="form-control input-lg" type="text">
-                        <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuário para Login" value=''>
-                    </div>
-                </div>
-                -->
-                 
-                <!-- E-mail -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="email">E-mail:</label>
-                    <div class="col-sm-7">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Ex.: meu@email.com" value=''>
-                        <!--<input id="email" name="email" placeholder="" class="form-control" type="email">-->
-                    </div>
-                </div>
-                
-                <!-- Senha -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="senha">Token de autorização memorizável:</label>
-                    <div class="col-sm-7">
-                        <input type="password" class="form-control" id="senha" name="senha" placeholder="Ex.: **********" value=''>
-                        <!--<input id="senha" name="senha" placeholder="" class="form-control" type="password">-->
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="senha_confirmar">Token de autorização memorizável  (Confirma):</label>
-                    <div class="col-sm-7">
-                        <input type="password" class="form-control" id="senha_confirmar" name="senha_confirmar" placeholder="Repita '**********'" value=''>
-                        <!--<input id="senha_confirmar" name="senha_confirmar" placeholder="" class="form-control" type="password">-->
-                    </div>
-                </div>
-                
-                <!-- Nome -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="nome">Nome:</label>
-                    <div class="col-sm-7">
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex.: João" value=''>
-                        <!--<input id="nome" name="nome" placeholder="" class="form-control" type="text">-->
-                    </div>
-                </div>
-                
-                <!-- Sobrenome -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="sobrenome">Sobrenome:</label>
-                    <div class="col-sm-7">
-                        <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Ex.: Silva Pinto" value=''>
-                        <!--<input id="sobrenome" name="sobrenome" placeholder="" class="form-control" type="text">-->
-                    </div>
-                </div>
-                
-                <!-- Sexo -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="sexo">Sexo:</label>
-                    <div class="col-sm-7">
-                        <label class="radio-inline">
-                            <input type="radio" name="sexo" id="sexoMasculino" value="sexoMasculino" checked> Masculino
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="sexo" id="sexoFeminino" value="sexoFeminino"> Feminino
-                        </label>
+<!--
+    <div class="social-auth-links text-center">
+      <p>- OR -</p>
+      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
+        Facebook</a>
+      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
+        Google+</a>
+    </div>
+-->
+    <a href="login.php" class="text-center">Ja possuo uma conta</a>
+  </div>
+  <!-- /.form-box -->
+</div>
+<!-- /.register-box -->
 
-                        <!--
-                        <input type="radio" class="form-control" id="sexo" name="sexo" placeholder="Masculino" value='Masculino' checked> Masculino
-                        <input type="radio" class="form-control" id="sexo" name="sexo" placeholder="Feminino" value='Feminino'> Feminino
-                        
-                        <input type="radio" name="sexo" id="sexo" value="masculino" checked> Masculino
-                        <input type="radio" name="sexo" id="sexo" value="feminino"> Feminino
-                        -->
-                    </div>
-                </div>
-                
-                <!-- Data de Nascimento -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="dataNasc">Data de nascimento:</label>
-                    <div class="col-sm-7">
-                        <input type="date" class="form-control" id="dataNasc" name="dataNasc" placeholder="Ex.: 01/02/2003" value=''> 
-                        <!--<input id="dataNasc" name="dataNasc" placeholder="" class="form-control" type="date">-->
-                    </div>
-                </div>
-                
-                <!-- CPF -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="cpf">Cadastro de pessoa física:</label>
-                    <div class="col-sm-7">
-                        <input type="number" class="form-control" id="cpf" name="cpf" placeholder="Ex.: 12345678911" value=''> 
-                        <!--<input id="cpf" name="cpf" placeholder="" class="form-control" type="number">-->
-                    </div>
-                </div>
-                
-                <!-- Endereço -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="endereco">Endereço:</label>
-                    <div class="col-sm-7">
-                        <input type="endereco" class="form-control" id="endereco" name="endereco" placeholder="Ex.: Esquina com Avenida das Alamedas, 467" value=''> 
-                        <!--<input id="endereco" name="endereco" placeholder="" class="form-control" type="text">-->
-                    </div>
-                </div>
-               
-               <!-- Telefone -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="telefone">Telefone:</label>
-                    <div class="col-sm-7">
-                        <input type="number" class="form-control" id="telefone" name="telefone" placeholder="Ex.: 11912345678" value=''>
-                        <!--<input id="telefone" name="telefone" placeholder="" class="form-control" type="number">-->
-                    </div>
-                </div>
-                
-                <!-- Termos de Uso -->
-                <div class="form-group">
-                    <label class="control-label col-sm-3" for="telefone">TDU:</label>
-                    <div class="col-sm-7">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" id="termos" name="termos" required> Li e aceito os termos de uno.
-                            <!-- <input type="checkbox" name="termos" id="termos" value="termos" required> Li e aceito os termos de uno.-->
-                        </label>
-                    </div>
-                </div>
-
-
-                <!-- BOTÃO DE CONCLUIR -->
-                <div class="form-group">        
-                    <div align="center">
-                        <span class="label label-danger">
-                            <?php
-                                echo  $_SESSION["nomeItem"]. " " . $_SESSION["erro"] . "<br>";
-                                session_destroy(); 
-                            ?>
-                        </span>
-                        <br>
-                        <input id="submit" name="submitted" type="submit" value="Cadastrar" class="btn btn-success">
-                    </div>
-                </div>
-            </form>
-         </div>
-    </body>
+<!-- jQuery 2.1.4 -->
+<script src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="../../plugins/iCheck/icheck.min.js"></script>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>
+</body>
 </html>
-  
