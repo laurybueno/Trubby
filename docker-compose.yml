@@ -1,0 +1,38 @@
+version: '2.0'
+volumes:
+  db_data: {}
+services:
+  mariadb:
+    image: mariadb:5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: trubby
+      MYSQL_USER: trubby
+      MYSQL_PASSWORD: trubby
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./resources/:/data/
+  api:
+    build:
+      context: api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api/:/var/www/html/
+    ports:
+      - "8000:80"
+    links:
+      - mariadb
+    depends_on:
+      - mariadb
+  web:
+    build:
+      context: webapp
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./webapp/:/var/www/html/
+    links:
+      - api
+    depends_on:
+      - api

@@ -2,16 +2,16 @@
 include "$_SERVER[DOCUMENT_ROOT]/includes/usa_api.inc.php";
 
 if (!empty($_POST['submitted'])) {
-    
+
     session_set_cookie_params(3600);
-    
+
     session_start();
-    
+
     $array_info = array(
             email => $_POST[email],
             senha => $_POST[senha]
         );
-    
+
     $resposta = login_valida($array_info);
     
 
@@ -20,7 +20,7 @@ if (!empty($_POST['submitted'])) {
         $_SESSION[email] = $_POST[email];
         $_SESSION[senha] = $_POST[senha];
         header("Location: ../");
-        
+
     }
 }
 
