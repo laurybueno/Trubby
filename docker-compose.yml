@@ -3,15 +3,11 @@ volumes:
   db_data: {}
 services:
   mariadb:
-    image: mariadb:5
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: trubby
-      MYSQL_USER: trubby
-      MYSQL_PASSWORD: trubby
+    build:
+      context: mariadb
+      dockerfile: Dockerfile
     volumes:
       - db_data:/var/lib/mysql
-      - ./resources/:/data/
   api:
     build:
       context: api
