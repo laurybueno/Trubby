@@ -1,0 +1,24 @@
+version: '2.0'
+volumes:
+  db_data: {}
+services:
+  mariadb:
+    image: laury/trubby-php:mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+  api:
+    image: laury/trubby-php:api
+    ports:
+      - "8000:80"
+    links:
+      - mariadb
+    depends_on:
+      - mariadb
+  web:
+    image: laury/trubby-php:web
+    ports:
+      - "80:80"
+    links:
+      - api
+    depends_on:
+      - api
