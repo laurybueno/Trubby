@@ -6,11 +6,13 @@ O software disponível aqui foi desenvolvido em 2015 para o Bacharelado em Siste
 # Como instalar?
 O método recomendado de instalação é via Docker.
 
-```
+```shell
 curl -o trubby-php.yml https://raw.githubusercontent.com/laurybueno/trubby-php/master/docker-compose-prod.yml
 
 docker-compose -f trubby-php.yml up
 ```
+
+A base de dados tem um usuário pré-configurado para testes. Acesse com email "1@1.com" e senha "1".
 
 # Sobre o Trubby
 Um sistema de gerenciamento de estoque, receitas e caixa para empreendimentos gastronômicos de pequeno porte, como foodtrucks e quiosques.
